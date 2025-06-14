@@ -2,7 +2,7 @@ package com.washingtondcsquad.tudee.presentation.design.colors
 
 import androidx.compose.ui.graphics.Color
 
-val DarkTudeeColors = TudeeColors(
+val darkTudeeColors = TudeeColors(
     primary = Color(0xFF3090BF),
     secondary = Color(0xFFF49061),
     primaryVarient = Color(0xFF05202E),
