@@ -1,4 +1,5 @@
 name: 'Auto-Request Review'
+
 on:
   pull_request:
     types: [opened, reopened, ready_for_review]
@@ -12,7 +13,8 @@ jobs:
       pull-requests: write
     steps:
       - name: 'Add reviewers to PR'
-        uses: poad/request-review-action@v2
+        uses: hkusu/review-assign-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          assignees: ${{ github.actor }}
           reviewers: "Ahmedsayed0895,HendSayed25,kareem-01,karrar-abbas,khaledeid1k,Mohamed-Boumaraf,Mohamedragabali,Mostafa-alsaygh,NadaMansour20,omer1998,saraashraf11"
