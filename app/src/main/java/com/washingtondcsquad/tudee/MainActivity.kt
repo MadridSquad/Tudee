@@ -33,11 +33,8 @@ fun GreetingPreview() {
     ){
         Text(
             text = "Hello World",
-
-
+            color = AppTheme.tudeeColors.title,
             style = AppTheme.textStyle.headLine.large
-
-
         )
 
     }
