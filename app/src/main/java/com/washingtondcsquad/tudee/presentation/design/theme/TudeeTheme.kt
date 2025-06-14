@@ -2,9 +2,13 @@ package com.washingtondcsquad.tudee.presentation.design.theme
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.staticCompositionLocalOf
 import com.washingtondcsquad.tudee.presentation.design.colors.DarkTudeeColors
 import com.washingtondcsquad.tudee.presentation.design.colors.LightTudeeColors
 import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyle
+
+val LocalTudeeColors = staticCompositionLocalOf { LightTudeeColors }
+val LocalTudeeTextStyle = staticCompositionLocalOf { defaultTextStyle }
 
 @Composable
 fun TudeeTheme(
@@ -25,4 +29,3 @@ fun TudeeTheme(
     }
 
 }
-

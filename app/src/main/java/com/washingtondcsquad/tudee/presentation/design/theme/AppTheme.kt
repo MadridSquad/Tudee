@@ -14,7 +14,7 @@ object AppTheme {
         @ReadOnlyComposable
         get()= LocalTudeeTextStyle.current
 
-    val tudeeColors: TudeeColors
+    val colors: TudeeColors
         @Composable
         @ReadOnlyComposable
         get() = LocalTudeeColors.current
