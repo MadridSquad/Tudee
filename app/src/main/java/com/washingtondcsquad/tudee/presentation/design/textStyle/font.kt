@@ -11,4 +11,3 @@ val nunitot = FontFamily(
     Font(R.font.nunito, weight = FontWeight.Medium),
     Font(R.font.nunito, weight = FontWeight.SemiBold),
 )
-val LocalTudeeTextStyle = staticCompositionLocalOf { defaultTextStyle }

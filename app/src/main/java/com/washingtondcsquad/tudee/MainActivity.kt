@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.washingtondcsquad.tudee.presentation.design.theme.AppTheme
 import com.washingtondcsquad.tudee.presentation.design.theme.TudeeTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,7 +20,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 
 
 @Preview(showBackground = true)

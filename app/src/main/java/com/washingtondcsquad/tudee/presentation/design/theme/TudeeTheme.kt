@@ -1,9 +1,7 @@
 package com.washingtondcsquad.tudee.presentation.design.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import com.washingtondcsquad.tudee.presentation.design.textStyle.LocalTudeeTextStyle
 import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyle
 
 @Composable
