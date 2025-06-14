@@ -5,6 +5,5 @@ data class TudeeTextStyle(
     val title : SizedTextStyle,
     val body : SizedTextStyle,
     val label: SizedTextStyle,
-
     )
 

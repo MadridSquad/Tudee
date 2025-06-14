@@ -3,7 +3,6 @@ package com.washingtondcsquad.tudee.presentation.design.theme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.Stable
-import com.washingtondcsquad.tudee.presentation.design.textStyle.LocalTudeeTextStyle
 import com.washingtondcsquad.tudee.presentation.design.textStyle.TudeeTextStyle
 
 @Stable
