@@ -46,13 +46,13 @@ val defaultTextStyle = TudeeTextStyle(
             fontSize = 16.sp,
             lineHeight = 20.sp
         ),
-        medium =  TextStyle(
+        medium = TextStyle(
             fontFamily = nunito,
             fontWeight = FontWeight.Medium,
             fontSize = 18.sp,
             lineHeight = 22.sp
         ),
-        large =  TextStyle(
+        large = TextStyle(
             fontFamily = nunito,
             fontWeight = FontWeight.Medium,
             fontSize = 20.sp,
@@ -83,8 +83,8 @@ val defaultTextStyle = TudeeTextStyle(
     ),
 
 
-    label =  SizedTextStyle(
-        small =TextStyle(
+    label = SizedTextStyle(
+        small = TextStyle(
             fontFamily = nunito,
             fontWeight = FontWeight.Medium,
             fontSize = 12.sp,

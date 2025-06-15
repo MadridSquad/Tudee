@@ -14,7 +14,7 @@ object AppTheme {
     val textStyle: TudeeTextStyle
         @Composable
         @ReadOnlyComposable
-        get()= LocalTudeeTextStyle.current
+        get() = LocalTudeeTextStyle.current
 
     val colors: TudeeColors
         @Composable
@@ -25,11 +25,11 @@ object AppTheme {
     operator fun invoke(
         useDarkTheme: Boolean,
         content: @Composable () -> Unit
-    ){
+    ) {
         val colors = if (!useDarkTheme) {
-            TudeeColors.lightTudeeColors
+            TudeeColors.light
         } else {
-            TudeeColors.darkTudeeColors
+            TudeeColors.dark
         }
 
         CompositionLocalProvider(
@@ -41,7 +41,7 @@ object AppTheme {
 
     }
 
-    private val LocalTudeeColors = staticCompositionLocalOf { TudeeColors.lightTudeeColors }
+    private val LocalTudeeColors = staticCompositionLocalOf { TudeeColors.light }
     private val LocalTudeeTextStyle = staticCompositionLocalOf { defaultTextStyle }
 }
 

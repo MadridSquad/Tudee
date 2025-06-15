@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AppTheme(
-                useDarkTheme = false ,
+                useDarkTheme = false,
             ) {
 
             }
@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
 fun GreetingPreview() {
     AppTheme(
         useDarkTheme = false,
-    ){
+    ) {
         Text(
             text = "Hello World",
             color = AppTheme.colors.title,

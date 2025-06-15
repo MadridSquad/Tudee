@@ -35,7 +35,7 @@ data class TudeeColors(
 ) {
 
     companion object {
-        val lightTudeeColors = TudeeColors(
+        val light = TudeeColors(
             primary = Color(0xFF49BAF2),
             secondary = Color(0xFFF49061),
             primaryVarient = Color(0xFFEFF9FE),
@@ -65,7 +65,7 @@ data class TudeeColors(
             errorVariant = Color(0xFFFCE8E8),
         )
 
-        val darkTudeeColors = TudeeColors(
+        val dark = TudeeColors(
             primary = Color(0xFF3090BF),
             secondary = Color(0xFFF49061),
             primaryVarient = Color(0xFF05202E),
