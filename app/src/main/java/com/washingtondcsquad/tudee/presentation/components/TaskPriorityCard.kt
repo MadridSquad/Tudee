@@ -17,14 +17,35 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.theme.AppTheme
+import com.washingtondcsquad.tudee.presentation.features.sharedUiState.Priority
 
 @Composable
 fun TaskPriorityCard(
-    icon: Painter,
-    title: String,
-    backgroundColor: Color,
-    modifier: Modifier = Modifier
+    priority: Priority, modifier: Modifier = Modifier
 ) {
+    var backgroundColor: Color
+    var icon: Painter
+    var title: String
+    when (priority) {
+        Priority.LOW -> {
+            backgroundColor = AppTheme.colors.greenAccent
+            icon = painterResource(R.drawable.low_priority_icon)
+            title = Priority.LOW.name.lowercase().replaceFirstChar { it.uppercase() }
+        }
+
+        Priority.MEDIUM -> {
+            backgroundColor = AppTheme.colors.yellowAccent
+            icon = painterResource(R.drawable.medium_priority_icon)
+            title = Priority.MEDIUM.name.lowercase().replaceFirstChar { it.uppercase() }
+
+        }
+        Priority.HIGH -> {
+            backgroundColor = AppTheme.colors.pinkAccent
+            icon = painterResource(R.drawable.flag_icon)
+            title = Priority.HIGH.name.lowercase().replaceFirstChar { it.uppercase() }
+
+        }
+    }
     Row(
         modifier = modifier
             .background(color = backgroundColor, shape = RoundedCornerShape(100))
@@ -38,8 +59,7 @@ fun TaskPriorityCard(
             tint = AppTheme.colors.onPrimary,
         )
         Text(
-            title,
-            color = AppTheme.colors.onPrimary
+            title, color = AppTheme.colors.onPrimary
         )
 
     }
@@ -50,9 +70,6 @@ fun TaskPriorityCard(
 @Composable
 private fun Preview() {
     TaskPriorityCard(
-        icon = painterResource(
-            id = R.drawable.flag_icon
-        ), title = "High", backgroundColor = AppTheme.colors.pinkAccent,
-
+        priority = Priority.LOW,
     )
 }
