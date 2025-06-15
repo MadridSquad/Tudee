@@ -5,7 +5,7 @@ import com.washingtondcsquad.tudee.domain.services.TasksService
 import java.util.UUID
 
 class TasksServiceImpl : TasksService {
-    override suspend fun addTask(task: Task) {
+    override suspend fun createTask(task: Task) {
         TODO("Not yet implemented")
     }
 
@@ -13,7 +13,7 @@ class TasksServiceImpl : TasksService {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getTasks(): List<Task> {
+    override suspend fun getAllTasks(): List<Task> {
         TODO("Not yet implemented")
     }
 

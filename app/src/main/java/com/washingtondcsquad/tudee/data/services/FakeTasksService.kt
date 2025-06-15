@@ -6,7 +6,7 @@ import java.util.UUID
 
 class FakeTasksService : TasksService {
     private val tasks = mutableListOf<Task>()
-    override suspend fun addTask(task: Task) {
+    override suspend fun createTask(task: Task) {
         this.tasks.add(task)
     }
 
@@ -14,7 +14,7 @@ class FakeTasksService : TasksService {
         tasks.removeIf { it.id == id }
     }
 
-    override suspend fun getTasks(): List<Task> {
+    override suspend fun getAllTasks(): List<Task> {
         return tasks
     }
 
