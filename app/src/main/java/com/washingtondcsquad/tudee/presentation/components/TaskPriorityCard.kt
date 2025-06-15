@@ -49,7 +49,7 @@ fun TaskPriorityCard(
     Row(
         modifier = modifier
             .background(color = backgroundColor, shape = RoundedCornerShape(100))
-            .padding(8.dp),
+            .padding(vertical = 6.dp, horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(2.dp)
     ) {
