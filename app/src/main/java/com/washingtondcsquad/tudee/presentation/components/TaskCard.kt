@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -50,12 +51,40 @@ fun TaskCard(
                     .padding(12.dp)
                     .size(32.dp)
             )
-            // to be changed when project structure is merged
-            TaskPriorityCard(
-                icon = painterResource(R.drawable.flag_icon),
-                title = "High",
-                backgroundColor = AppTheme.colors.pinkAccent,
-            )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+
+                ) {
+                Row(
+                    modifier = Modifier
+                        .background(
+                            color = AppTheme.colors.surface,
+                            shape = RoundedCornerShape(100)
+                        )
+                        .padding(horizontal = 8.dp, vertical = 6.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(2.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.calendar_icon),
+                        contentDescription = null,
+                        tint = AppTheme.colors.body
+                    )
+                    Text(
+                        text = taskUiState.taskDate,
+                        style = AppTheme.textStyle.label.small,
+                        color = AppTheme.colors.body
+                    )
+                }
+
+                // to be changed when project structure is merged
+                TaskPriorityCard(
+                    icon = painterResource(R.drawable.flag_icon),
+                    title = "High",
+                    backgroundColor = AppTheme.colors.pinkAccent,
+                )
+            }
         }
         Text(
             text = taskUiState.taskTitle,
@@ -81,6 +110,7 @@ private fun Preview() {
             taskTitle = "Task Title",
             taskDescription = "Task Description",
             taskPriority = "High",
-            )
+            taskDate = "2021-10-10",
+        )
     )
 }
