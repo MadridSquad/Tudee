@@ -1,8 +1,18 @@
 package com.washingtondcsquad.tudee.presentation.design.textStyle
 
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.washingtondcsquad.tudee.R
+
+
+val nunito = FontFamily(
+    Font(R.font.nunito, weight = FontWeight.Normal),
+    Font(R.font.nunito_medium, weight = FontWeight.Medium),
+    Font(R.font.nunito_semibold, weight = FontWeight.SemiBold),
+)
 
 val defaultTextStyle = TudeeTextStyle(
 
@@ -28,8 +38,6 @@ val defaultTextStyle = TudeeTextStyle(
             lineHeight = 30.sp
         ),
     ),
-
-
 
     title = SizedTextStyle(
         small = TextStyle(
