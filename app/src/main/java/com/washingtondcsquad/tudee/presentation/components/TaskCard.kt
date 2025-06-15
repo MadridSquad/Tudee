@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.theme.AppTheme
+import com.washingtondcsquad.tudee.presentation.features.sharedUiState.Priority
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 
 @Composable
@@ -52,9 +53,7 @@ fun TaskCard(
             )
             // to be changed when project structure is merged
             TaskPriorityCard(
-                icon = painterResource(R.drawable.flag_icon),
-                title = "High",
-                backgroundColor = AppTheme.colors.pinkAccent,
+                priority = Priority.HIGH
             )
         }
         Text(
