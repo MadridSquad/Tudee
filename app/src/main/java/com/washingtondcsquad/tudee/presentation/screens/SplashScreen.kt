@@ -1,5 +1,6 @@
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
@@ -7,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import com.washingtondcsquad.tudee.R
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -28,14 +30,18 @@ fun SplashScreen(
         strokeInDp.toPx()
     }
     Box(
-        modifier = modifier.background(AppTheme.colors.overlay),
+        modifier = modifier
+            .fillMaxSize()
+            .background(AppTheme.colors.surface),
         contentAlignment = Alignment.Center
 
     ){
-        Image(
-            painter = painterResource(R.drawable.background_graphics),
+       Image(
+            painter = if (isSystemInDarkTheme()) painterResource(R.drawable.background_graphics_dark) else painterResource(R.drawable.background_graphics) ,
             contentDescription = "Background graphics",
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(AppTheme.colors.overlay),
             alignment = Alignment.TopEnd
             )
         Box {
