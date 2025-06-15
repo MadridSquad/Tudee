@@ -1,9 +1,8 @@
 package com.washingtondcsquad.tudee.presentation.features.sharedUiState
 
-import java.util.UUID
-
 data class TaskUiState(
-    val taskId: UUID = UUID.randomUUID(),
+    val taskId: String = "",
+    val taskDate: String = "",
     val taskTitle: String = "",
     val taskDescription: String = "",
     val taskPriority: String = "",
