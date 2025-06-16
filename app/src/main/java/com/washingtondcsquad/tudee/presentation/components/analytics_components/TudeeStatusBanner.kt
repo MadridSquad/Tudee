@@ -29,9 +29,9 @@ import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TudeeStat
 @Composable
 fun TudeeStatusBanner(
     tudeeStatus: TudeeStatus,
+    modifier: Modifier = Modifier,
     completedTask: Int? = null,
     totalTasks: Int? = null,
-    modifier: Modifier = Modifier
 ) {
     var title: String
     var icon: Painter
@@ -94,7 +94,9 @@ fun TudeeStatusBanner(
             Box(
                 modifier = Modifier
                     .size(65.dp)
-                    .background(color = AppTheme.colors.primary.copy(alpha = 0.16f), shape = CircleShape)
+                    .background(
+                        color = AppTheme.colors.primary.copy(alpha = 0.16f), shape = CircleShape
+                    )
             )
 
             Image(
@@ -104,8 +106,6 @@ fun TudeeStatusBanner(
 
             )
         }
-
-
     }
 }
 

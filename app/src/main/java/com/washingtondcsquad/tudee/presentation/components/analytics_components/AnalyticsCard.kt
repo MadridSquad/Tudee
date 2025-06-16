@@ -41,8 +41,6 @@ fun AnalyticsCard(
             .background(color = AppTheme.colors.surfaceHigh)
             .padding(top = 8.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
             .fillMaxWidth()
-
-
     ) {
 
         Row {
@@ -91,8 +89,8 @@ fun determineTudeeStatus(doneCount: Int, inProgressCount: Int, toDoCount: Int): 
     }
 }
 
-@Preview(showBackground = true,
-    backgroundColor = 0xFF7D7D7D
+@Preview(
+    showBackground = true, backgroundColor = 0xFF7D7D7D
 )
 @Composable
 private fun PreviewAnalyticsCard() {

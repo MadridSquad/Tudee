@@ -10,10 +10,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -117,11 +115,9 @@ fun TaskStatusCountCard(taskStatus: TaskStatus, count: Int, modifier: Modifier =
         Box(
             Modifier
                 .size(45.dp)
-                //.background(AppTheme.colors.onPrimary, shape = CircleShape)
                 .align(
                     Alignment.TopEnd
                 )
-            //.offset(x = 25.dp, y = -25.dp)
         ) {
             Image(
                 painter = painterResource(R.drawable.status_card_background),
@@ -138,10 +134,7 @@ fun TaskStatusCountCard(taskStatus: TaskStatus, count: Int, modifier: Modifier =
 @Composable
 private fun PreviewTaskStatusCount() {
     TudeeTheme(useDarkTheme = false) {
-        //TaskStatusCountCard(TaskStatus.DONE, 6)
         OverViewSection(doneCount = 6, inProgressCount = 6, toDoCount = 6)
-
-
     }
 
 }
