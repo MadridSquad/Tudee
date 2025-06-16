@@ -1,6 +1,5 @@
 package com.washingtondcsquad.tudee.presentation.design.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -13,7 +12,7 @@ val LocalTudeeTextStyle = staticCompositionLocalOf { defaultTextStyle }
 
 @Composable
 fun TudeeTheme(
-    useDarkTheme: Boolean = isSystemInDarkTheme() ,
+    useDarkTheme: Boolean ,
     content: @Composable () -> Unit
 ){
     val theme = if (!useDarkTheme) {
