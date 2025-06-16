@@ -12,6 +12,5 @@ class TudeeApp : Application() {
             androidContext(this@TudeeApp)
             modules(appModule)
         }
-
     }
 }

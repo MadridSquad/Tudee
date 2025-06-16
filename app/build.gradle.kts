@@ -73,4 +73,9 @@ dependencies {
 
     testImplementation(kotlin("test"))
     testImplementation(libs.kotlin.test)
+
+
+    // SVG
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("io.coil-kt:coil-svg:2.4.0")
 }
