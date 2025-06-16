@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Tudee</string>
     <string name="cancel">Cancel</string>
+    <string name="delete_task">Delete task</string>
+    <string name="are_you_sure_to_continue">Are you sure to continue?</string>
+    <string name="delete">Delete</string>
 </resources>
