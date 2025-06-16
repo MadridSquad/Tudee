@@ -18,11 +18,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.theme.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TudeeStatus
 
@@ -86,6 +84,6 @@ fun TudeeStatusBanner(
 @Preview
 @Composable
 private fun PreviewStatusBanner() {
-    TudeeStatusBanner(completedTask = 0, totalTasks = 10,tudeeStatus = TudeeStatus.ZERO_PROGRESS)
+    TudeeStatusBanner(completedTask = 0, totalTasks = 10, tudeeStatus = TudeeStatus.ZERO_PROGRESS)
 
 }
