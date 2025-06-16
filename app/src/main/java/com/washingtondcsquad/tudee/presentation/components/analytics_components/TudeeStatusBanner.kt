@@ -1,7 +1,9 @@
 package com.washingtondcsquad.tudee.presentation.components.analytics_components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,13 +20,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.theme.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TudeeStatus
 
 @Composable
-fun TudeeStatusBanner(tudeeStatus: TudeeStatus, completedTask: Int? = null ,totalTasks: Int? = null,  modifier: Modifier = Modifier) {
+fun TudeeStatusBanner(
+    tudeeStatus: TudeeStatus,
+    completedTask: Int? = null,
+    totalTasks: Int? = null,
+    modifier: Modifier = Modifier
+) {
     var title: String
     var icon: Painter
     var description: String
@@ -32,7 +41,8 @@ fun TudeeStatusBanner(tudeeStatus: TudeeStatus, completedTask: Int? = null ,tota
         TudeeStatus.STAY_WORKING -> {
             title = "Stay working!"
             icon = painterResource(R.drawable.status_neutral_icon)
-            description = "You've completed ${completedTask ?: ""} out of ${totalTasks ?: ""} tasks Keep going!"
+            description =
+                "You've completed ${completedTask ?: ""} out of ${totalTasks ?: ""} tasks Keep going!"
             bannerImage = painterResource(R.drawable.stay_working_status_image)
         }
 
@@ -77,12 +87,32 @@ fun TudeeStatusBanner(tudeeStatus: TudeeStatus, completedTask: Int? = null ,tota
                 description, style = AppTheme.textStyle.body.small, color = AppTheme.colors.body
             )
         }
-        Image(
-            painter = bannerImage,
-            modifier = Modifier.size(width = 61.dp, height = 92.dp),
-            contentDescription = TudeeStatus.STAY_WORKING.name
+        Box(
+            modifier = Modifier.size(width = 65.dp, height = 92.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(65.dp)
+                    .background(color = AppTheme.colors.primaryVarient, shape = CircleShape)
+            )
 
-        )
+            Image(
+                painter = bannerImage,
+                modifier = Modifier.size(width = 61.dp, height = 92.dp),
+                contentDescription = TudeeStatus.STAY_WORKING.name
+
+            )
+        }
+
 
     }
+}
+
+
+@Preview
+@Composable
+private fun PreviewStatusBanner() {
+    TudeeStatusBanner(tudeeStatus = TudeeStatus.ZERO_PROGRESS)
+
 }
