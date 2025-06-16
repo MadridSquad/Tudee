@@ -51,7 +51,7 @@ fun TudeeStatusBanner(
                     tint = Color.Unspecified
                 )
             }
-            Spacer(Modifier.width(9.dp))
+            Spacer(Modifier.width(8.dp))
             Text(
                 tudeeStatus.getDescription(completedTask, totalTasks),
                 style = AppTheme.textStyle.body.small,
