@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,8 +21,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
+import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.presentation.design.theme.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
+import java.time.LocalDate
 
 @Composable
 fun TaskCard(
@@ -72,7 +75,7 @@ fun TaskCard(
                         tint = AppTheme.colors.body
                     )
                     Text(
-                        text = taskUiState.taskDate,
+                        text = taskUiState.taskDate.toString(),
                         style = AppTheme.textStyle.label.small,
                         color = AppTheme.colors.body
                     )
@@ -109,8 +112,8 @@ private fun Preview() {
         taskUiState = TaskUiState(
             taskTitle = "Task Title",
             taskDescription = "Task Description",
-            taskPriority = "High",
-            taskDate = "2021-10-10",
+            taskPriority = Priority.HIGH,
+            taskDate = LocalDate.now()
         )
     )
 }
