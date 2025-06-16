@@ -7,5 +7,3 @@ data class SizedTextStyle(
     val medium: TextStyle,
     val small: TextStyle,
 )
-
-
