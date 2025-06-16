@@ -14,16 +14,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.theme.AppTheme
+import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.dropShadow
 
 
 @Composable
-private fun SnackBarCard(
+fun SnackBarCard(
     modifier: Modifier = Modifier,
     isError: Boolean,
     message: String
@@ -33,16 +33,14 @@ private fun SnackBarCard(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .size(width = 328.dp, height = 58.dp)
-            .shadow(
-                elevation = 16.dp,
-                shape = RoundedCornerShape(12.dp),
-                ambientColor = Color(0x1F000000),
+            .dropShadow(
+                shape = RoundedCornerShape(16.dp),
+                blur = 16.dp,
+                color = Color.Black.copy(0.12f),
             )
             .clip(RoundedCornerShape(12.dp))
             .background(AppTheme.colors.surfaceHigh)
             .padding(8.dp)
-
-
     ) {
         Box(
             contentAlignment = Alignment.Center,
@@ -66,14 +64,13 @@ private fun SnackBarCard(
                     tint = AppTheme.colors.greenAccent
                 )
             }
-
-
         }
         Spacer(modifier = Modifier.size(12.dp))
         Text(
+            modifier = Modifier.weight(1f),
             text = message,
             style = AppTheme.textStyle.body.medium,
-            color = AppTheme.colors.body
+            color = AppTheme.colors.body,
         )
 
     }
