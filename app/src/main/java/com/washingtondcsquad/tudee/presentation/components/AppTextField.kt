@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.theme.AppTheme
+import com.washingtondcsquad.tudee.presentation.design.theme.AppTheme.textStyle
 
 @Composable
 fun AppTextField(
@@ -50,7 +51,8 @@ fun AppTextField(
         placeholder = {
             Text(
                 text = hintText,
-                color = AppTheme.colors.stroke
+                color = AppTheme.colors.hint,
+                style = textStyle.label.medium,
             )
         },
         shape = RoundedCornerShape(16.dp),

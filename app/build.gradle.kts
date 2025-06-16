@@ -73,4 +73,6 @@ dependencies {
 
     testImplementation(kotlin("test"))
     testImplementation(libs.kotlin.test)
+    implementation (libs.koin.androidx.compose)
+
 }
