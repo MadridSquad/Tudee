@@ -21,6 +21,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,38 +37,37 @@ import com.washingtondcsquad.tudee.presentation.design.theme.AppTheme
 
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showSystemUi = true)
 @Composable
 fun ConfirmDeleteTask(
 
-//    deleteOnClick: () -> Unit,
-//    cancelOnClick: () -> Unit,
+    deleteOnClick: () -> Unit,
+    cancelOnClick: () -> Unit,
+    onDismiss: () -> Unit
 
-    ) {
+
+) {
+
+    val sheetState=rememberModalBottomSheetState()
+    LaunchedEffect(Unit) {
+        sheetState.show()
+    }
 
     ModalBottomSheet(
-        onDismissRequest = {},
+        onDismissRequest = {onDismiss()},
         modifier = Modifier
             .fillMaxWidth(),
         shape = RoundedCornerShape(topEnd = 24.dp, topStart = 24.dp),
         containerColor = AppTheme.colors.surface,
-        sheetState = rememberModalBottomSheetState(),
-        dragHandle = {
-            Box(
-                modifier = Modifier
-                    .padding(vertical = 12.dp)
-                    .size(width = 32.dp, height = 4.dp)
-                    .clip(RoundedCornerShape(100))
-                    .background(AppTheme.colors.body),
-            )
-        },
-
+        sheetState = sheetState,
+        dragHandle =null
         ) {
 
         Column(
             modifier = Modifier.fillMaxWidth(),
 
             ) {
+
+            CustomDragHandle(modifier = Modifier.padding(vertical = 16.dp))
 
             Column(
                 modifier = Modifier
@@ -89,7 +89,7 @@ fun ConfirmDeleteTask(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(148.dp)
-                    .shadow(elevation = 4.dp, spotColor = Color.Black.copy(alpha = 0.08f))
+                    .shadow(elevation = 20.dp, spotColor = Color.Black.copy(alpha = 0.08f))
                     .border(BorderStroke(width = 1.dp, AppTheme.colors.surfaceHigh))
                     .padding(vertical = 12.dp, horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -99,14 +99,14 @@ fun ConfirmDeleteTask(
                     buttonColor = AppTheme.colors.errorVariant,
                     buttonTextId = R.string.delete,
                     buttonTextColor = AppTheme.colors.error,
-//                    buttonClick = deleteOnClick
+                    buttonClick = deleteOnClick
                 )
                 DeleteButton(
                     borderStroke = 1,
                     borderColor = AppTheme.colors.stroke,
                     buttonTextId = R.string.cancel,
                     buttonTextColor = AppTheme.colors.primary,
-//                    buttonClick = cancelOnClick
+                    buttonClick = cancelOnClick
                 )
             }
         }
@@ -162,15 +162,14 @@ fun DeleteButton(
     buttonColor: Color = AppTheme.colors.surfaceHigh,
     buttonTextId: Int,
     buttonTextColor: Color,
-//    buttonClick: () -> Unit
+    buttonClick: () -> Unit
 ) {
 
     Button(
         onClick = { /*buttonClick()*/ },
         modifier = Modifier
             .fillMaxWidth()
-            .height(58.dp)
-            .padding(vertical = 8.dp, horizontal = 24.dp),
+            .height(58.dp),
         shape = RoundedCornerShape(100.dp),
         colors = ButtonDefaults.buttonColors(buttonColor),
         elevation = null,
@@ -179,6 +178,7 @@ fun DeleteButton(
     ) {
 
         Row(
+            modifier = Modifier.padding(vertical = 8.dp, horizontal = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -192,6 +192,21 @@ fun DeleteButton(
         }
 
 
+    }
+}
+
+@Composable
+fun CustomDragHandle(modifier: Modifier=Modifier){
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Box(
+            modifier = Modifier
+                .size(width = 32.dp, height = 4.dp)
+                .clip(RoundedCornerShape(100))
+                .background(AppTheme.colors.body),
+        )
     }
 }
 
