@@ -32,7 +32,11 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun AnalyticsCard(
-    doneCount: Int, inProgressCount: Int, toDoCount: Int, modifier: Modifier = Modifier
+    doneCount: Int,
+    inProgressCount: Int,
+    toDoCount: Int,
+    tudeeStatus: TudeeStatus,
+    modifier: Modifier = Modifier
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -53,13 +57,12 @@ fun AnalyticsCard(
             Spacer(Modifier.width(8.dp))
             Text(
                 "Today, ${LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy"))}",
-                style = AppTheme.textStyle.label.medium
+                style = AppTheme.textStyle.label.medium,
+                color = AppTheme.colors.body
             )
         }
         TudeeStatusBanner(
-            tudeeStatus = determineTudeeStatus(
-                doneCount = doneCount, inProgressCount = inProgressCount, toDoCount = toDoCount
-            ),
+            tudeeStatus = tudeeStatus,
             completedTask = doneCount,
             totalTasks = doneCount + inProgressCount + toDoCount,
         )
@@ -74,28 +77,17 @@ fun AnalyticsCard(
     }
 }
 
-fun determineTudeeStatus(doneCount: Int, inProgressCount: Int, toDoCount: Int): TudeeStatus {
-    val totalCount = doneCount + inProgressCount + toDoCount
-    if (totalCount == 0) {
-        return TudeeStatus.ZERO_TASK
-    } else if (doneCount >= totalCount / 2) {
-        return TudeeStatus.DOING_AMAZING
-    } else if (inProgressCount == 0 && doneCount == 0) {
-        return TudeeStatus.ZERO_PROGRESS
-    } else if (doneCount <= toDoCount / 2) {
-        return TudeeStatus.STAY_WORKING
-    } else {
-        return TudeeStatus.DOING_AMAZING
-    }
-}
-
 @Preview(
     showBackground = true, backgroundColor = 0xFF7D7D7D
 )
 @Composable
 private fun PreviewAnalyticsCard() {
     AnalyticsCard(
-        doneCount = 1, inProgressCount = 0, toDoCount = 10, modifier = Modifier
+        doneCount = 1,
+        inProgressCount = 0,
+        toDoCount = 10,
+        tudeeStatus = TudeeStatus.STAY_WORKING,
+        modifier = Modifier
     )
 }
 

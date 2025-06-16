@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
@@ -53,20 +54,20 @@ fun TaskStatusCountCard(taskStatus: TaskStatus, count: Int, modifier: Modifier =
     var title: String
     when (taskStatus) {
         TaskStatus.TODO -> {
-            title = "To-Do"
+            title = stringResource(R.string.to_do)
             bgColor = AppTheme.colors.purpleAccent
             icon = painterResource(R.drawable.todo_status_icon)
         }
 
         TaskStatus.IN_PROGRESS -> {
-            title = "In progress"
+            title = stringResource(R.string.in_progress)
             bgColor = AppTheme.colors.yellowAccent
             icon = painterResource(R.drawable.inprogress_status_icon)
 
         }
 
         TaskStatus.DONE -> {
-            title = "Done"
+            title = stringResource(R.string.done)
             bgColor = AppTheme.colors.greenAccent
             icon = painterResource(R.drawable.done_status_icon)
 

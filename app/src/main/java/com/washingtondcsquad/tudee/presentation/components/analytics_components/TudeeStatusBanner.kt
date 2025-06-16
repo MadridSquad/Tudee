@@ -30,43 +30,10 @@ import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TudeeStat
 fun TudeeStatusBanner(
     tudeeStatus: TudeeStatus,
     modifier: Modifier = Modifier,
-    completedTask: Int? = null,
-    totalTasks: Int? = null,
+    completedTask: Int,
+    totalTasks: Int,
 ) {
-    var title: String
-    var icon: Painter
-    var description: String
-    var bannerImage: Painter
-    when (tudeeStatus) {
-        TudeeStatus.STAY_WORKING -> {
-            title = "Stay working!"
-            icon = painterResource(R.drawable.status_neutral_icon)
-            description =
-                "You've completed ${completedTask ?: ""} out of ${totalTasks ?: ""} tasks Keep going!"
-            bannerImage = painterResource(R.drawable.stay_working_status_image)
-        }
 
-        TudeeStatus.DOING_AMAZING -> {
-            title = "Tadaa!"
-            icon = painterResource(R.drawable.status_happy_icon)
-            description = "You’re doing amazing!!!\n" + "Tudee is proud of you."
-            bannerImage = painterResource(R.drawable.doing_amazing_status_image)
-        }
-
-        TudeeStatus.ZERO_PROGRESS -> {
-            title = "Zero progress?!"
-            icon = painterResource(R.drawable.status_very_sad_icon)
-            description = "You just scrolling, not working. Tudee is watching. back to work!!!"
-            bannerImage = painterResource(R.drawable.zero_progress_status_image)
-        }
-
-        TudeeStatus.ZERO_TASK -> {
-            title = "Nothing on your list…"
-            icon = painterResource(R.drawable.status_sad_icon)
-            description = "Fill your day with something awesome."
-            bannerImage = painterResource(R.drawable.stay_working_status_image)
-        }
-    }
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -74,17 +41,23 @@ fun TudeeStatusBanner(
     ) {
         Column(modifier = Modifier.widthIn(max = 231.dp)) {
             Row {
-                Text(title, style = AppTheme.textStyle.title.small, color = AppTheme.colors.title)
+                Text(
+                    tudeeStatus.title,
+                    style = AppTheme.textStyle.title.small,
+                    color = AppTheme.colors.title
+                )
                 Spacer(Modifier.width(8.dp))
                 Icon(
-                    painter = icon,
+                    painter = painterResource(tudeeStatus.icon),
                     contentDescription = TudeeStatus.ZERO_TASK.name,
                     tint = Color.Unspecified
                 )
             }
             Spacer(Modifier.width(9.dp))
             Text(
-                description, style = AppTheme.textStyle.body.small, color = AppTheme.colors.body
+                tudeeStatus.getDescription(completedTask, totalTasks),
+                style = AppTheme.textStyle.body.small,
+                color = AppTheme.colors.body
             )
         }
         Box(
@@ -100,7 +73,7 @@ fun TudeeStatusBanner(
             )
 
             Image(
-                painter = bannerImage,
+                painter = painterResource(tudeeStatus.bannerImage),
                 modifier = Modifier.size(width = 61.dp, height = 92.dp),
                 contentDescription = TudeeStatus.STAY_WORKING.name
 
@@ -113,6 +86,6 @@ fun TudeeStatusBanner(
 @Preview
 @Composable
 private fun PreviewStatusBanner() {
-    TudeeStatusBanner(tudeeStatus = TudeeStatus.ZERO_PROGRESS)
+    TudeeStatusBanner(completedTask = 0, totalTasks = 10,tudeeStatus = TudeeStatus.ZERO_PROGRESS)
 
 }
