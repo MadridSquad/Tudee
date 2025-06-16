@@ -1,3 +1,4 @@
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -6,16 +7,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import com.washingtondcsquad.tudee.R
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.textStyle.Cherry_Bomb
 import com.washingtondcsquad.tudee.presentation.design.theme.AppTheme
 
@@ -70,4 +74,37 @@ fun SplashScreen(
 
     }
 
+}
+
+@Composable
+fun SplashBackground() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AppTheme.colors.primaryVarient)
+    ) {
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val width = size.width
+            val height = size.height
+            val rectWidth = width * 0.2f
+            val rectHeight = height * 2
+
+            val offsets = listOf(-width * 0.30f)
+
+            offsets.forEach { offsetX ->
+                withTransform({
+                    rotate(
+                        degrees = 45f,
+                        pivot = Offset.Zero
+                    )
+                }) {
+                    drawRect(
+                        color = Color.White.copy(alpha = 0.5f),
+                        topLeft = Offset(800f, -height),
+                        size = Size(rectWidth, rectHeight)
+                    )
+                }
+            }
+        }
+    }
 }
