@@ -30,4 +30,6 @@ val darkTudeeColors = TudeeColors(
     greenVariant = Color(0xFF1C1F1D),
     purpleVariant = Color(0xFF1C1A33),
     errorVariant = Color(0xFF1F1111),
+    darkSwitch =Color(0xFF151535),
+    lightSwitch =Color(0xFF49BAF2),
 )
