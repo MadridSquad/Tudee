@@ -68,7 +68,7 @@ fun TudeeStatusBanner(
         }
     }
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -94,7 +94,7 @@ fun TudeeStatusBanner(
             Box(
                 modifier = Modifier
                     .size(65.dp)
-                    .background(color = AppTheme.colors.primaryVarient, shape = CircleShape)
+                    .background(color = AppTheme.colors.primary.copy(alpha = 0.16f), shape = CircleShape)
             )
 
             Image(
