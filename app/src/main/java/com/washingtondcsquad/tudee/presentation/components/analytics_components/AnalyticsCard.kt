@@ -39,8 +39,7 @@ fun AnalyticsCard(
         modifier = modifier
             .clip(RoundedCornerShape(16.dp))
             .background(color = AppTheme.colors.surfaceHigh)
-            .padding(vertical = 8.dp, horizontal = 12.dp)
-            .height(281.dp)
+            .padding(top = 8.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
             .fillMaxWidth()
 
 
