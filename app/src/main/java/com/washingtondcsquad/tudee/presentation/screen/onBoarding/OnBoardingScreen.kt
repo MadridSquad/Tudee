@@ -22,11 +22,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.washingtondcsquad.tudee.R
-import com.washingtondcsquad.tudee.presentation.design.theme.AppTheme
-import com.washingtondcsquad.tudee.presentation.design.theme.TudeeTheme
+import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import kotlinx.coroutines.launch
 
 @Composable

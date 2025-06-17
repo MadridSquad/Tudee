@@ -17,8 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.washingtondcsquad.tudee.presentation.design.theme.AppTheme
-import com.washingtondcsquad.tudee.presentation.design.theme.TudeeTheme
+import com.washingtondcsquad.tudee.presentation.design.AppTheme
 
 @Composable
 fun OnBoardingPagerIndicator(
@@ -52,7 +51,7 @@ fun OnBoardingPagerIndicator(
 @Composable
 private fun OnBoardingPagerIndicatorPrev() {
     Box(contentAlignment = Alignment.Center) {
-        TudeeTheme(true) {
+        AppTheme(true) {
             OnBoardingPagerIndicator(
                 pagerState = rememberPagerState(
                     initialPage = 0,
