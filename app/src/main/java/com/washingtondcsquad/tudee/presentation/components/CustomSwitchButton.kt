@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.washingtondcsquad.tudee.presentation.design.theme.AppTheme
 
 
 @Composable
@@ -52,7 +53,7 @@ fun CustomSwitchButton(
     )
 
     val backgroundColor by animateColorAsState(
-        targetValue = if (switchClicked) Color(0xFF151535) else Color(0xFF49BAF2),
+        targetValue = if (switchClicked) AppTheme.colors.darkSwitch else AppTheme.colors.primary,
         animationSpec = tween(700),
         label = "backgroundColor"
     )
