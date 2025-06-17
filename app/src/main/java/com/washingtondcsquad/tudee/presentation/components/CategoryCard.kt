@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
-import com.washingtondcsquad.tudee.presentation.design.AppTheme
+import com.washingtondcsquad.tudee.presentation.design.theme.AppTheme
 import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.noRippleClick
 
 @Composable
@@ -42,7 +42,8 @@ fun CategoryCard(
             Image(
                 modifier = Modifier
                     .background(
-                        color = AppTheme.colors.surfaceHigh, shape = CircleShape
+                        color = AppTheme.colors.surfaceHigh,
+                        shape = CircleShape
                     )
                     .padding(24.dp)
                     .size(32.dp),
@@ -58,7 +59,8 @@ fun CategoryCard(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .background(
-                            color = AppTheme.colors.greenAccent, shape = CircleShape
+                            color = AppTheme.colors.greenAccent,
+                            shape = CircleShape
                         )
                         .padding(4.dp)
                 )
@@ -71,7 +73,8 @@ fun CategoryCard(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
                             .background(
-                                color = AppTheme.colors.surfaceLow, shape = RoundedCornerShape(100)
+                                color = AppTheme.colors.surfaceLow,
+                                shape = RoundedCornerShape(100)
                             )
                             .padding(horizontal = 12.dp, vertical = 2.dp)
                     )
@@ -79,7 +82,9 @@ fun CategoryCard(
             }
         }
         Text(
-            text = title, color = AppTheme.colors.body, style = AppTheme.textStyle.label.small
+            text = title,
+            color = AppTheme.colors.body,
+            style = AppTheme.textStyle.label.small
         )
 
     }
