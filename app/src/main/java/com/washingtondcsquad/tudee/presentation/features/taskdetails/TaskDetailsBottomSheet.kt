@@ -40,7 +40,9 @@ import com.washingtondcsquad.tudee.presentation.components.ProgressCard
 import com.washingtondcsquad.tudee.presentation.components.TaskPriorityCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.design.Spacer
-import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.statusColor
+import com.washingtondcsquad.tudee.presentation.utils.next
+import com.washingtondcsquad.tudee.presentation.utils.statusColor
+import com.washingtondcsquad.tudee.presentation.utils.toDisplayName
 import java.time.LocalDate
 import java.util.UUID
 
@@ -144,10 +146,10 @@ fun TaskDetailsBottomSheet(
                             .fillMaxWidth(1f)
                             .clip(RoundedCornerShape(100.dp))
                             .border(1.dp, AppTheme.colors.stroke, RoundedCornerShape(100.dp))
-                            .clickable {}
+                            .clickable {taskDetails.status = taskDetails.status.next()}
                     ) {
                         Text(
-                            "Move to done",
+                            "Move to ${taskDetails.status.next().toDisplayName()}",
                             color = AppTheme.colors.primary,
                             style = AppTheme.textStyle.label.large,
                             modifier = Modifier.align(Alignment.Center)

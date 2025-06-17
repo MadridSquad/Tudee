@@ -1,4 +1,4 @@
-package com.washingtondcsquad.tudee.presentation.utils.modifierExensions
+package com.washingtondcsquad.tudee.presentation.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
