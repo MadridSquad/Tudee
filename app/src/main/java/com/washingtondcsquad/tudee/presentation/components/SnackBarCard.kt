@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,7 +34,9 @@ fun SnackBarCard(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .size(width = 328.dp, height = 58.dp)
+            .padding(horizontal = 16.dp)
+            .fillMaxWidth()
+            .height(58.dp)
             .dropShadow(
                 shape = RoundedCornerShape(16.dp),
                 blur = 16.dp,
