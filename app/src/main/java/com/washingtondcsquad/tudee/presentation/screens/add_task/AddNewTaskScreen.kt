@@ -24,6 +24,8 @@ import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyle
 import org.koin.androidx.compose.koinViewModel
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -33,7 +35,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import java.time.format.DateTimeFormatter
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.graphics.Color
 import com.washingtondcsquad.tudee.domain.entity.Category
+import com.washingtondcsquad.tudee.presentation.components.CancelableActionLayout
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,133 +55,151 @@ fun AddNewTaskScreen(
         Category(id = UUID.randomUUID(), title = "Sport", image = "calendar_icon", taskCount = 2)
     )
 
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Bottom
 
-    ModalBottomSheet(
-        onDismissRequest = { },
-        sheetState = rememberModalBottomSheetState(
-            skipPartiallyExpanded = false,
-            confirmValueChange = { true }
-        ),
+    ) {
 
+
+
+        ModalBottomSheet(
+            onDismissRequest = { },
+            containerColor = Color(0xFFF9F9F9),
+            sheetState = rememberModalBottomSheetState(
+                skipPartiallyExpanded = true // <-- skip middle state
+            ),
         ) {
 
-        Box(modifier = Modifier.fillMaxSize())
-        {
-
-            if (showDatePicker) {
-                DatePickerModal(
-                    onDateSelected = { selectedDateMillis ->
-                        if (selectedDateMillis != null) {
-                            viewModel.onDateSelected(selectedDateMillis)
+                if (showDatePicker) {
+                    DatePickerModal(
+                        onDateSelected = { selectedDateMillis ->
+                            if (selectedDateMillis != null) {
+                                viewModel.onDateSelected(selectedDateMillis)
+                            }
+                            showDatePicker = false
+                        },
+                        onDismiss = {
+                            showDatePicker = false
                         }
-                        showDatePicker = false
-                    },
-                    onDismiss = {
-                        showDatePicker = false
-                    }
-                )
-            }
+                    )
+                }
 
 
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 90.dp),
+
+            Column(
+                Modifier.fillMaxHeight(0.8f)
+            ) {
+
+                LazyColumn(
+                    //.padding(scaffoldPadding)
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalAlignment = Alignment.Start,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .weight(1f)
 
                 ) {
 
-                // fixed Text (Add New Task)
-                item {
-                    Text(
-                        text = "Add New Task",
-                        modifier = Modifier.offset(y = 4.dp),
-                        style = defaultTextStyle.title.large
-                    )
-                }
-
-                // title
-                item {
-                    AppTextField(
-                        prefixIconPainter = painterResource(R.drawable.flag_icon),
-                        hintText = "Task Title",
-                        value = uiState.taskTitle,
-                        onValueChange = { viewModel.onTitleChange(it) },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-
-                // description
-                item {
-                    AppTextField(
-                        prefixIconPainter = null,
-                        hintText = "Description",
-                        value = uiState.taskDescription,
-                        onValueChange = { viewModel.onDescriptionChange(it) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(168.dp)
-                    )
-                }
-
-                // calendar
-                item {
-                    val dateFormatter = DateTimeFormatter.ofPattern("dd-MMMM-yyyy")
-                    val currentDate = uiState.taskDate
-                    val formattedDate = currentDate?.format(dateFormatter) ?: "Calendar"
-                    AppTextField(
-                        prefixIconPainter = painterResource(R.drawable.calendar_icon),
-                        hintText = "Calendar",
-                        value = formattedDate,
-                        onValueChange = { },
-
-                        onPrefixIconClick = {
-                            showDatePicker = true
-                        },
-                        readOnly = true,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-
-                // priority
-                item {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        horizontalAlignment = Alignment.Start
-                    ) {
+                    // fixed Text (Add New Task)
+                    item {
                         Text(
-                            text = "Priority",
-                            style = defaultTextStyle.title.medium,
-                            color = AppTheme.colors.title
+                            text = "Add New Task",
+                            modifier = Modifier.offset(y = 4.dp),
+                            style = defaultTextStyle.title.large
                         )
-                        LazyRow(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    }
+
+                    // title
+                    item {
+                        AppTextField(
+                            prefixIconPainter = painterResource(R.drawable.flag_icon),
+                            hintText = "Task Title",
+                            value = uiState.taskTitle,
+                            onValueChange = { viewModel.onTitleChange(it) },
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+
+                    // description
+                    item {
+                        AppTextField(
+                            prefixIconPainter = null,
+                            hintText = "Description",
+                            value = uiState.taskDescription,
+                            onValueChange = { viewModel.onDescriptionChange(it) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(168.dp)
+                        )
+                    }
+
+                    // calendar
+                    item {
+                        val dateFormatter = DateTimeFormatter.ofPattern("dd-MMMM-yyyy")
+                        val currentDate = uiState.taskDate
+                        val formattedDate = currentDate?.format(dateFormatter) ?: "Calendar"
+                        AppTextField(
+                            prefixIconPainter = painterResource(R.drawable.calendar_icon),
+                            hintText = "Calendar",
+                            value = formattedDate,
+                            onValueChange = { },
+
+                            onPrefixIconClick = {
+                                showDatePicker = true
+                            },
+                            readOnly = true,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+
+                    // priority
+                    item {
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                            horizontalAlignment = Alignment.Start
                         ) {
-                            items(viewModel.uiState.value.priorityList) { priority ->
-                                TaskPriorityCard(
-                                    priority = priority,
-                                    isSelected = uiState.selectedPriority == priority,
-                                    onClick = { viewModel.onPrioritySelected(priority) },
-                                )
+                            Text(
+                                text = "Priority",
+                                style = defaultTextStyle.title.medium,
+                                color = AppTheme.colors.title
+                            )
+                            LazyRow(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            ) {
+                                items(viewModel.uiState.value.priorityList) { priority ->
+                                    TaskPriorityCard(
+                                        priority = priority,
+                                        isSelected = uiState.selectedPriority == priority,
+                                        onClick = { viewModel.onPrioritySelected(priority) },
+                                    )
+                                }
                             }
                         }
                     }
+
                 }
 
-            }
+                // category (later)
+                // we need a domy data for this
 
-            // category (later)
-            // we need a domy data for this
+                CancelableActionLayout(
+                    modifier = Modifier,
+                    // .padding(horizontal = 16.dp, vertical = 16.dp),
+                    actionText = "Add Task",
+                    actionTextColor = Color.White,
+                    actionBackgroundColor = AppTheme.colors.primaryGradient,
+                    onAction = { },
+                    onCancel = { },
+                )
+            }
 
         }
 
-        // we need to add this but see it before
-        // CancelableActionLayout()
-
     }
+
+
 }
 
 
