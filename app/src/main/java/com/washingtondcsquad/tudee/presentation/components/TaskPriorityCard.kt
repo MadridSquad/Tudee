@@ -30,7 +30,7 @@ fun TaskPriorityCard(
                 color = getBackgroundColor(priority),
                 shape = RoundedCornerShape(100)
             )
-            .padding(vertical = 6.dp, horizontal = 8.dp),
+            .padding(horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(2.dp)
     ) {
@@ -41,7 +41,8 @@ fun TaskPriorityCard(
         )
         Text(
             text = priority.name.lowercase().replaceFirstChar { it.uppercase() },
-            color = AppTheme.colors.onPrimary
+            color = AppTheme.colors.onPrimary,
+            style = AppTheme.textStyle.label.small
         )
 
     }

@@ -9,6 +9,6 @@ data class Task(
     val title: String,
     val description: String,
     val date: LocalDate,
-    val status: String,
-    val priority: String,
+    val status: TaskStatus,
+    val priority: Priority,
 )
