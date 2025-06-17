@@ -17,9 +17,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
-import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.dropShadow
 
@@ -27,8 +26,10 @@ import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.dropShad
 @Composable
 fun SnackBarCard(
     modifier: Modifier = Modifier,
-    isError: Boolean,
-    message: String
+    message: String,
+    icon: Painter,
+    iconTint: Color,
+    iconBackgroundColor: Color
 ) {
     Row(
         horizontalArrangement = Arrangement.Start,
@@ -51,23 +52,14 @@ fun SnackBarCard(
             modifier = Modifier
                 .size(40.dp)
                 .clip(RoundedCornerShape(12.dp))
-                .background(if (isError) AppTheme.colors.errorVariant else AppTheme.colors.greenVariant)
+                .background(iconBackgroundColor)
 
         ) {
-            if (isError) {
-                Icon(
-                    painter = painterResource(R.drawable.information_diamond),
-                    contentDescription = "error icon",
-                    tint = AppTheme.colors.error
-
-                )
-            } else {
-                Icon(
-                    painter = painterResource(R.drawable.checkmark),
-                    contentDescription = "success icon",
-                    tint = AppTheme.colors.greenAccent
-                )
-            }
+            Icon(
+                painter = icon,
+                contentDescription = "success icon",
+                tint = iconTint
+            )
         }
         Spacer(modifier = Modifier.size(12.dp))
         Text(
