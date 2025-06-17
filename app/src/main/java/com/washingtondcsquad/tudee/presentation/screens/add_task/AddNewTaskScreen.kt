@@ -16,7 +16,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.components.AppTextField
@@ -32,14 +31,10 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
 import java.time.format.DateTimeFormatter
-
 import androidx.compose.foundation.lazy.items
 import com.washingtondcsquad.tudee.domain.entity.Category
-import com.washingtondcsquad.tudee.presentation.components.CategoryCard
 import java.util.UUID
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,17 +51,15 @@ fun AddNewTaskScreen(
         Category(id = UUID.randomUUID(), title = "Sport", image = "calendar_icon", taskCount = 2)
     )
 
-    var selectedCategoryForTesting by remember { mutableStateOf<Category?>(null) }
-
 
     ModalBottomSheet(
         onDismissRequest = { },
         sheetState = rememberModalBottomSheetState(
             skipPartiallyExpanded = false,
             confirmValueChange = { true }
-            ),
+        ),
 
-    ) {
+        ) {
 
         Box(modifier = Modifier.fillMaxSize())
         {
@@ -94,7 +87,7 @@ fun AddNewTaskScreen(
                     .padding(horizontal = 16.dp)
                     .padding(bottom = 90.dp),
 
-            ) {
+                ) {
 
                 // fixed Text (Add New Task)
                 item {
@@ -111,8 +104,8 @@ fun AddNewTaskScreen(
                         prefixIconPainter = painterResource(R.drawable.flag_icon),
                         hintText = "Task Title",
                         value = uiState.taskTitle,
-                        onValueChange = { viewModel.onTitleChange(it) }
-                        ,modifier = Modifier.fillMaxWidth()
+                        onValueChange = { viewModel.onTitleChange(it) },
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
 
@@ -163,32 +156,33 @@ fun AddNewTaskScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
-                            items(viewModel.availablePriorities) { priority ->
+                            items(viewModel.uiState.value.priorityList) { priority ->
                                 TaskPriorityCard(
                                     priority = priority,
-                                    isSelected = (uiState.taskPriority == priority),
-                                    onClick = { viewModel.onPrioritySelected(priority) }
+                                    isSelected = uiState.selectedPriority == priority,
+                                    onClick = { viewModel.onPrioritySelected(priority) },
                                 )
                             }
                         }
                     }
                 }
 
-                // category
-                //
-
             }
 
-            // we need to add this but see it before
-           // CancelableActionLayout()
+            // category (later)
+            // we need a domy data for this
 
         }
+
+        // we need to add this but see it before
+        // CancelableActionLayout()
+
     }
 }
 
 
-@Preview
+//@Preview
 @Composable
-fun Preview(){
+fun Preview() {
     AddNewTaskScreen()
 }

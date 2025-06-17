@@ -1,22 +1,16 @@
 package com.washingtondcsquad.tudee.presentation.screens.add_task
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.services.TasksService
-import com.washingtondcsquad.tudee.domain.usecase.CreateTaskUseCase
-import com.washingtondcsquad.tudee.domain.usecase.GetCategoriesUseCase
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
-import java.util.UUID
-
 
 class AddTaskViewModel(
     private val tasksService: TasksService,
@@ -24,8 +18,6 @@ class AddTaskViewModel(
 {
     private val _uiState = MutableStateFlow(TaskUiState())
     val uiState = _uiState.asStateFlow()
-
-    val availablePriorities: List<Priority> = Priority.entries
 
     fun onTitleChange(newTitle: String) {
         _uiState.update { it.copy(taskTitle = newTitle) }
@@ -43,25 +35,35 @@ class AddTaskViewModel(
         _uiState.update { it.copy(taskDate = realDate) }
     }
 
-    fun onPrioritySelected(priority: Priority) {
-        _uiState.update { currentState ->
-            currentState.copy(taskPriority = priority)
-        }
+    fun onPrioritySelected( priority: Priority ){
+        val currentPriority = uiState.value.selectedPriority
+        if (currentPriority?.name != priority.name)
+            _uiState.update { it.copy(selectedPriority = priority) }
     }
 
     fun onCategorySelected(category: Category) {
-        _uiState.update { it.copy(selectedCategory = category) }
+        val currentCategory = uiState.value.selectedCategory
+        if (currentCategory != category)
+            _uiState.update { it.copy(selectedCategory = category) }
     }
 
-    fun saveTask(currentState: TaskUiState) {
-        viewModelScope.launch {
-                createTaskUseCase(
-                    title = currentState.taskTitle,
-                    description = currentState.taskDescription,
-                    date = currentState.taskDate,
-                    priority = currentState.taskPriority,
-                    category = currentState.selectedCategory
-                )
-        }
-    }
+
+
+//    fun saveTask(currentState: TaskUiState) {
+//        viewModelScope.launch {
+//            tasksService.createTask(
+//                Task(
+//                    id = UUID.randomUUID(),
+//                    title = currentState.taskTitle,
+//                    description = currentState.taskDescription,
+//                    date = currentState.taskDate,
+//                    priority = currentState.taskPriority,
+//                    categoryId = TODO(),
+//                    status = TODO(),
+//                )
+//            )
+//        }
+//
+//
+//    }
 }

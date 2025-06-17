@@ -1,11 +1,13 @@
 package com.washingtondcsquad.tudee.presentation.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,66 +16,83 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
+import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 
-import androidx.compose.foundation.clickable
-import androidx.compose.ui.draw.clip
-import com.washingtondcsquad.tudee.domain.entity.Priority
 
 @Composable
 fun TaskPriorityCard(
     priority: Priority,
     isSelected: Boolean,
-    onClick: () -> Unit,
+    onClick: (priority: Priority) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    Card (
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0x00000000)
+        ),
+        shape = RoundedCornerShape(100),
+        modifier = modifier
 
-    val title: String
-    val iconRes: Int
-    val backgroundColor: Color
-
-    when (priority) {
-        Priority.LOW -> {
-            title = "Low"
-            iconRes = R.drawable.flag_icon
-            backgroundColor = Color(0xFF38C2B4)
-        }
-        Priority.MEDIUM -> {
-            title = "Medium"
-            iconRes = R.drawable.flag_icon
-            backgroundColor = Color(0xFFFDD264)
-        }
-        Priority.HIGH -> {
-            title = "High"
-            iconRes = R.drawable.flag_icon
-            backgroundColor = Color(0xFFF79494)
-        }
-    }
-
-    val borderColor = if (isSelected) AppTheme.colors.primary else Color.Transparent
-
+    ){
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(100))
-            .clickable(onClick = onClick)
-            .border(width = 2.dp, color = borderColor, shape = RoundedCornerShape(100)) // نضيف الحدود
-            .background(color = backgroundColor)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+        .clickable(onClick = { onClick(priority) })
+        .background(
+                color = getBackgroundColor(priority, isSelected),
+                shape = RoundedCornerShape(100)
+            )
+            .padding(vertical = 6.dp, horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(2.dp)
     ) {
         Icon(
-            painter = painterResource(id = iconRes),
-            contentDescription = title,
-            tint = Color.White,
+            painter = getIcon(priority),
+            contentDescription = priority.name,
+            tint = AppTheme.colors.hint,
         )
         Text(
-            text = title,
-            color = Color.White,
-            style = AppTheme.textStyle.label.large
+            text = priority.name.lowercase().replaceFirstChar { it.uppercase() },
+            color = AppTheme.colors.hint
         )
     }
+    }
 }
+
+@Composable
+private fun getBackgroundColor(
+    priority: Priority,
+    isSelected: Boolean = false
+    ): Color {
+    return if(isSelected) {
+        when (priority) {
+            Priority.LOW -> AppTheme.colors.greenAccent
+            Priority.MEDIUM -> AppTheme.colors.yellowAccent
+            Priority.HIGH -> AppTheme.colors.pinkAccent
+        }
+    }
+    else { AppTheme.colors.surfaceLow }
+}
+
+@Composable
+private fun getIcon(priority: Priority): Painter {
+    return when (priority) {
+        // need to change icons later
+        Priority.LOW -> painterResource(R.drawable.flag_icon)
+        Priority.MEDIUM -> painterResource(R.drawable.flag_icon)
+        Priority.HIGH -> painterResource(R.drawable.flag_icon)
+    }
+}
+
+
+//@Preview
+//@Composable
+//private fun PreviewPriorityCard() {
+//    TaskPriorityCard(
+//        priority = Priority.LOW,
+//        onClick = {},
+//        isSelected = true
+//    )
+//}

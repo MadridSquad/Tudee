@@ -9,14 +9,18 @@ data class TaskUiState(
     val taskDate: LocalDate? = null,
     val taskTitle: String = "",
     val taskDescription: String = "",
-    val taskPriority: Priority? = null,
-    val selectedCategory: Category? = null,
     val errorMessage: String? = null,
 
-    // new
-    val availableCategories: List<Category> = emptyList(),
-)
+    val categoryList : List<Category> = emptyList(),
+    val selectedCategory: Category? = null,
 
+    val priorityList : List<Priority> = listOf(
+        Priority.LOW,
+        Priority.MEDIUM,
+        Priority.HIGH,
+    ),
+    val selectedPriority: Priority? = null,
+)
 
 
 
