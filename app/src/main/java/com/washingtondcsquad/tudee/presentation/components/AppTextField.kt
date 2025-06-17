@@ -29,8 +29,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
-import com.washingtondcsquad.tudee.presentation.design.theme.AppTheme
-import com.washingtondcsquad.tudee.presentation.design.theme.AppTheme.textStyle
+import com.washingtondcsquad.tudee.presentation.design.AppTheme
+import com.washingtondcsquad.tudee.presentation.design.AppTheme.textStyle
+import androidx.compose.foundation.clickable
+
 
 @Composable
 fun AppTextField(
@@ -39,11 +41,14 @@ fun AppTextField(
     onValueChange: (String) -> Unit,
     value: String,
     modifier: Modifier = Modifier,
+    readOnly: Boolean = false,
+    onPrefixIconClick: (() -> Unit)? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
     val isFocused by interactionSource.collectIsFocusedAsState()
 
     TextField(
+        readOnly = readOnly,
         interactionSource = interactionSource,
         value = value,
         textStyle = AppTheme.textStyle.label.medium,
@@ -65,7 +70,12 @@ fun AppTextField(
                     Icon(
                         painter = prefixIconPainter,
                         contentDescription = null,
-                        tint = AppTheme.colors.hint
+                        tint = AppTheme.colors.hint,
+                        modifier = if (onPrefixIconClick != null) {
+                            Modifier.clickable { onPrefixIconClick() }
+                        } else {
+                            Modifier
+                        }
                     )
                     Spacer(
                         modifier = Modifier

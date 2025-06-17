@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.Priority
-import com.washingtondcsquad.tudee.presentation.design.theme.AppTheme
+import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import java.time.LocalDate
 
@@ -82,11 +82,13 @@ fun TaskCard(
                 }
 
                 // to be changed when project structure is merged
-                TaskPriorityCard(
-                    icon = painterResource(R.drawable.flag_icon),
-                    title = "High",
-                    backgroundColor = AppTheme.colors.pinkAccent,
-                )
+//                TaskPriorityCard(
+//                    icon = painterResource(R.drawable.flag_icon),
+//                    title = "High",
+//                    backgroundColor = AppTheme.colors.pinkAccent,
+//                    isSelected = true,
+//                    onClick = { }
+//                )
             }
         }
         Text(

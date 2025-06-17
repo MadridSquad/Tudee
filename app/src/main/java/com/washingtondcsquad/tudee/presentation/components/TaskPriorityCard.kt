@@ -1,6 +1,7 @@
 package com.washingtondcsquad.tudee.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -16,43 +17,63 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
-import com.washingtondcsquad.tudee.presentation.design.theme.AppTheme
+import com.washingtondcsquad.tudee.presentation.design.AppTheme
+
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.draw.clip
+import com.washingtondcsquad.tudee.domain.entity.Priority
 
 @Composable
 fun TaskPriorityCard(
-    icon: Painter,
-    title: String,
-    backgroundColor: Color,
-    modifier: Modifier = Modifier
+    priority: Priority,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Row(
-        modifier = modifier
-            .background(color = backgroundColor, shape = RoundedCornerShape(100))
-            .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(2.dp)
-    ) {
-        Icon(
-            painter = icon,
-            contentDescription = title,
-            tint = AppTheme.colors.onPrimary,
-        )
-        Text(
-            title,
-            color = AppTheme.colors.onPrimary
-        )
 
+    val title: String
+    val iconRes: Int
+    val backgroundColor: Color
+
+    when (priority) {
+        Priority.LOW -> {
+            title = "Low"
+            iconRes = R.drawable.flag_icon
+            backgroundColor = Color(0xFF38C2B4)
+        }
+        Priority.MEDIUM -> {
+            title = "Medium"
+            iconRes = R.drawable.flag_icon
+            backgroundColor = Color(0xFFFDD264)
+        }
+        Priority.HIGH -> {
+            title = "High"
+            iconRes = R.drawable.flag_icon
+            backgroundColor = Color(0xFFF79494)
+        }
     }
 
-}
+    val borderColor = if (isSelected) AppTheme.colors.primary else Color.Transparent
 
-@Preview
-@Composable
-private fun Preview() {
-    TaskPriorityCard(
-        icon = painterResource(
-            id = R.drawable.flag_icon
-        ), title = "High", backgroundColor = AppTheme.colors.pinkAccent,
-
-    )
+    Row(
+        modifier = modifier
+            .clip(RoundedCornerShape(100))
+            .clickable(onClick = onClick)
+            .border(width = 2.dp, color = borderColor, shape = RoundedCornerShape(100)) // نضيف الحدود
+            .background(color = backgroundColor)
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Icon(
+            painter = painterResource(id = iconRes),
+            contentDescription = title,
+            tint = Color.White,
+        )
+        Text(
+            text = title,
+            color = Color.White,
+            style = AppTheme.textStyle.label.large
+        )
+    }
 }

@@ -11,7 +11,10 @@ data class TaskUiState(
     val taskDescription: String = "",
     val taskPriority: Priority? = null,
     val selectedCategory: Category? = null,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+
+    // new
+    val availableCategories: List<Category> = emptyList(),
 )
 
 

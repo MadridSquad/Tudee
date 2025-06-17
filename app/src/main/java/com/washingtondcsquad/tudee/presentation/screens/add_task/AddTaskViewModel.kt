@@ -4,17 +4,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.Priority
-import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.services.TasksService
+import com.washingtondcsquad.tudee.domain.usecase.CreateTaskUseCase
+import com.washingtondcsquad.tudee.domain.usecase.GetCategoriesUseCase
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.util.UUID
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
+import java.util.UUID
 
 
 class AddTaskViewModel(
@@ -23,6 +24,8 @@ class AddTaskViewModel(
 {
     private val _uiState = MutableStateFlow(TaskUiState())
     val uiState = _uiState.asStateFlow()
+
+    val availablePriorities: List<Priority> = Priority.entries
 
     fun onTitleChange(newTitle: String) {
         _uiState.update { it.copy(taskTitle = newTitle) }
@@ -40,44 +43,25 @@ class AddTaskViewModel(
         _uiState.update { it.copy(taskDate = realDate) }
     }
 
-    fun onPriorityChange(newPriority: Priority) {
-        _uiState.update { it.copy(taskPriority = newPriority) }
+    fun onPrioritySelected(priority: Priority) {
+        _uiState.update { currentState ->
+            currentState.copy(taskPriority = priority)
+        }
     }
 
     fun onCategorySelected(category: Category) {
         _uiState.update { it.copy(selectedCategory = category) }
     }
 
-    fun saveTask() {
-        val currentUiState = uiState.value
-
-        if (currentUiState.selectedCategory == null ||
-            currentUiState.taskPriority == null ||
-            currentUiState.taskDate == null) {
-
-            _uiState.update { it.copy(errorMessage = "Please fill all the fields") }
-            return
-        }
-
-        val newTask = Task(
-            id = UUID.randomUUID(),
-            categoryId = currentUiState.selectedCategory!!.id,
-            title = currentUiState.taskTitle,
-            description = currentUiState.taskDescription,
-            date = currentUiState.taskDate,
-            status = "Pending",
-            priority = currentUiState.taskPriority
-        )
-
+    fun saveTask(currentState: TaskUiState) {
         viewModelScope.launch {
-            tasksService.createTask(newTask)
+                createTaskUseCase(
+                    title = currentState.taskTitle,
+                    description = currentState.taskDescription,
+                    date = currentState.taskDate,
+                    priority = currentState.taskPriority,
+                    category = currentState.selectedCategory
+                )
         }
     }
-
-
-    fun errorShown() {
-        _uiState.update { it.copy(errorMessage = null) }
-    }
-
-
 }
