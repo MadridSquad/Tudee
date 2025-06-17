@@ -50,20 +50,20 @@ fun AddNewTaskScreen(
     }
 
     ModalBottomSheet(
-        onDismissRequest = {  },
+        onDismissRequest = { },
     ) {
 
         Scaffold(
             bottomBar = {
-            CancelableActionLayout(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
-                actionText = "Add Task",
-                actionTextColor = Color.White,
-                actionBackgroundColor = AppTheme.colors.primaryGradient,
-                onAction = { viewModel.saveTask() },
-                onCancel = { },
-            )
-        }
+                CancelableActionLayout(
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+                    actionText = "Add Task",
+                    actionTextColor = Color.White,
+                    actionBackgroundColor = AppTheme.colors.primaryGradient,
+                    onAction = { viewModel.saveTask() },
+                    onCancel = { },
+                )
+            }
 
         ) { scaffoldPadding ->
 
@@ -152,4 +152,291 @@ fun AddNewTaskScreen(
 
         }
     }
-    }
+}
+
+//    Column(
+//        modifier = Modifier.fillMaxSize(),
+//        verticalArrangement = Arrangement.Bottom
+//
+//    ) {
+//        val scaffoldState = rememberBottomSheetScaffoldState()
+//        val scope = rememberCoroutineScope()
+//        scope.launch {
+//            scaffoldState.bottomSheetState.expand()
+//        }
+//
+//
+//
+//        BottomSheetScaffold(
+//            modifier = Modifier,
+//            scaffoldState = scaffoldState,
+//            sheetSwipeEnabled = true,
+//            sheetPeekHeight = 0.dp,
+//            sheetContent = {
+//                Column(
+//                    Modifier.fillMaxHeight(0.8f)
+//                ) {
+//                    LazyColumn(
+//                        verticalArrangement = Arrangement.spacedBy(16.dp),
+//                        horizontalAlignment = Alignment.Start,
+//
+//                        modifier = Modifier
+//                            .weight(1f)
+//                            //.padding(scaffoldPadding)
+//                            .padding(horizontal = 16.dp)
+//
+//                    ) {
+//                        item {
+//                            Text(
+//                                text = "Add New Task",
+//                                modifier = Modifier.offset(y = 4.dp),
+//                                style = defaultTextStyle.title.large
+//                            )
+//                        }
+//                        item {
+//                            Text(
+//                                text = "Add New Task",
+//                                modifier = Modifier.offset(y = 4.dp),
+//                                style = defaultTextStyle.title.large
+//                            )
+//                        }
+//                        item {
+//                            Text(
+//                                text = "Add New Task",
+//                                modifier = Modifier.offset(y = 4.dp),
+//                                style = defaultTextStyle.title.large
+//                            )
+//                        }
+//                        item {
+//                            Text(
+//                                text = "Add New Task",
+//                                modifier = Modifier.offset(y = 4.dp),
+//                                style = defaultTextStyle.title.large
+//                            )
+//                        }
+//                        item {
+//                            Text(
+//                                text = "Add New Task",
+//                                modifier = Modifier.offset(y = 4.dp),
+//                                style = defaultTextStyle.title.large
+//                            )
+//                        }
+//                        item {
+//                            Text(
+//                                text = "Add New Task",
+//                                modifier = Modifier.offset(y = 4.dp),
+//                                style = defaultTextStyle.title.large
+//                            )
+//                        }
+//                        item {
+//                            Text(
+//                                text = "Add New Task",
+//                                modifier = Modifier.offset(y = 4.dp),
+//                                style = defaultTextStyle.title.large
+//                            )
+//                        }
+//                        item {
+//                            Text(
+//                                text = "Add New Task",
+//                                modifier = Modifier.offset(y = 4.dp),
+//                                style = defaultTextStyle.title.large
+//                            )
+//                        }
+//
+//                        // Title
+//                        item {
+//                            AppTextField(
+//                                prefixIconPainter = painterResource(R.drawable.flag_icon),
+//                                hintText = "Task Title",
+//                                value = uiState.taskTitle,
+//                                onValueChange = viewModel::onTitleChange,
+//                                modifier = Modifier.fillMaxWidth()
+//                            )
+//                        }
+//
+//                        // Description
+//                        item {
+//                            AppTextField(
+//                                prefixIconPainter = null,
+//                                hintText = "Description",
+//                                value = uiState.taskDescription,
+//                                onValueChange = viewModel::onDescriptionChange,
+//                                modifier = Modifier
+//                                    .fillMaxWidth()
+//                                    .height(168.dp)
+//                            )
+//                        }
+//
+//                        // todo Calendar
+//                        item {
+//                            AppTextField(
+//                                prefixIconPainter = painterResource(R.drawable.flag_icon),
+//                                hintText = "Calendar",
+//                                value = "",
+//                                onValueChange = { },
+//                                modifier = Modifier.fillMaxWidth()
+//                            )
+//                        }
+//
+//                        item {
+//                            Column(
+//                                verticalArrangement = Arrangement.spacedBy(8.dp),
+//                                horizontalAlignment = Alignment.Start
+//                            ) {
+//                                Text(
+//                                    text = "priority",
+//                                    style = defaultTextStyle.title.medium,
+//                                    color = AppTheme.colors.title
+//                                )
+//                                Row(
+//                                    modifier = Modifier.fillMaxWidth(),
+//                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+//                                ) {
+//                                    TaskPriorityCard(
+//                                        icon = painterResource(id = R.drawable.flag_icon),
+//                                        title = "High",
+//                                        backgroundColor = AppTheme.colors.pinkAccent,
+//                                    )
+//
+//                                }
+//                            }
+//                        }
+//
+//                        item {
+//                            Column {
+//                                Text(text = "Category")
+//
+//                            }
+//                        }
+//                    }
+//
+//
+//                    CancelableActionLayout(
+//                        modifier = Modifier
+//                            .padding(horizontal = 16.dp, vertical = 16.dp),
+//                        actionText = "Add Task",
+//                        actionTextColor = Color.White,
+//                        actionBackgroundColor = AppTheme.colors.primaryGradient,
+//                        onAction = { viewModel.saveTask() },
+//                        onCancel = { },
+//                    )
+//
+//                }
+//            }
+//        ) {
+//
+//        }
+
+//        ModalBottomSheet(
+//            onDismissRequest = { },
+//            containerColor = Color(0xFFF9F9F9),
+//        sheetState = rememberModalBottomSheetState(
+//                skipPartiallyExpanded = true // <-- skip middle state
+//            ),
+//        ) {
+//            Column(
+//                Modifier.fillMaxHeight(0.8f)
+//            ) {
+//                LazyColumn(
+//                    verticalArrangement = Arrangement.spacedBy(16.dp),
+//                    horizontalAlignment = Alignment.Start,
+//
+//                    modifier = Modifier
+//                        .weight(1f)
+//                        //.padding(scaffoldPadding)
+//                        .padding(horizontal = 16.dp)
+//
+//                ) {
+//                    item {
+//                        Text(
+//                            text = "Add New Task",
+//                            modifier = Modifier.offset(y = 4.dp),
+//                            style = defaultTextStyle.title.large
+//                        )
+//                    }
+//
+//
+//                    // Title
+//                    item {
+//                        AppTextField(
+//                            prefixIconPainter = painterResource(R.drawable.flag_icon),
+//                            hintText = "Task Title",
+//                            value = uiState.taskTitle,
+//                            onValueChange = viewModel::onTitleChange,
+//                            modifier = Modifier.fillMaxWidth()
+//                        )
+//                    }
+//
+//                    // Description
+//                    item {
+//                        AppTextField(
+//                            prefixIconPainter = null,
+//                            hintText = "Description",
+//                            value = uiState.taskDescription,
+//                            onValueChange = viewModel::onDescriptionChange,
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .height(168.dp)
+//                        )
+//                    }
+//
+//                    // todo Calendar
+//                    item {
+//                        AppTextField(
+//                            prefixIconPainter = painterResource(R.drawable.flag_icon),
+//                            hintText = "Calendar",
+//                            value = "",
+//                            onValueChange = { },
+//                            modifier = Modifier.fillMaxWidth()
+//                        )
+//                    }
+//
+//                    item {
+//                        Column(
+//                            verticalArrangement = Arrangement.spacedBy(8.dp),
+//                            horizontalAlignment = Alignment.Start
+//                        ) {
+//                            Text(
+//                                text = "priority",
+//                                style = defaultTextStyle.title.medium,
+//                                color = AppTheme.colors.title
+//                            )
+//                            Row(
+//                                modifier = Modifier.fillMaxWidth(),
+//                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+//                            ) {
+//                                TaskPriorityCard(
+//                                    icon = painterResource(id = R.drawable.flag_icon),
+//                                    title = "High",
+//                                    backgroundColor = AppTheme.colors.pinkAccent,
+//                                )
+//
+//                            }
+//                        }
+//                    }
+//
+//                    item {
+//                        Column {
+//                            Text(text = "Category")
+//
+//                        }
+//                    }
+//                }
+//
+//
+//                CancelableActionLayout(
+//                    modifier = Modifier,
+//                       // .padding(horizontal = 16.dp, vertical = 16.dp),
+//                    actionText = "Add Task",
+//                    actionTextColor = Color.White,
+//                    actionBackgroundColor = AppTheme.colors.primaryGradient,
+//                    onAction = { viewModel.saveTask() },
+//                    onCancel = { },
+//                )
+//
+//            }
+//
+//        }
+//
+//
+//    }
