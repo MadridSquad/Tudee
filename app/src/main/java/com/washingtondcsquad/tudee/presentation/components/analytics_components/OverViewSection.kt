@@ -27,8 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
-import com.washingtondcsquad.tudee.presentation.design.theme.AppTheme
-import com.washingtondcsquad.tudee.presentation.design.theme.TudeeTheme
+import com.washingtondcsquad.tudee.presentation.design.AppTheme
 
 @Composable
 fun OverViewSection(
@@ -134,7 +133,7 @@ fun TaskStatusCountCard(taskStatus: TaskStatus, count: Int, modifier: Modifier =
 @Preview
 @Composable
 private fun PreviewTaskStatusCount() {
-    TudeeTheme(useDarkTheme = false) {
+    AppTheme(useDarkTheme = false) {
         OverViewSection(doneCount = 6, inProgressCount = 6, toDoCount = 6)
     }
 
