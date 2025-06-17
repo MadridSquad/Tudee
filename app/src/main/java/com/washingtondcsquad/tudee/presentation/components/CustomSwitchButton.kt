@@ -24,10 +24,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.washingtondcsquad.tudee.presentation.design.theme.AppTheme
+import com.washingtondcsquad.tudee.presentation.design.AppTheme
 
 
 @Composable
@@ -82,7 +81,9 @@ fun CustomSwitchButton(
         // ☁️ Clouds in light mode
         CloudsOverlay(visible = !switchClicked)
 
-        Row(modifier = Modifier.fillMaxSize().padding(switchPadding)) {
+        Row(modifier = Modifier
+            .fillMaxSize()
+            .padding(switchPadding)) {
 
             Spacer(
                 modifier = Modifier
