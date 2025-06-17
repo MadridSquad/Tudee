@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.koin.core)
     implementation(libs.koin.android)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
@@ -73,4 +74,9 @@ dependencies {
 
     testImplementation(kotlin("test"))
     testImplementation(libs.kotlin.test)
+
+
+    // SVG
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("io.coil-kt:coil-svg:2.4.0")
 }
