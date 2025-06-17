@@ -32,4 +32,6 @@ data class TudeeColors(
     val greenVariant: Color,
     val purpleVariant: Color,
     val errorVariant: Color,
+    val darkSwitch: Color,
+    val lightSwitch: Color,
 )
