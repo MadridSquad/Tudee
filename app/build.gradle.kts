@@ -48,6 +48,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
+    implementation(libs.coil.compose)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.koin.android)
@@ -74,6 +75,7 @@ dependencies {
     testImplementation(libs.truth)
 
     testImplementation(libs.mockk)
+    implementation(libs.koin.androidx.compose)
 
     testImplementation(kotlin("test"))
     testImplementation(libs.kotlin.test)

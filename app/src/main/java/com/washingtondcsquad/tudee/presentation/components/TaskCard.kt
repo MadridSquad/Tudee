@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
@@ -71,12 +72,17 @@ fun TaskCard(
                         tint = AppTheme.colors.body
                     )
                     Text(
-                        text = taskUiState.taskDate.toString(),
+                        text = taskUiState.taskDate,
                         style = AppTheme.textStyle.label.small,
                         color = AppTheme.colors.body
                     )
                 }
 
+//                TaskPriorityCard(
+//                    icon = painterResource(R.drawable.flag_icon),
+//                    title = "High",
+//                    backgroundColor = AppTheme.colors.pinkAccent,
+//                )
                 // to be changed when project structure is merged
 //                TaskPriorityCard(
 //                    icon = painterResource(R.drawable.flag_icon),
@@ -102,16 +108,16 @@ fun TaskCard(
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//private fun Preview() {
-//    TaskCard(
-//        categoryImagePainter = painterResource(R.drawable.education_icon),
-//        taskUiState = TaskUiState(
-//            taskTitle = "Task Title",
-//            taskDescription = "Task Description",
-//            taskPriority = Priority.HIGH,
-//            taskDate = LocalDate.now()
-//        )
-//    )
-//}
+@Preview(showBackground = true)
+@Composable
+private fun Preview() {
+    TaskCard(
+        categoryImagePainter = painterResource(R.drawable.education_icon),
+        taskUiState = TaskUiState(
+            taskTitle = "Task Title",
+            taskDescription = "Task Description",
+            taskPriority = "High",
+            taskDate = "2021-10-10",
+        )
+    )
+}

@@ -1,10 +1,9 @@
 package com.washingtondcsquad.tudee.domain.entity
 
-import java.util.UUID
 
 data class Category(
-    val id: UUID,
+    val id: Long,
     val title: String,
-    val image: String,
+    val icon: String,
     val taskCount: Int,
 )

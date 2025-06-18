@@ -5,9 +5,10 @@ import com.washingtondcsquad.tudee.data.services.FakeTasksService
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val serviceModule = module {
     singleOf<TasksService>(::FakeTasksService)
-    singleOf<CategoriesService>(::CategoriesServiceImpl)
+    singleOf(::CategoriesServiceImpl) bind CategoriesService::class
 }
