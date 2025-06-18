@@ -30,8 +30,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             Scaffold(
-
-
                 bottomBar = {
                     TudeeNavigationBar(
                         navBarItemDataList = navBarItemsList,
@@ -45,27 +43,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.padding(innerPadding)
                 ) {
                     composable(route = "home") {
-                        Box(modifier = Modifier.fillMaxSize().background(Color.Green)) {
-                            Text(
-                                "home", fontSize = 40.sp, modifier = Modifier.padding(30.dp)
-                            )
-                        }
+                        // home screen
                     }
                     composable(route = "task") {
-                        Box(modifier = Modifier.fillMaxSize().background(Color.Magenta)) {
-
-                            Text(
-                                "TASKS", fontSize = 40.sp, modifier = Modifier.padding(30.dp)
-                            )
-                        }
+                        // tasks screen
                     }
                     composable(route = "category") {
-                        Box(modifier = Modifier.fillMaxSize().background(Color.Cyan)) {
-
-                            Text(
-                                "category", fontSize = 40.sp, modifier = Modifier.padding(30.dp)
-                            )
-                        }
+                        // Category screen
                     }
                 }
             }
