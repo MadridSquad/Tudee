@@ -43,7 +43,6 @@ andoridx-room-compiler = { group = "androidx.room", name = "room-compiler", vers
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroidxCompose" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
-koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroid" }
 
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 [plugins]

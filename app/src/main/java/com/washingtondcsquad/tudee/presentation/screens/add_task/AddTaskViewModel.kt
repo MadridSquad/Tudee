@@ -2,11 +2,12 @@ package com.washingtondcsquad.tudee.presentation.screens.add_task
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.washingtondcsquad.tudee.data.localSource.CategoryLocalDataSourceImpl
+import com.washingtondcsquad.tudee.data.localSource.mapper.category.toDomain
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
-import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +21,7 @@ import java.util.UUID
 
 class AddTaskViewModel(
     private val tasksService: TasksService,
-    private val categoryService: CategoriesService
+    private val categoryService: CategoryLocalDataSourceImpl
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(TaskUiState())
     val uiState = _uiState.asStateFlow()
@@ -31,7 +32,9 @@ class AddTaskViewModel(
 
     fun  getAllCategories(){
         viewModelScope.launch {
-          val allCategory =   categoryService.getAllCategories()
+          val allCategory =  categoryService.getAllCategories().map {
+              it.toDomain()
+          }
             _uiState.update { it.copy(categoryList = allCategory) }
         }
     }

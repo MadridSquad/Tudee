@@ -5,7 +5,7 @@ import java.util.UUID
 
 data class Task(
     val id: UUID,
-    val categoryId: UUID,
+    val categoryId: Long,
     val title: String,
     val description: String,
     val date: LocalDate? = null,

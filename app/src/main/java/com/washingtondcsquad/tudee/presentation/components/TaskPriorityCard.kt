@@ -16,12 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.domain.entity.Priority
-import com.washingtondcsquad.tudee.presentation.design.AppTheme
 
 
 @Composable
@@ -31,53 +29,56 @@ fun TaskPriorityCard(
     onClick: (priority: Priority) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Card (
+    Card(
         colors = CardDefaults.cardColors(
             containerColor = Color(0x00000000)
         ),
         shape = RoundedCornerShape(100),
         modifier = modifier
 
-    ){
-    Row(
-        modifier = modifier
-        .clickable(onClick = { onClick(priority) })
-        .background(
-                color = getBackgroundColor(priority, isSelected),
-                shape = RoundedCornerShape(100)
-            )
-            .padding(vertical = 6.dp, horizontal = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        Icon(
-            painter = getIcon(priority),
-            contentDescription = priority.name,
-            tint = getColors(isSelected)
-        )
-        Text(
-            text = priority.name.lowercase().replaceFirstChar { it.uppercase() },
-            color = getColors(isSelected)
-        )
+        Row(
+            modifier = modifier
+                .clickable(onClick = { onClick(priority) })
+                .background(
+                    color = getBackgroundColor(priority, isSelected),
+                    shape = RoundedCornerShape(100)
+                )
+                .padding(vertical = 6.dp, horizontal = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            Icon(
+                painter = getIcon(priority),
+                contentDescription = priority.name,
+                tint = getColors(isSelected)
+            )
+            Text(
+                text = priority.name.lowercase().replaceFirstChar { it.uppercase() },
+                color = getColors(isSelected)
+            )
+
+        }
 
     }
-
 }
 
 @Composable
 private fun getBackgroundColor(
     priority: Priority,
-    isSelected: Boolean = false
-    ): Color {
-    return if(isSelected) {
+    bool: Boolean
+): Color {
+    return if (bool) {
         when (priority) {
-            Priority.LOW -> AppTheme.colors.greenAccent
+            Priority.LOW -> AppTheme.colors.greenAccent //.colors.greenAccent
             Priority.MEDIUM -> AppTheme.colors.yellowAccent
             Priority.HIGH -> AppTheme.colors.pinkAccent
         }
+    } else {
+        AppTheme.colors.surfaceLow
     }
-    else { AppTheme.colors.surfaceLow }
 }
+
 
 @Composable
 private fun getIcon(priority: Priority): Painter {
@@ -90,5 +91,5 @@ private fun getIcon(priority: Priority): Painter {
 
 @Composable
 private fun getColors(isSelected: Boolean = false): Color {
-    return if(isSelected) Color.White else AppTheme.colors.hint
+    return if (isSelected) Color.White else AppTheme.colors.hint
 }

@@ -72,25 +72,12 @@ fun TaskCard(
                         tint = AppTheme.colors.body
                     )
                     Text(
-                        text = taskUiState.taskDate,
+                        text = taskUiState.taskDate.toString(),
                         style = AppTheme.textStyle.label.small,
                         color = AppTheme.colors.body
                     )
                 }
 
-//                TaskPriorityCard(
-//                    icon = painterResource(R.drawable.flag_icon),
-//                    title = "High",
-//                    backgroundColor = AppTheme.colors.pinkAccent,
-//                )
-                // to be changed when project structure is merged
-//                TaskPriorityCard(
-//                    icon = painterResource(R.drawable.flag_icon),
-//                    title = "High",
-//                    backgroundColor = AppTheme.colors.pinkAccent,
-//                    isSelected = true,
-//                    onClick = { }
-//                )
             }
         }
         Text(
@@ -116,8 +103,6 @@ private fun Preview() {
         taskUiState = TaskUiState(
             taskTitle = "Task Title",
             taskDescription = "Task Description",
-            taskPriority = "High",
-            taskDate = "2021-10-10",
         )
     )
 }
