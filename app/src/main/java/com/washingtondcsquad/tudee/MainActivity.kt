@@ -15,8 +15,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.washingtondcsquad.tudee.presentation.components.deletetask.ConfirmDeleteTask
-import com.washingtondcsquad.tudee.presentation.design.theme.TudeeTheme
+import com.washingtondcsquad.tudee.presentation.deletetask.ConfirmDeleteTask
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
