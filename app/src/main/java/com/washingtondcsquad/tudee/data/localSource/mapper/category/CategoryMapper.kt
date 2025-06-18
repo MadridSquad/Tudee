@@ -4,7 +4,7 @@ import com.washingtondcsquad.tudee.data.localSource.entities.CategoryEntity
 import com.washingtondcsquad.tudee.domain.entity.Category
 
 
-fun Category.toCategoryEntity(): CategoryEntity {
+fun Category.toEntity(): CategoryEntity {
     return CategoryEntity(
         id = id,
         title = title,
@@ -14,7 +14,7 @@ fun Category.toCategoryEntity(): CategoryEntity {
     )
 }
 
-fun CategoryEntity.toCategory(): Category {
+fun CategoryEntity.toDomain(): Category {
     return Category(
         id = id,
         title = title,

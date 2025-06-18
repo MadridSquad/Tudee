@@ -1,5 +1,5 @@
 package com.washingtondcsquad.tudee.data.utils
 
-object Constants {
+object DataBaseConstants {
     const val ROOM_DATABASE_NAME = "TudeeDatabase"
 }

@@ -78,7 +78,6 @@ fun TaskCard(
                     )
                 }
 
-                // to be changed when project structure is merged
                 TaskPriorityCard(
                     icon = painterResource(R.drawable.flag_icon),
                     title = "High",

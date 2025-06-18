@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.washingtondcsquad.tudee.data.localSource.entities.CategoryEntity
-import com.washingtondcsquad.tudee.data.utils.Constants
+import com.washingtondcsquad.tudee.data.utils.DataBaseConstants
 
 @Database(entities = [CategoryEntity::class], version = 1, exportSchema = false)
 abstract class TudeeDataBase : RoomDatabase() {
@@ -22,7 +22,7 @@ abstract class TudeeDataBase : RoomDatabase() {
             return Room.databaseBuilder(
                 context,
                 TudeeDataBase::class.java,
-                Constants.ROOM_DATABASE_NAME
+                DataBaseConstants.ROOM_DATABASE_NAME
             ).build()
 
         }
