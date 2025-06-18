@@ -32,6 +32,7 @@ import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.design.AppTheme.textStyle
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.size
 
 
 @Composable
@@ -72,9 +73,9 @@ fun AppTextField(
                         contentDescription = null,
                         tint = AppTheme.colors.hint,
                         modifier = if (onPrefixIconClick != null) {
-                            Modifier.clickable { onPrefixIconClick() }
+                            Modifier.size(24.dp).clickable { onPrefixIconClick() }
                         } else {
-                            Modifier
+                            Modifier.size(24.dp)
                         }
                     )
                     Spacer(
