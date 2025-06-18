@@ -102,7 +102,7 @@ fun AppTextField(
                 color = if (isFocused) AppTheme.colors.primary else AppTheme.colors.stroke,
                 shape = RoundedCornerShape(16.dp)
             )
-            .padding(horizontal = 12.dp, vertical = 12.dp),
+            .padding(horizontal = 12.dp),
     )
 
 }

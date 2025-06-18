@@ -51,28 +51,27 @@ fun AddNewTaskScreen(
             onDismissRequest = { },
             containerColor = Color(0xFFF9F9F9),
             sheetState = rememberModalBottomSheetState(
-                skipPartiallyExpanded = true // <-- skip middle state
+                skipPartiallyExpanded = true
             ),
         ) {
-                if (uiState.isDatePickerDisplayed) {
-                    DatePickerModal(
-                        onDateSelected = { selectedDateMillis ->
-                            if (selectedDateMillis != null) {
-                                viewModel.onDateSelected(selectedDateMillis)
-                            }
-                            viewModel::onHideDatePicker
-                        },
-                        onDismiss = viewModel::onHideDatePicker
+            if (uiState.isDatePickerDisplayed) {
+                DatePickerModal(
+                    onDateSelected = { selectedDateMillis ->
+                        if (selectedDateMillis != null) {
+                            viewModel.onDateSelected(selectedDateMillis)
+                        }
+                        viewModel::onHideDatePicker
+                    },
+                    onDismiss = viewModel::onHideDatePicker
 
-                    )
-                }
+                )
+            }
 
             Column(
                 Modifier.fillMaxHeight(0.8f)
             ) {
 
                 LazyColumn(
-                    //.padding(scaffoldPadding)
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalAlignment = Alignment.Start,
                     modifier = Modifier
@@ -93,11 +92,14 @@ fun AddNewTaskScreen(
                     // title
                     item {
                         AppTextField(
-                            prefixIconPainter = painterResource(R.drawable.flag_icon),
+                            prefixIconPainter = painterResource(R.drawable.add_task_title),
                             hintText = "Task Title",
                             value = uiState.taskTitle,
                             onValueChange = { viewModel.onTitleChange(it) },
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(56.dp)
+
                         )
                     }
 
@@ -117,19 +119,25 @@ fun AddNewTaskScreen(
                     // calendar
                     item {
                         val dateFormatter = DateTimeFormatter.ofPattern("dd-MMMM-yyyy")
-                        val currentDate = uiState.taskDate
-                        val formattedDate = currentDate?.format(dateFormatter) ?: "Calendar"
-                        AppTextField(
-                            prefixIconPainter = painterResource(R.drawable.calendar_icon),
-                            hintText = "Calendar",
-                            value = formattedDate,
-                            onValueChange = { },
+                        val hintDateFormatter = DateTimeFormatter.ofPattern("dd-MM-yy")
+                        val today = java.time.LocalDate.now().format(hintDateFormatter)
 
+                        val currentDate = uiState.taskDate
+                        val formattedDate = currentDate?.format(dateFormatter) ?: ""
+
+                        AppTextField(
+                            prefixIconPainter = painterResource(R.drawable.add_task_calendar),
+                            hintText = today,
+                            value = formattedDate,
+                            onValueChange = {},
                             onPrefixIconClick = viewModel::onShowDatePicker,
                             readOnly = true,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(56.dp)
                         )
                     }
+
 
                     // priority
                     item {
@@ -199,11 +207,10 @@ fun AddNewTaskScreen(
 
                 CancelableActionLayout(
                     modifier = Modifier,
-                    // .padding(horizontal = 16.dp, vertical = 16.dp),
-                    actionText = "Add Task",
+                    actionText = "Add",
                     actionTextColor = Color.White,
                     actionBackgroundColor = AppTheme.colors.primaryGradient,
-                    onAction = { viewModel::onClickSaveButton},
+                    onAction = { viewModel::onClickSaveButton },
                     onCancel = { },
                     isEnabled = uiState.isButtonActionEnable
                 )
@@ -213,9 +220,7 @@ fun AddNewTaskScreen(
 
     }
 
-
 }
-
 
 //@Preview
 @Composable

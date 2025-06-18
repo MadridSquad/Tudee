@@ -51,11 +51,11 @@ fun TaskPriorityCard(
         Icon(
             painter = getIcon(priority),
             contentDescription = priority.name,
-            tint = AppTheme.colors.hint,
+            tint = getColors(isSelected)
         )
         Text(
             text = priority.name.lowercase().replaceFirstChar { it.uppercase() },
-            color = AppTheme.colors.hint
+            color = getColors(isSelected)
         )
     }
     }
@@ -79,20 +79,13 @@ private fun getBackgroundColor(
 @Composable
 private fun getIcon(priority: Priority): Painter {
     return when (priority) {
-        // need to change icons later
-        Priority.LOW -> painterResource(R.drawable.flag_icon)
-        Priority.MEDIUM -> painterResource(R.drawable.flag_icon)
-        Priority.HIGH -> painterResource(R.drawable.flag_icon)
+        Priority.LOW -> painterResource(R.drawable.priority_low)
+        Priority.MEDIUM -> painterResource(R.drawable.priority_medium)
+        Priority.HIGH -> painterResource(R.drawable.priority_high)
     }
 }
 
-
-//@Preview
-//@Composable
-//private fun PreviewPriorityCard() {
-//    TaskPriorityCard(
-//        priority = Priority.LOW,
-//        onClick = {},
-//        isSelected = true
-//    )
-//}
+@Composable
+private fun getColors(isSelected: Boolean = false): Color {
+    return if(isSelected) Color.White else AppTheme.colors.hint
+}
