@@ -46,8 +46,6 @@ fun AddNewTaskScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    var showDatePicker by remember { mutableStateOf(false) }
-
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Bottom
