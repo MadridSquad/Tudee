@@ -118,7 +118,7 @@ fun AddNewTaskScreen(
 
                     // calendar
                     item {
-                        val dateFormatter = DateTimeFormatter.ofPattern("dd-MMMM-yyyy")
+                        val dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
                         val hintDateFormatter = DateTimeFormatter.ofPattern("dd-MM-yy")
                         val today = java.time.LocalDate.now().format(hintDateFormatter)
 
