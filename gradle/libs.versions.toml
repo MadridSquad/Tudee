@@ -15,6 +15,7 @@ mockk = "1.14.0"
 roomVersion = "2.7.1"
 kspVersion = "2.0.21-1.0.27"
 truth = "1.4.4"
+coilCompose = "2.7.0"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomVersion" }
@@ -39,6 +40,8 @@ androidx-room-runtime = { group = "androidx.room", name = "room-runtime", versio
 andoridx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomVersion" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroid" }
+
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

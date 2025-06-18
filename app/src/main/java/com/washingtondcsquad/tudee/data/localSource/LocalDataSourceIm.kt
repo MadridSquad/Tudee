@@ -7,12 +7,13 @@ class LocalDataSourceIm (
     private val tudeeDaoCategory: TudeeDaoCategory
 ): LocalDataSource {
 
+
     override suspend fun createCategory(category: CategoryEntity) {
         tudeeDaoCategory.createCategory(category)
     }
 
-    override suspend fun deleteCategory(categoryId: CategoryEntity) {
-        tudeeDaoCategory.deleteCategory(categoryId)
+    override suspend fun deleteCategory(category: CategoryEntity) {
+        tudeeDaoCategory.deleteCategory(category)
     }
 
     override suspend fun editCategory(category: CategoryEntity) {

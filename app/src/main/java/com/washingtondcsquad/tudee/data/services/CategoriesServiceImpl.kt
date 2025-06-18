@@ -1,29 +1,31 @@
 package com.washingtondcsquad.tudee.data.services
 
+import com.washingtondcsquad.tudee.data.localSource.mapper.category.toCategory
+import com.washingtondcsquad.tudee.data.localSource.mapper.category.toCategoryEntity
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
-import java.util.UUID
 
 class CategoriesServiceImpl(
     private val localDataSource: LocalDataSource,
 ) : CategoriesService {
     override suspend fun createCategory(category: Category) {
-        TODO("Not yet implemented")
+        localDataSource.createCategory(category.toCategoryEntity())
     }
 
-    override suspend fun deleteCategory(categoryId: UUID) {
-        TODO("Not yet implemented")
+    override suspend fun deleteCategory(category: Category) {
+        localDataSource.deleteCategory(category.toCategoryEntity())
     }
 
     override suspend fun editCategory(category: Category) {
-        TODO("Not yet implemented")
+        localDataSource.editCategory(category.toCategoryEntity())
     }
 
     override suspend fun getAllCategories(): List<Category> {
-        TODO("Not yet implemented")
+        return localDataSource.getAllCategories().map { it.toCategory() }
     }
 
-    override suspend fun getCategoryById(categoryId: UUID): Category {
-        TODO("Not yet implemented")
+    override suspend fun getCategoryById(categoryId: Long): Category {
+        return localDataSource.getCategoryById(categoryId).toCategory()
     }
+
 }
