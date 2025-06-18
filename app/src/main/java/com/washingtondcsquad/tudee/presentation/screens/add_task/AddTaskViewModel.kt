@@ -39,18 +39,19 @@ class AddTaskViewModel(
     fun onShowDatePicker(){
         _uiState.update { it.copy(isDatePickerDisplayed = true) }
     }
+
     fun onHideDatePicker(){
         _uiState.update { it.copy(isDatePickerDisplayed = false) }
     }
+
     fun updateButtonEnable() {
         _uiState.update {
             it.copy(
                 isButtonActionEnable =
-                    _uiState.value.taskDate != null &&
-                            _uiState.value.taskTitle.isNotEmpty() &&
-                            _uiState.value.taskTitle.isNotBlank() &&
-                            _uiState.value.selectedCategory != null &&
-                            _uiState.value.selectedPriority != null
+                    _uiState.value.taskTitle.isNotEmpty() &&
+                    _uiState.value.taskTitle.isNotBlank() &&
+                    _uiState.value.selectedCategory != null &&
+                    _uiState.value.selectedPriority != null
             )
         }
     }
@@ -68,11 +69,7 @@ class AddTaskViewModel(
         val realDate: LocalDate = Instant.ofEpochMilli(dateAsMilliseconds)
             .atZone(ZoneId.systemDefault())
             .toLocalDate()
-
         _uiState.update { it.copy(taskDate = realDate) }
-
-        updateButtonEnable()
-
     }
 
     fun onPrioritySelected(priority: Priority) {
@@ -87,7 +84,6 @@ class AddTaskViewModel(
         val currentCategory = uiState.value.selectedCategory
         if (currentCategory != category) {
             _uiState.update { it.copy(selectedCategory = category) }
-
             updateButtonEnable()
         }
     }
@@ -97,7 +93,7 @@ class AddTaskViewModel(
             tasksService.createTask(
                 Task(
                     id = UUID.randomUUID(),
-                    title = _uiState.value.taskTitle, //currentState.taskTitle,
+                    title = _uiState.value.taskTitle,
                     description =_uiState.value.taskDescription,
                     date = _uiState.value.taskDate,
                     priority = _uiState.value.selectedPriority,

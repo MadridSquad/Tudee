@@ -52,7 +52,7 @@ fun AppTextField(
         readOnly = readOnly,
         interactionSource = interactionSource,
         value = value,
-        textStyle = AppTheme.textStyle.label.medium,
+        textStyle = AppTheme.textStyle.label.large,
         onValueChange = onValueChange,
         placeholder = {
             Text(

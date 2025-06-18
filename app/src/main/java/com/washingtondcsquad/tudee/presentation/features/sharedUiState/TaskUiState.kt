@@ -6,7 +6,7 @@ import java.time.LocalDate
 
 data class TaskUiState(
     val taskId: String = "",
-    val taskDate: LocalDate? = null,
+    val taskDate: LocalDate = LocalDate.now(),
     val taskTitle: String = "",
     val taskDescription: String = "",
     val errorMessage: String? = null,
@@ -15,9 +15,9 @@ data class TaskUiState(
     val selectedCategory: Category? = null,
 
     val priorityList: List<Priority> = listOf(
-        Priority.LOW,
-        Priority.MEDIUM,
         Priority.HIGH,
+        Priority.MEDIUM,
+        Priority.LOW,
     ),
     val selectedPriority: Priority? = null,
     val isButtonActionEnable: Boolean = false,

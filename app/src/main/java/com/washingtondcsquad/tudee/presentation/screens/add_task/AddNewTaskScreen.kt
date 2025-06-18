@@ -35,20 +35,32 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.graphics.Color
 import com.washingtondcsquad.tudee.presentation.components.CancelableActionLayout
 import com.washingtondcsquad.tudee.presentation.components.CategoryCard
+import java.time.LocalDate
+import java.time.ZoneId
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddNewTaskScreen(
-    viewModel: AddTaskViewModel = koinViewModel()
+    viewModel: AddTaskViewModel = koinViewModel(),
+    onCancelAddTaskBottomSheet: () -> Unit,
+    taskDate: LocalDate = LocalDate.now()
 ) {
+
     val uiState by viewModel.uiState.collectAsState()
+
+    val dateAsMilliseconds = taskDate
+            .atStartOfDay(ZoneId.systemDefault())
+            .toInstant()
+            .toEpochMilli()
+
+    viewModel.onDateSelected(dateAsMilliseconds)
 
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Bottom
     ) {
         ModalBottomSheet(
-            onDismissRequest = { },
+            onDismissRequest = { onCancelAddTaskBottomSheet() },
             containerColor = Color(0xFFF9F9F9),
             sheetState = rememberModalBottomSheetState(
                 skipPartiallyExpanded = true
@@ -63,7 +75,6 @@ fun AddNewTaskScreen(
                         viewModel::onHideDatePicker
                     },
                     onDismiss = viewModel::onHideDatePicker
-
                 )
             }
 
@@ -79,7 +90,6 @@ fun AddNewTaskScreen(
                         .weight(1f)
 
                 ) {
-
                     // fixed Text (Add New Task)
                     item {
                         Text(
@@ -118,24 +128,16 @@ fun AddNewTaskScreen(
 
                     // calendar
                     item {
-                        val dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-                        val hintDateFormatter = DateTimeFormatter.ofPattern("dd-MM-yy")
-                        val today = java.time.LocalDate.now().format(hintDateFormatter)
-
-                        val currentDate = uiState.taskDate
-                        val formattedDate = currentDate?.format(dateFormatter) ?: ""
-
+                        val dateFormatter = DateTimeFormatter.ofPattern("d-M-yyyy")
+                        val formattedDate = uiState.taskDate.format(dateFormatter)
                         AppTextField(
                             prefixIconPainter = painterResource(R.drawable.add_task_calendar),
-                            hintText = today,
+                            hintText = formattedDate,
                             value = formattedDate,
-                            onValueChange = {},
+                            onValueChange = {  },
                             onPrefixIconClick = viewModel::onShowDatePicker,
                             readOnly = true,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(56.dp)
-                        )
+                            modifier = Modifier.fillMaxWidth())
                     }
 
 
@@ -154,7 +156,7 @@ fun AddNewTaskScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                             ) {
-                                items(viewModel.uiState.value.priorityList) { priority ->
+                                items(uiState.priorityList) { priority ->
                                     TaskPriorityCard(
                                         priority = priority,
                                         isSelected = uiState.selectedPriority == priority,
@@ -211,7 +213,7 @@ fun AddNewTaskScreen(
                     actionTextColor = Color.White,
                     actionBackgroundColor = AppTheme.colors.primaryGradient,
                     onAction = { viewModel::onClickSaveButton },
-                    onCancel = { },
+                    onCancel = onCancelAddTaskBottomSheet,
                     isEnabled = uiState.isButtonActionEnable
                 )
             }
@@ -225,5 +227,7 @@ fun AddNewTaskScreen(
 //@Preview
 @Composable
 fun Preview() {
-    AddNewTaskScreen()
+    AddNewTaskScreen(
+        onCancelAddTaskBottomSheet = {}
+    )
 }
