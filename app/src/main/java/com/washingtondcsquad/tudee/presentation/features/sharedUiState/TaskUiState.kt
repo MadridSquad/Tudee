@@ -11,16 +11,20 @@ data class TaskUiState(
     val taskDescription: String = "",
     val errorMessage: String? = null,
 
-    val categoryList : List<Category> = emptyList(),
+    val categoryList: List<Category> = emptyList(),
     val selectedCategory: Category? = null,
 
-    val priorityList : List<Priority> = listOf(
+    val priorityList: List<Priority> = listOf(
         Priority.LOW,
         Priority.MEDIUM,
         Priority.HIGH,
     ),
     val selectedPriority: Priority? = null,
-)
+    val isButtonActionEnable: Boolean = false,
+
+    val isDatePickerDisplayed: Boolean = false,
+
+    )
 
 
 
