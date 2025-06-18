@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -40,7 +41,6 @@ import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.presentation.components.ProgressCard
 import com.washingtondcsquad.tudee.presentation.components.TaskPriorityCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
-import com.washingtondcsquad.tudee.presentation.design.Spacer
 import com.washingtondcsquad.tudee.presentation.utils.next
 import com.washingtondcsquad.tudee.presentation.utils.statusColor
 import com.washingtondcsquad.tudee.presentation.utils.toDisplayName
@@ -85,9 +85,8 @@ fun TaskDetailsBottomSheet(
                     Text(
                         text = "Task details",
                         style = AppTheme.textStyle.title.large,
-                        color = AppTheme.colors.title
+                        color = AppTheme.colors.title, modifier = Modifier.padding(bottom = 16.dp)
                     )
-                    Spacer.Medium()
 
                     Image(
                         modifier = Modifier
@@ -100,15 +99,16 @@ fun TaskDetailsBottomSheet(
                         painter = painterResource(R.drawable.education_icon),
                         contentDescription = "Category Image",
                     )
-                    Spacer.Small()
+                    Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
                     Text(
-                        text = task.title,  // Using the actual task data
-                        style = AppTheme.textStyle.title.medium
+                        text = task.title,
+                        style = AppTheme.textStyle.title.medium,
+                        modifier = Modifier.padding(bottom = 8.dp)
                     )
-                    Spacer.Small()
+
                     Text(
-                        text = task.description,  // Using the actual task data
+                        text = task.description,
                         style = AppTheme.textStyle.body.small,
                         color = AppTheme.colors.title
                     )
@@ -120,14 +120,13 @@ fun TaskDetailsBottomSheet(
 
                     Row(Modifier.fillMaxWidth()) {
                         ProgressCard(
-                            title = task.status.toDisplayName(),  // Using task status
-                            backgroundColor = statusColor(task.status)
+                            title = task.status.toDisplayName(),
+                            backgroundColor = statusColor(task.status),
+                            modifier = Modifier.padding(end = 8.dp)
                         )
 
-                        Spacer.Small(vertical = false)
-
                         TaskPriorityCard(
-                            priority = task.priority,  // Using task priority
+                            priority = task.priority,
                             modifier = Modifier.height(28.dp)
                         )
                     }
@@ -153,11 +152,11 @@ fun TaskDetailsBottomSheet(
                                 Image(
                                     painter = painterResource(id = R.drawable.pencil_edit),
                                     contentDescription = "edit screen",
-                                    modifier = Modifier.align(Alignment.Center)
+                                    modifier = Modifier
+                                        .align(Alignment.Center)
+                                        .padding(end = 4.dp)
                                 )
                             }
-
-                            Spacer.ExtraSmall(vertical = false)
 
                             Box(
                                 Modifier
