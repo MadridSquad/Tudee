@@ -13,18 +13,18 @@ import com.washingtondcsquad.tudee.data.utils.Constants
 interface TudeeDaoCategory {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun createCategory(category: CategoryEntity)
+    suspend fun createCategory(category: CategoryEntity)
 
     @Delete
-    fun deleteCategory(category: CategoryEntity)
+    suspend fun deleteCategory(category: CategoryEntity)
 
     @Update
-    fun editCategory(category: CategoryEntity)
+    suspend fun editCategory(category: CategoryEntity)
 
     @Query("SELECT * FROM ${Constants.ROOM_DATABASE_NAME}")
-    fun getAllCategories(): List<CategoryEntity>
+    suspend fun getAllCategories(): List<CategoryEntity>
 
     @Query("SELECT * FROM ${Constants.ROOM_DATABASE_NAME} WHERE id = :categoryId")
-    fun getCategoryById(categoryId: Long): CategoryEntity
+    suspend fun getCategoryById(categoryId: Long): CategoryEntity
 
 }
