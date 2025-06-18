@@ -1,11 +1,11 @@
 package com.washingtondcsquad.tudee.data.localSource
 
 import com.washingtondcsquad.tudee.data.localSource.entities.CategoryEntity
-import com.washingtondcsquad.tudee.data.services.LocalDataSource
+import com.washingtondcsquad.tudee.data.services.CategoryLocalDataSource
 
-class LocalDataSourceImpl (
+class CategoryLocalDataSourceImpl (
     private val daoCategory: DaoCategory
-): LocalDataSource {
+): CategoryLocalDataSource {
 
 
     override suspend fun createCategory(category: CategoryEntity) {

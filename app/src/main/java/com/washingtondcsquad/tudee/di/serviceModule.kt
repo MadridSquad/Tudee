@@ -2,7 +2,6 @@ package com.washingtondcsquad.tudee.di
 
 import com.washingtondcsquad.tudee.data.services.CategoriesServiceImpl
 import com.washingtondcsquad.tudee.data.services.FakeTasksService
-import com.washingtondcsquad.tudee.data.services.LocalDataSource
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import org.koin.core.module.dsl.singleOf

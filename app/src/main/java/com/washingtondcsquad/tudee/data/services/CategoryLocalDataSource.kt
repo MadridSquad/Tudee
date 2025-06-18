@@ -2,7 +2,7 @@ package com.washingtondcsquad.tudee.data.services
 
 import com.washingtondcsquad.tudee.data.localSource.entities.CategoryEntity
 
-interface LocalDataSource {
+interface CategoryLocalDataSource {
     suspend fun createCategory(category: CategoryEntity)
     suspend fun deleteCategory(category: CategoryEntity)
     suspend fun editCategory(category: CategoryEntity)

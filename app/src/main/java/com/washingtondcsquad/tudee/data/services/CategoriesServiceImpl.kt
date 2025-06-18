@@ -6,26 +6,26 @@ import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 
 class CategoriesServiceImpl(
-    private val localDataSource: LocalDataSource,
+    private val categoryLocalDataSource: CategoryLocalDataSource,
 ) : CategoriesService {
     override suspend fun createCategory(category: Category) {
-        localDataSource.createCategory(category.toCategoryEntity())
+        categoryLocalDataSource.createCategory(category.toCategoryEntity())
     }
 
     override suspend fun deleteCategory(category: Category) {
-        localDataSource.deleteCategory(category.toCategoryEntity())
+        categoryLocalDataSource.deleteCategory(category.toCategoryEntity())
     }
 
     override suspend fun editCategory(category: Category) {
-        localDataSource.editCategory(category.toCategoryEntity())
+        categoryLocalDataSource.editCategory(category.toCategoryEntity())
     }
 
     override suspend fun getAllCategories(): List<Category> {
-        return localDataSource.getAllCategories().map { it.toCategory() }
+        return categoryLocalDataSource.getAllCategories().map { it.toCategory() }
     }
 
     override suspend fun getCategoryById(categoryId: Long): Category {
-        return localDataSource.getCategoryById(categoryId).toCategory()
+        return categoryLocalDataSource.getCategoryById(categoryId).toCategory()
     }
 
 }
