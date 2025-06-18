@@ -20,19 +20,20 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
-import com.washingtondcsquad.tudee.domain.entity.Priority
-import com.washingtondcsquad.tudee.domain.entity.fromStringToPriority
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 
 @Composable
 fun TaskCard(
-    categoryImagePainter: Painter, taskUiState: TaskUiState, modifier: Modifier = Modifier
+    categoryImagePainter: Painter,
+    taskUiState: TaskUiState,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
             .background(
-                color = AppTheme.colors.surfaceHigh, shape = RoundedCornerShape(16.dp)
+                color = AppTheme.colors.surfaceHigh,
+                shape = RoundedCornerShape(16.dp)
             )
             .padding(horizontal = 16.dp)
             .padding(top = 4.dp, bottom = 32.dp),
@@ -58,7 +59,8 @@ fun TaskCard(
                 Row(
                     modifier = Modifier
                         .background(
-                            color = AppTheme.colors.surface, shape = RoundedCornerShape(100)
+                            color = AppTheme.colors.surface,
+                            shape = RoundedCornerShape(100)
                         )
                         .padding(horizontal = 8.dp, vertical = 6.dp),
                     verticalAlignment = Alignment.CenterVertically,
@@ -76,8 +78,11 @@ fun TaskCard(
                     )
                 }
 
-                // to be changed when project structure is merged
-                TaskPriorityCard(fromStringToPriority(taskUiState.taskPriority))
+                TaskPriorityCard(
+                    icon = painterResource(R.drawable.flag_icon),
+                    title = "High",
+                    backgroundColor = AppTheme.colors.pinkAccent,
+                )
             }
         }
         Text(
