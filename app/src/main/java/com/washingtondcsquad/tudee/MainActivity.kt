@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -22,9 +23,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            TudeeTheme(
-                useDarkTheme = false ,
+            AppTheme(
+                useDarkTheme = false,
             ) {
+
 
                 var isSheet by rememberSaveable { mutableStateOf(false) }
 
