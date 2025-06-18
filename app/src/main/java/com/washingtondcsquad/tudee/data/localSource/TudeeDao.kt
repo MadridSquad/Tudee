@@ -10,7 +10,7 @@ import com.washingtondcsquad.tudee.data.localSource.entities.CategoryEntity
 import com.washingtondcsquad.tudee.data.utils.Constants
 
 @Dao
-interface TudeeDaoCategory {
+interface DaoCategory {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun createCategory(category: CategoryEntity)

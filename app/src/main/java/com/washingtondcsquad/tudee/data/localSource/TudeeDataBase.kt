@@ -9,7 +9,7 @@ import com.washingtondcsquad.tudee.data.utils.Constants
 
 @Database(entities = [CategoryEntity::class], version = 1, exportSchema = false)
 abstract class TudeeDataBase : RoomDatabase() {
-    abstract fun tudeeDaoCategory(): TudeeDaoCategory
+    abstract fun daoCategory(): DaoCategory
 
     companion object {
         @Volatile

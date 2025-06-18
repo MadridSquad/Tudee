@@ -3,29 +3,29 @@ package com.washingtondcsquad.tudee.data.localSource
 import com.washingtondcsquad.tudee.data.localSource.entities.CategoryEntity
 import com.washingtondcsquad.tudee.data.services.LocalDataSource
 
-class LocalDataSourceIm (
-    private val tudeeDaoCategory: TudeeDaoCategory
+class LocalDataSourceImpl (
+    private val daoCategory: DaoCategory
 ): LocalDataSource {
 
 
     override suspend fun createCategory(category: CategoryEntity) {
-        tudeeDaoCategory.createCategory(category)
+        daoCategory.createCategory(category)
     }
 
     override suspend fun deleteCategory(category: CategoryEntity) {
-        tudeeDaoCategory.deleteCategory(category)
+        daoCategory.deleteCategory(category)
     }
 
     override suspend fun editCategory(category: CategoryEntity) {
-        tudeeDaoCategory.editCategory(category)
+        daoCategory.editCategory(category)
     }
 
     override suspend fun getAllCategories(): List<CategoryEntity> {
-        return tudeeDaoCategory.getAllCategories()
+        return daoCategory.getAllCategories()
     }
 
     override suspend fun getCategoryById(categoryId: Long): CategoryEntity {
-        return tudeeDaoCategory.getCategoryById(categoryId)
+        return daoCategory.getCategoryById(categoryId)
     }
 
 
