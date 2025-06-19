@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.devtools.ksp)
+    // Kotlin serialization plugin for type safe routes and navigation arguments
+    kotlin("plugin.serialization") version "2.0.21"
 }
 
 android {
@@ -41,18 +43,23 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
+    implementation(libs.coil.compose)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.koin.core)
     implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.navigation.compose.jvmstubs)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -62,6 +69,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     ksp(libs.andoridx.room.compiler)
 
+    implementation("androidx.compose.material3:material3:1.3.2")
+    implementation("androidx.compose.material3:material3-window-size-class:1.3.2")
+    implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.4.0-alpha15")
+
 
     testImplementation(libs.junit.jupiter.api)
     testRuntimeOnly(libs.junit.jupiter.engine)
@@ -70,7 +81,19 @@ dependencies {
     testImplementation(libs.truth)
 
     testImplementation(libs.mockk)
+    implementation(libs.koin.androidx.compose)
 
     testImplementation(kotlin("test"))
     testImplementation(libs.kotlin.test)
+
+    // serialization library helps with navigation
+    implementation(libs.kotlinx.serialization.json)
+
+    // Jetpack Compose integration
+    implementation(libs.androidx.navigation.compose)
+
+
+    // SVG
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("io.coil-kt:coil-svg:2.4.0")
 }
