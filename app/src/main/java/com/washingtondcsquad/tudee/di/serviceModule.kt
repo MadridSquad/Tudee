@@ -9,8 +9,7 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val serviceModule = module {
-    singleOf<TasksService>(::FakeTasksService)
-    single<TasksService> { TasksServiceImpl() }
+    singleOf(::TasksServiceImpl) bind TasksService::class
     singleOf(::TasksServiceImpl) bind TasksService::class
     singleOf(::CategoriesServiceImpl) bind CategoriesService::class
 }
