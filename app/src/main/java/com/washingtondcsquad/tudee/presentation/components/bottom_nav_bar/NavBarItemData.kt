@@ -28,3 +28,7 @@ var navBarItemsList = listOf(
         unSelectedIcon = R.drawable.category_icon_outlined,
     )
 )
+
+val bottomNavBarRoutes = navBarItemsList.map {
+    it.route
+}
