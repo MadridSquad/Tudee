@@ -208,7 +208,7 @@ fun AddNewTaskScreen(
                     actionText = stringResource(R.string.add),
                     actionTextColor = Color.White,
                     actionBackgroundColor = AppTheme.colors.primaryGradient,
-                    onAction = { viewModel::onClickSaveButton },
+                    onAction = viewModel::onClickSaveButton ,
                     onCancel = onCancelAddTaskBottomSheet,
                     isEnabled = state.isButtonActionEnable
                 )

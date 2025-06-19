@@ -136,7 +136,7 @@ class AddTaskViewModel(
                     )
                 )
             },
-            onSuccess = TODO(),
+            onSuccess = {},
             onError = { exception -> }
         )
     }
