@@ -24,15 +24,7 @@ class CategoriesServiceImpl(
     }
 
     override suspend fun getAllCategories(): List<Category> {
-        return listOf(
-            Category(
-                id = 1L,
-                title = "Work",
-                taskCount = 5,
-                icon = R.drawable.education_icon.toString()
-            ),
-        )
-        //return daoCategory.getAllCategories()
+        return daoCategory.getAllCategories().map { it.toDomain() }
     }
 
     override suspend fun getCategoryById(categoryId: Long): Category {

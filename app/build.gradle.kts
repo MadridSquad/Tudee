@@ -57,7 +57,6 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.navigation.compose.jvmstubs)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.datastore.core)
     testImplementation(libs.junit)
