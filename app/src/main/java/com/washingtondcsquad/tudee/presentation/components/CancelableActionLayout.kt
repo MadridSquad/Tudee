@@ -50,13 +50,16 @@ fun CancelableActionLayout(
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Transparent,
                 contentColor = actionTextColor,
+                disabledContainerColor = AppTheme.colors.disable,
+                disabledContentColor = AppTheme.colors.stroke,
+
             ),
             contentPadding = PaddingValues(vertical = 16.dp),
             shape = RoundedCornerShape(100)
         ) {
             Text(
                 text = actionText,
-                color = actionTextColor,
+                color = if(isEnabled) actionTextColor else AppTheme.colors.stroke,
                 style = AppTheme.textStyle.label.large,
             )
         }

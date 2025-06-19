@@ -6,9 +6,9 @@ import com.washingtondcsquad.tudee.domain.entity.Category
 
 fun Category.toEntity(): CategoryEntity {
     return CategoryEntity(
-        id = id,
+        id = 0L,
         title = title,
-        image = icon,
+        image = iconPath,
         taskCount = taskCount
 
     )
@@ -18,7 +18,7 @@ fun CategoryEntity.toDomain(): Category {
     return Category(
         id = id,
         title = title,
-        icon = image,
+        iconPath = image,
         taskCount = taskCount
     )
 }
