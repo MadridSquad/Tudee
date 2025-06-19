@@ -20,6 +20,9 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,6 +37,7 @@ import com.washingtondcsquad.tudee.presentation.components.DatePickerModal
 import com.washingtondcsquad.tudee.presentation.components.TaskPriorityCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyle
+import com.washingtondcsquad.tudee.presentation.features.sharedUiState.ImageSource
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import java.time.LocalDate
@@ -42,19 +46,13 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddNewTaskScreen(
-    onCancelAddTaskBottomSheet: () -> Unit,
+    onCancelAddTaskBottomSheet: () -> Unit={},
     taskDate: LocalDate = LocalDate.now(),
     viewModel: AddTaskViewModel = koinViewModel(
         parameters = { parametersOf(taskDate) }
     ),
 ) {
-
     val state by viewModel.state.collectAsState()
-
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Bottom
-    ) {
         ModalBottomSheet(
             onDismissRequest = { onCancelAddTaskBottomSheet() },
             containerColor = AppTheme.colors.surface,
@@ -183,7 +181,7 @@ fun AddNewTaskScreen(
                                         rowCategories.forEach { category ->
                                             CategoryCard(
                                                 title = category.title,
-                                                iconPainter = painterResource(R.drawable.education_icon),
+                                                imageSource = ImageSource.Path(category.iconPath),
                                                 onClick = { viewModel.onCategorySelected(category) },
                                                 isSelected = state.selectedCategory == category,
                                                 modifier = Modifier.weight(1f)
@@ -211,13 +209,14 @@ fun AddNewTaskScreen(
                 )
             }
         }
-    }
 }
 
 //@Preview
 @Composable
 fun Preview() {
     AddNewTaskScreen(
-        onCancelAddTaskBottomSheet = {}
+        onCancelAddTaskBottomSheet = {
+
+        }
     )
 }

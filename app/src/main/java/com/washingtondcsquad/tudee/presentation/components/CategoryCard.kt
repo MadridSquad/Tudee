@@ -1,6 +1,5 @@
 package com.washingtondcsquad.tudee.presentation.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,12 +19,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
+import com.washingtondcsquad.tudee.presentation.features.sharedUiState.ImageSource
 import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.noRippleClick
 
 @Composable
 fun CategoryCard(
     title: String,
-    iconPainter: Painter,
+    imageSource: ImageSource,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
@@ -39,18 +39,15 @@ fun CategoryCard(
         Box(
             modifier = Modifier
         ) {
-            Image(
+            LoadImage(
+                imageSource = imageSource,
                 modifier = Modifier
                     .background(
                         color = AppTheme.colors.surfaceHigh,
                         shape = CircleShape
                     )
                     .padding(24.dp)
-                    .size(32.dp),
-                painter = iconPainter,
-                contentDescription = title,
-
-                )
+                    .size(32.dp))
             if (isSelected) {
                 Icon(
                     painterResource(R.drawable.selection_icon),
@@ -59,7 +56,7 @@ fun CategoryCard(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .background(
-                            color = AppTheme.colors.greenAccent,
+                            color = AppTheme.colors.surfaceHigh,
                             shape = CircleShape
                         )
                         .padding(4.dp)
@@ -98,7 +95,7 @@ private fun Preview() {
 
     CategoryCard(
         title = "Test",
-        iconPainter = painterResource(R.drawable.education_icon),
+        imageSource = ImageSource.Path(""),
         onClick = {},
         modifier = Modifier,
         isSelected = false,
