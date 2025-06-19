@@ -18,9 +18,6 @@ roomVersion = "2.7.1"
 kspVersion = "2.0.21-1.0.27"
 truth = "1.4.4"
 coilCompose = "2.7.0"
-navigationComposeJvmstubs = "2.9.0"
-composeMaterial = "1.4.1"
-constraintlayoutComposeAndroid = "1.1.1"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
@@ -52,9 +49,6 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroid" }
 
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
-androidx-navigation-compose-jvmstubs = { group = "androidx.navigation", name = "navigation-compose-jvmstubs", version.ref = "navigationComposeJvmstubs" }
-androidx-compose-material = { group = "androidx.wear.compose", name = "compose-material", version.ref = "composeMaterial" }
-androidx-constraintlayout-compose-android = { group = "androidx.constraintlayout", name = "constraintlayout-compose-android", version.ref = "constraintlayoutComposeAndroid" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

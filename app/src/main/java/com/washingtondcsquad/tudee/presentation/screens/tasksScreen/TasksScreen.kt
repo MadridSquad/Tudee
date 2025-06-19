@@ -22,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,20 +30,17 @@ import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.components.DayCard
 import com.washingtondcsquad.tudee.presentation.components.TaskCard
-import com.washingtondcsquad.tudee.presentation.deletetask.ConfirmDeleteTask
-import com.washingtondcsquad.tudee.presentation.deletetask.DeleteTaskScroll
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyle
-import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.ChangeMonthButton
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.DatePickerModal
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.NoTasks
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.TasksTabRow
-import java.util.UUID
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun TasksScreen(tasksViewModel: TasksViewModel) {
+fun TasksScreen(tasksViewModel: TasksViewModel = koinViewModel()) {
 
     val tasksUiState by tasksViewModel.state.collectAsState()
     TasksScreenContent(
@@ -55,8 +51,8 @@ fun TasksScreen(tasksViewModel: TasksViewModel) {
         tasksViewModel::goToPreviousMonth,
         tasksViewModel::clearDatePicker,
         tasksViewModel::formatedSelectedDate,
-        tasksUiState,
-        tasksViewModel = tasksViewModel
+        tasksViewModel::onTaskClicked,
+        tasksUiState
     )
 }
 
@@ -69,8 +65,8 @@ fun TasksScreenContent(
     gotToPreviousMonth: () -> Unit,
     clearDatePicker: () -> Long,
     formatedSelectedDate: (Long) -> String,
+    onTaskClicked: (Int) -> Unit,
     tasksUiState: TasksUiState,
-    tasksViewModel: TasksViewModel
 ) {
     val pagerState = rememberPagerState(pageCount = { 3 })
     val selectedTabIndex by remember { derivedStateOf { pagerState.currentPage } }
@@ -104,16 +100,13 @@ fun TasksScreenContent(
             ChangeMonthButton(R.drawable.left_arrow) { gotToPreviousMonth() }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.clickable {
-                    setShowDialog(true)
-                }
+                modifier = Modifier.clickable { setShowDialog(true) }
             ) {
                 Text(
                     tasksUiState.yearAndMonthTitle,
                     style = AppTheme.textStyle.label.medium,
                     color = AppTheme.colors.body,
-                    modifier = Modifier
-                        .padding(end = 4.dp)
+                    modifier = Modifier.padding(end = 4.dp)
                 )
                 Icon(
                     painter = painterResource(R.drawable.down_arrow),
@@ -137,9 +130,7 @@ fun TasksScreenContent(
                     isSelected = item.isSelected,
                     modifier = Modifier
                         .width(65.dp)
-                        .clickable {
-                            onDaySelectedFromLazyRow(item.dayNumber)
-                        }
+                        .clickable { onDaySelectedFromLazyRow(item.dayNumber) }
                 )
             }
         }
@@ -162,7 +153,11 @@ fun TasksScreenContent(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 val tasksToShow = if (tasksUiState.isFilterEnabled) {
-                    currentTasks.filter { it.taskDate == formatedSelectedDate(tasksUiState.selectedDateInMillis) }
+                    currentTasks.filter {
+                        it.taskDate == formatedSelectedDate(
+                            tasksUiState.selectedDateInMillis
+                        )
+                    }
                 } else {
                     currentTasks
                 }
@@ -184,11 +179,8 @@ fun TasksScreenContent(
                         }
                     }
                 }
-
             }
-
         }
-
         if (tasksUiState.showDateDialog) {
             DatePickerModal(
                 tasksUiState.selectedDateInMillis,
@@ -219,6 +211,5 @@ fun TasksScreenContent(
 
     }
 }
-
 
 

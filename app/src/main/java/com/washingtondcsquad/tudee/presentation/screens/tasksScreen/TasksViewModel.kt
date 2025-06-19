@@ -1,6 +1,6 @@
 package com.washingtondcsquad.tudee.presentation.screens.tasksScreen
 
-import com.washingtondcsquad.tudee.domain.entity.Task
+import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
@@ -8,14 +8,12 @@ import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiSta
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.utils.buildMonthDaysList
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.utils.getYearAndMonthTitleFromYearMonth
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.utils.todayInMillis
-import org.koin.mp.KoinPlatform.getKoin
 import java.time.Instant
 import java.time.YearMonth
 import java.time.ZoneId
-import java.util.UUID
 
 class TasksViewModel(
-    private val tasksService: TasksService ,
+    private val tasksService: TasksService,
     private val categoriesService: CategoriesService
 ) : BaseViewModel<TasksUiState>(
     TasksUiState(
@@ -52,11 +50,11 @@ class TasksViewModel(
             val tasks = tasksService.getAllTasks()
             val tasksForUiState = tasks.map {
                 TaskUiState(
-                    taskId = it.id.toString(),
-                    taskDate = it.date.toString(),
+                    taskId = it.id,
+                    taskDate = it.date,
                     taskTitle = it.title,
                     taskDescription = it.description,
-                    taskPriority = it.priority,
+                    taskPriority = Priority.fromString(it.priority),
                     taskStatus = it.status,
                     categoryImage = categoriesService.getCategoryById(
                         it.categoryId.toString().toLong()
@@ -76,6 +74,10 @@ class TasksViewModel(
     }
 
     private fun onError(error: Throwable) {
+
+    }
+
+    fun onTaskClicked(taskId: Int) {
 
     }
 
