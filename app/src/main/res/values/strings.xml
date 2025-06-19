@@ -28,4 +28,7 @@
     <string name="onboarding_description_3">Progress is progress. Tudee will celebrate you on for every win, big or small.</string>
     <string name="cancel">Cancel</string>
     <string name="background_graphics">Background graphics</string>
+    <string name="delete_task">Delete task</string>
+    <string name="are_you_sure_to_continue">Are you sure to continue?</string>
+    <string name="delete">Delete</string>
 </resources>
