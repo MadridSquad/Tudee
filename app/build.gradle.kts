@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.devtools.ksp)
+    // Kotlin serialization plugin for type safe routes and navigation arguments
+    kotlin("plugin.serialization") version "2.0.21"
 }
 
 android {
@@ -63,6 +65,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     ksp(libs.andoridx.room.compiler)
 
+
     testImplementation(libs.junit.jupiter.api)
     testRuntimeOnly(libs.junit.jupiter.engine)
     testImplementation(libs.junit.jupiter.params)
@@ -74,6 +77,12 @@ dependencies {
 
     testImplementation(kotlin("test"))
     testImplementation(libs.kotlin.test)
+
+    // serialization library helps with navigation
+    implementation(libs.kotlinx.serialization.json)
+
+    // Jetpack Compose integration
+    implementation(libs.androidx.navigation.compose)
     implementation (libs.koin.androidx.compose)
 
 }
