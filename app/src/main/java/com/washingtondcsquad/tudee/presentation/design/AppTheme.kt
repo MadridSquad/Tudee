@@ -5,6 +5,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.staticCompositionLocalOf
+import com.washingtondcsquad.tudee.presentation.design.colorStyle.TudeeColors
+import com.washingtondcsquad.tudee.presentation.design.colorStyle.dark
+import com.washingtondcsquad.tudee.presentation.design.colorStyle.light
 import com.washingtondcsquad.tudee.presentation.design.textStyle.TudeeTextStyle
 import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyle
 
@@ -27,9 +30,9 @@ object AppTheme {
         content: @Composable () -> Unit
     ) {
         val colors = if (!useDarkTheme) {
-            TudeeColors.light
+            light
         } else {
-            TudeeColors.dark
+            dark
         }
 
         CompositionLocalProvider(
@@ -41,7 +44,7 @@ object AppTheme {
 
     }
 
-    private val LocalTudeeColors = staticCompositionLocalOf { TudeeColors.light }
+    private val LocalTudeeColors = staticCompositionLocalOf { light }
     private val LocalTudeeTextStyle = staticCompositionLocalOf { defaultTextStyle }
 }
 
