@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,12 +31,16 @@ import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.components.DayCard
 import com.washingtondcsquad.tudee.presentation.components.TaskCard
+import com.washingtondcsquad.tudee.presentation.deletetask.ConfirmDeleteTask
+import com.washingtondcsquad.tudee.presentation.deletetask.DeleteTaskScroll
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyle
+import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.ChangeMonthButton
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.DatePickerModal
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.NoTasks
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.TasksTabRow
+import java.util.UUID
 
 
 @Composable
@@ -50,7 +55,8 @@ fun TasksScreen(tasksViewModel: TasksViewModel) {
         tasksViewModel::goToPreviousMonth,
         tasksViewModel::clearDatePicker,
         tasksViewModel::formatedSelectedDate,
-        tasksUiState
+        tasksUiState,
+        tasksViewModel = tasksViewModel
     )
 }
 
@@ -64,6 +70,7 @@ fun TasksScreenContent(
     clearDatePicker: () -> Long,
     formatedSelectedDate: (Long) -> String,
     tasksUiState: TasksUiState,
+    tasksViewModel: TasksViewModel
 ) {
     val pagerState = rememberPagerState(pageCount = { 3 })
     val selectedTabIndex by remember { derivedStateOf { pagerState.currentPage } }
@@ -72,6 +79,9 @@ fun TasksScreenContent(
         tasksUiState.tasksList.filter { it.taskStatus == "TODO" },
         tasksUiState.tasksList.filter { it.taskStatus == "DONE" }
     )
+
+    val selectedTaskToDelete = remember { mutableStateOf<TaskUiState?>(null) }
+
     Column(
         modifier = Modifier
             .background(AppTheme.colors.surfaceHigh)
@@ -158,10 +168,9 @@ fun TasksScreenContent(
                 }
                 if (tasksToShow.isNotEmpty()) {
                     itemsIndexed(currentTasks) { index, item ->
-                        TaskCard(
-                            categoryImagePainter = painterResource(item.categoryImage.toInt()),
-                            taskUiState = item,
-                        )
+                        DeleteTaskScroll(task = item) {
+                            selectedTaskToDelete.value=item
+                        }
                     }
                 } else {
                     item {
@@ -192,7 +201,24 @@ fun TasksScreenContent(
 
             )
         }
+
+        selectedTaskToDelete.value?.let { taskToDelete ->
+            ConfirmDeleteTask(
+                deleteOnClick = {
+                    tasksViewModel.deleteTask(UUID.fromString(taskToDelete.taskId))
+                    selectedTaskToDelete.value = null
+                },
+                cancelOnClick = {
+                    selectedTaskToDelete.value = null
+                },
+                onDismiss = {
+                    selectedTaskToDelete.value = null
+                }
+            )
+        }
+
     }
 }
+
 
 

@@ -1,5 +1,6 @@
 package com.washingtondcsquad.tudee.presentation.screens.tasksScreen
 
+import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
@@ -7,12 +8,14 @@ import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiSta
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.utils.buildMonthDaysList
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.utils.getYearAndMonthTitleFromYearMonth
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.utils.todayInMillis
+import org.koin.mp.KoinPlatform.getKoin
 import java.time.Instant
 import java.time.YearMonth
 import java.time.ZoneId
+import java.util.UUID
 
 class TasksViewModel(
-    private val tasksService: TasksService,
+    private val tasksService: TasksService ,
     private val categoriesService: CategoriesService
 ) : BaseViewModel<TasksUiState>(
     TasksUiState(
@@ -30,6 +33,19 @@ class TasksViewModel(
     init {
         loadData()
     }
+
+    fun deleteTask(taskId: UUID) = tryToExecute(
+        request = {
+            tasksService.deleteTask(taskId)
+        },
+        onSuccess = {
+            loadData()
+        },
+        onError = {
+            onError(it)
+        }
+    )
+
 
     fun loadData() = tryToExecute(
         request = {

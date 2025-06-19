@@ -1,33 +1,37 @@
 package com.washingtondcsquad.tudee.presentation.deletetask
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.SwipeToDismissBox
-import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.wear.compose.material.ExperimentalWearMaterialApi
+import androidx.wear.compose.material.FractionalThreshold
+import androidx.wear.compose.material.rememberSwipeableState
+import androidx.wear.compose.material.swipeable
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.components.TaskCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
+import kotlin.math.roundToInt
 
 @Composable
 fun DeleteTaskBackground(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     Box(
         modifier = modifier
@@ -39,20 +43,15 @@ fun DeleteTaskBackground(
     ) {
 
         IconButton(
-            onClick = {},
+            onClick = { onClick() },
         ) {
-            Box(
-                modifier = Modifier
-                    .size(32.dp)
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.delete_icon),
-                    contentDescription = "delete icon",
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    tint = AppTheme.colors.error
-                )
-            }
+
+            Icon(
+                painter = painterResource(R.drawable.delete_icon),
+                contentDescription = "delete icon",
+                modifier = Modifier.size(32.dp),
+                tint = AppTheme.colors.error
+            )
         }
 
     }
@@ -60,42 +59,46 @@ fun DeleteTaskBackground(
 
 }
 
-@Preview(showSystemUi = true)
+@OptIn(ExperimentalWearMaterialApi::class)
 @Composable
-fun DeleteTaskScroll() {
+fun DeleteTaskScroll(
+    task: TaskUiState,
+    onDelete: () -> Unit
+) {
+    val maxOffset = with(LocalDensity.current) { 55.dp.toPx() }
+    val swipeableState = rememberSwipeableState(initialValue = 0)
+    val anchors = mapOf(0f to 0, -maxOffset to 1)
 
-    Row(
-        modifier = Modifier.padding(top = 50.dp, end = 16.dp, start = 16.dp)
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(111.dp)
+            .swipeable(
+                state = swipeableState,
+                anchors = anchors,
+                thresholds = { _, _ -> FractionalThreshold(0.3f) },
+                orientation = Orientation.Horizontal,
+                resistance = null
+            )
     ) {
-        val dismissState = rememberSwipeToDismissBoxState(
-            confirmValueChange = {
-                false
-            }
+        DeleteTaskBackground(
+            modifier = Modifier.matchParentSize(),
+            onClick = onDelete
         )
-        SwipeToDismissBox(
-            state = dismissState,
-            backgroundContent = {
-                DeleteTaskBackground(
-                    modifier = Modifier
-                )
-            },
-            content = {
-                TaskCard(
-                    modifier = Modifier.height(111.dp),
-                    categoryImagePainter = painterResource(R.drawable.education_icon),
-                    taskUiState = TaskUiState(
-                        taskTitle = "Task Title",
-                        taskDescription = "Task Description",
-                        taskPriority = "High",
-                        taskDate = "2021-10-10",
-                    )
-                )
-            },
-            enableDismissFromStartToEnd = false,
-            enableDismissFromEndToStart = true,
-        )
+
+        Box(
+            modifier = Modifier
+                .offset {
+                    IntOffset(swipeableState.offset.value.roundToInt(), 0)
+                }
+                .fillMaxWidth()
+                .height(111.dp)
+        ) {
+            TaskCard(
+                modifier = Modifier.height(111.dp),
+                categoryImagePainter = painterResource(R.drawable.delete_task_illustration),
+                taskUiState = task
+            )
+        }
     }
-
 }
-
-
