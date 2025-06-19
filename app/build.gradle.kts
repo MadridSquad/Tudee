@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.devtools.ksp)
+    // Kotlin serialization plugin for type safe routes and navigation arguments
+    kotlin("plugin.serialization") version "2.0.21"
 }
 
 android {
@@ -48,6 +50,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
+    implementation(libs.coil.compose)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.koin.android)
@@ -70,9 +73,16 @@ dependencies {
     testImplementation(libs.truth)
 
     testImplementation(libs.mockk)
+    implementation(libs.koin.androidx.compose)
 
     testImplementation(kotlin("test"))
     testImplementation(libs.kotlin.test)
+
+    // serialization library helps with navigation
+    implementation(libs.kotlinx.serialization.json)
+
+    // Jetpack Compose integration
+    implementation(libs.androidx.navigation.compose)
 
 
     // SVG
