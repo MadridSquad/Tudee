@@ -1,5 +1,7 @@
 package com.washingtondcsquad.tudee.presentation.utils.modifierExensions
 
+
+import android.graphics.BlurMaskFilter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Size
@@ -18,34 +20,23 @@ fun Modifier.dropShadow(
     offsetY: Dp = 4.dp,
     offsetX: Dp = 0.dp,
     spread: Dp = 0.dp
-): Modifier = this.drawBehind {
+) = this.drawBehind {
 
-
-    val shadowSize = Size(
-        width = size.width + spread.toPx(),
-        height = size.height + spread.toPx()
-    )
+    val shadowSize = Size(size.width + spread.toPx(), size.height + spread.toPx())
     val shadowOutline = shape.createOutline(shadowSize, layoutDirection, this)
 
+    val paint = Paint()
+    paint.color = color
 
-    val paint = Paint().apply {
-        this.color = color
-        if (blur.toPx() > 0) {
-            asFrameworkPaint().maskFilter =
-                android.graphics.BlurMaskFilter(
-                    blur.toPx(),
-                    android.graphics.BlurMaskFilter.Blur.NORMAL
-                )
+    if (blur.toPx() > 0) {
+        paint.asFrameworkPaint().apply {
+            maskFilter = BlurMaskFilter(blur.toPx(), BlurMaskFilter.Blur.NORMAL)
         }
     }
 
     drawIntoCanvas { canvas ->
-        val spreadPx = spread.toPx() / 2f
         canvas.save()
-        canvas.translate(
-            offsetX.toPx() - spreadPx,
-            offsetY.toPx() - spreadPx
-        )
+        canvas.translate(offsetX.toPx(), offsetY.toPx())
         canvas.drawOutline(shadowOutline, paint)
         canvas.restore()
     }
