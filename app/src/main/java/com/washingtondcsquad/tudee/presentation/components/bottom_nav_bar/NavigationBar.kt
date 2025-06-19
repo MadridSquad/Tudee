@@ -44,10 +44,10 @@ fun TudeeNavigationBar(
         horizontalArrangement = Arrangement.SpaceBetween
 
     ) {
-        navBarItemDataList.forEachIndexed { index, item ->
-            val isSelected = currentDestination == item.route
+        val selectedIconColor by animateColorAsState(AppTheme.colors.primary)
 
-            val iconColor by animateColorAsState(if (isSelected) AppTheme.colors.primary else AppTheme.colors.hint)
+        navBarItemDataList.forEach{  item ->
+            val isSelected = currentDestination == item.route
             Box(
                 modifier = Modifier
                     .size(42.dp)
@@ -73,14 +73,14 @@ fun TudeeNavigationBar(
                         painter = painterResource(id = item.selectedIcon),
                         contentDescription = item.label,
                         modifier = Modifier.size(24.dp),
-                        tint = iconColor
+                        tint = selectedIconColor
                     )
                 } else {
                     Icon(
                         painter = painterResource(id = item.unSelectedIcon),
                         contentDescription = item.label,
                         modifier = Modifier.size(24.dp),
-                        tint = iconColor
+                        tint = AppTheme.colors.hint
                     )
                 }
 
