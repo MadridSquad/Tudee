@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.BottomAppBarDefaults.windowInsets
@@ -33,7 +34,7 @@ class MainActivity : ComponentActivity() {
                 val currentDestination = navBackStackEntry.value?.destination?.route
                 Scaffold(
                     bottomBar = {
-                        if (currentDestination in bottomNavBarRoutes) {
+                        AnimatedVisibility(currentDestination in bottomNavBarRoutes) {
                             TudeeNavigationBar(
                                 navBarItemDataList = navBarItemsList,
                                 navController = navController,
