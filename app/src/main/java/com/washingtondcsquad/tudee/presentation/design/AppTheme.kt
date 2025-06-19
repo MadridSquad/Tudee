@@ -21,6 +21,8 @@ object AppTheme {
         @ReadOnlyComposable
         get() = LocalTudeeColors.current
 
+
+
     @Composable
     operator fun invoke(
         useDarkTheme: Boolean,
@@ -34,7 +36,7 @@ object AppTheme {
 
         CompositionLocalProvider(
             LocalTudeeTextStyle provides defaultTextStyle,
-            LocalTudeeColors provides colors
+            LocalTudeeColors provides colors,
         ) {
             content()
         }

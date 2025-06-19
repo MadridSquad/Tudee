@@ -1,11 +1,12 @@
 package com.washingtondcsquad.tudee.presentation.features.sharedUiState
 
+import com.washingtondcsquad.tudee.domain.entity.Priority
+
 data class TaskUiState(
-    val taskId: String = "",
-    val taskDate: String = "",
+    val taskId: Int = 0,
+    val taskDate: String? = null,
     val taskTitle: String = "",
     val taskDescription: String = "",
-    val taskPriority: String = "",
-    val taskStatus: String = "",
+    val taskPriority: Priority = Priority.LOW,
     val categoryImage: String = "",
 )

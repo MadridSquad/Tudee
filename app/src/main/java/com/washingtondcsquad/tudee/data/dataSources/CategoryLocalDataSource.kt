@@ -1,4 +1,4 @@
-package com.washingtondcsquad.tudee.data.services
+package com.washingtondcsquad.tudee.data.dataSources
 
 import com.washingtondcsquad.tudee.data.localSource.entities.CategoryEntity
 
