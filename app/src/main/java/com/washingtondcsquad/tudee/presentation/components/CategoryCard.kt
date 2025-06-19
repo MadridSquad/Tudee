@@ -13,17 +13,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
+import com.washingtondcsquad.tudee.presentation.features.sharedUiState.ImageSource
 import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.noRippleClick
 
 @Composable
 fun CategoryCard(
     title: String,
-    iconPath: String,
+    imageSource: ImageSource,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
@@ -38,7 +40,7 @@ fun CategoryCard(
             modifier = Modifier
         ) {
             LoadImage(
-                path = iconPath,
+                imageSource = imageSource,
                 modifier = Modifier
                     .background(
                         color = AppTheme.colors.surfaceHigh,
@@ -93,7 +95,7 @@ private fun Preview() {
 
     CategoryCard(
         title = "Test",
-        iconPath = "",
+        imageSource = ImageSource.Path(""),
         onClick = {},
         modifier = Modifier,
         isSelected = false,

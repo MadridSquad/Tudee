@@ -1,6 +1,7 @@
 package com.washingtondcsquad.tudee.data.services
 
-import com.washingtondcsquad.tudee.data.localSource.DaoCategory
+
+import com.washingtondcsquad.tudee.data.localSource.daos.DaoCategory
 import com.washingtondcsquad.tudee.data.localSource.imageStorageManager.DeleteImageFromInternalStorage
 import com.washingtondcsquad.tudee.data.localSource.imageStorageManager.SaveImageToInternalStorage
 import com.washingtondcsquad.tudee.data.localSource.mapper.category.toDomain
