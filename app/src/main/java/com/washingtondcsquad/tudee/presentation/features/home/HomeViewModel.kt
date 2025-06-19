@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val tasksService: TasksService
-) : BaseViewModel<HomeUiState>(HomeUiState()) {
+) : BaseViewModel<HomeUiState>(HomeUiState()), HomeListener {
 
     init {
         loadData()
@@ -76,5 +76,13 @@ class HomeViewModel(
         updateState {
             copy(isLoading = false, error = error.message)
         }
+    }
+
+    override fun onTaskClicked(taskId: Int) {
+
+    }
+
+    override fun onThemeSwitched(isDarkMode: Boolean) {
+
     }
 }

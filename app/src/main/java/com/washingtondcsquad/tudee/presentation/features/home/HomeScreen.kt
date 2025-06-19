@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,7 +42,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
+import com.washingtondcsquad.tudee.presentation.components.CustomSwitchButton
 import com.washingtondcsquad.tudee.presentation.components.TaskCard
+import com.washingtondcsquad.tudee.presentation.components.TextLogo
 import com.washingtondcsquad.tudee.presentation.components.analytics_components.AnalyticsCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
@@ -54,12 +57,16 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = koinVie
     val state by viewModel.state.collectAsState()
 
     SetStatusBarIconsColor(false)
-    HomeScreenContent(modifier, state)
+    HomeScreenContent(modifier, state, viewModel)
 
 }
 
 @Composable
-private fun HomeScreenContent(modifier: Modifier = Modifier, state: HomeUiState) {
+private fun HomeScreenContent(
+    modifier: Modifier = Modifier,
+    state: HomeUiState,
+    listener: HomeListener
+) {
     val isEmptyState =
         state.inProgressTasks.isEmpty() and state.todoTasks.isEmpty() and state.doneTasks.isEmpty()
 
@@ -114,15 +121,27 @@ private fun HomeScreenContent(modifier: Modifier = Modifier, state: HomeUiState)
                     )
                     Column(
                         modifier = Modifier.padding(start = 8.dp),
-                        verticalArrangement = Arrangement.SpaceBetween
+                        verticalArrangement = Arrangement.SpaceBetween,
                     ) {
-                        Text("tudee")
+                        TextLogo(title = stringResource(R.string.app_name), size = 18)
                         Text(
                             text = stringResource(R.string.home_app_bar_subtitle),
                             color = AppTheme.colors.onPrimaryCaption,
                             style = AppTheme.textStyle.label.small,
                         )
                     }
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    CustomSwitchButton(
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .padding(end = 16.dp),
+                        switchPadding = 8.dp,
+                        buttonWidth = 64.dp,
+                        buttonHeight = 36.dp,
+                        isDarkTheme = false,
+                        onToggle = { listener.onThemeSwitched(it) }
+                    )
                 }
                 Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
 
@@ -145,7 +164,7 @@ private fun HomeScreenContent(modifier: Modifier = Modifier, state: HomeUiState)
                                 title = stringResource(R.string.in_progress_title),
                                 modifier = Modifier
                                     .padding(top = 16.dp),
-                                onTaskClick = {},
+                                onTaskClick = listener::onTaskClicked,
                                 onSeeMoreClick = {}
                             )
                         if (state.todoTasks.isNotEmpty())
@@ -153,7 +172,7 @@ private fun HomeScreenContent(modifier: Modifier = Modifier, state: HomeUiState)
                                 tasks = state.todoTasks,
                                 title = stringResource(R.string.to_do_title),
                                 modifier = Modifier.padding(top = 24.dp),
-                                onTaskClick = {},
+                                onTaskClick = listener::onTaskClicked,
                                 onSeeMoreClick = {}
                             )
 
@@ -196,7 +215,7 @@ private fun FabIcon(modifier: Modifier) {
 private fun TaskStatusLayout(
     title: String,
     tasks: List<TaskUiState>,
-    onTaskClick: (TaskUiState) -> Unit,
+    onTaskClick: (Int) -> Unit,
     onSeeMoreClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -340,6 +359,13 @@ private fun Preview() {
     HomeScreenContent(
         modifier = Modifier,
         state = HomeUiState(
-        )
+        ),
+        listener = object : HomeListener {
+            override fun onTaskClicked(taskId: Int) {
+            }
+
+            override fun onThemeSwitched(isDarkMode: Boolean) {
+            }
+        }
     )
 }

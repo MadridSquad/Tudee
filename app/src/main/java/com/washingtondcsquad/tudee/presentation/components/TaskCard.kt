@@ -30,7 +30,7 @@ import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiSta
 @Composable
 fun TaskCard(
     taskUiState: TaskUiState,
-    onTaskClicked: (task: TaskUiState) -> Unit,
+    onTaskClicked: (taskId: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -40,7 +40,7 @@ fun TaskCard(
                 shape = RoundedCornerShape(16.dp)
             )
             .clip(RoundedCornerShape(16.dp))
-            .clickable { onTaskClicked(taskUiState) }
+            .clickable { onTaskClicked(taskUiState.taskId) }
             .padding(start = 4.dp, end = 12.dp, top = 4.dp, bottom = 12.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
@@ -51,7 +51,7 @@ fun TaskCard(
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(taskUiState.categoryImage)
+                    .data(taskUiState.categoryImage.ifEmpty { R.drawable.education_icon })
                     .crossfade(true)
                     .build(),
                 contentDescription = null,
