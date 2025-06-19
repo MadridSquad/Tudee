@@ -1,14 +1,12 @@
 package com.washingtondcsquad.tudee.domain.entity
 
-import java.time.LocalDate
-import java.util.UUID
-
 data class Task(
-    val id: UUID,
-    val categoryId: UUID,
+    val id: Int,
+    val categoryId: Long,
+    val categoryImage: String,
     val title: String,
     val description: String,
-    val date: LocalDate,
+    val date: String,
     val status: String,
     val priority: String,
 )

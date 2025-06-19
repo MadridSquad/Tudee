@@ -32,15 +32,13 @@ fun DarkModeIcon(visible: Boolean) {
         val moonRadius = size.minDimension / 2
         val moonCenter = center
 
-        // 🌘 Shadow behind the moon
         drawCircle(
-            color = Color(0xFF323297).copy(alpha = 0.4f), // أغمق وظاهر
-            radius = moonRadius + 40f, // أكبر أكتر عشان يبان
+            color = Color(0xFF323297).copy(alpha = 0.4f),
+            radius = moonRadius + 40f,
             center = moonCenter,
             alpha = moonAlpha
         )
 
-        // 🌕 Moon with alpha
         drawCircle(
             brush = Brush.radialGradient(
                 colors = listOf(Color(0xFfE0E9FE), Color(0xFFE9F0FF))
@@ -50,7 +48,6 @@ fun DarkModeIcon(visible: Boolean) {
             alpha = moonAlpha
         )
 
-        // 🌑 Craters with different fade timing
         drawCraterWithShadow(
             center = Offset(moonCenter.x - 3f, moonCenter.y - 20f),
             radius = 8f,
