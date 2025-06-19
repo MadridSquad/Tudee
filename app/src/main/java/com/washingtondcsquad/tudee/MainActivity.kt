@@ -2,17 +2,21 @@ package com.washingtondcsquad.tudee
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.BottomAppBarDefaults.windowInsets
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
@@ -44,72 +48,77 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
-        createPreDefineCategories()
+
         setContent {
             val isDarkMode by appPreferencesService.isDarkModeEnabled()
                 .collectAsState(initial = false)
+            val isOnboardingShownFlow = appPreferencesService.hasOnboardingBeenShown()
+            val isOnboardingShownState by isOnboardingShownFlow.collectAsState(initial = null)
 
             AppTheme(
                 useDarkTheme = isDarkMode
             ) {
-                val isDarkMode by appPreferencesService.isDarkModeEnabled()
-                    .collectAsState(initial = false)
-                val isOnboardingShown by appPreferencesService.hasOnboardingBeenShown()
-                    .collectAsState(initial = true)
-                AppTheme(
-                    useDarkTheme = isDarkMode
-                ) {
-
-                    val navController = rememberNavController()
-                    val navBackStackEntry = navController.currentBackStackEntryAsState()
-                    val currentDestination = navBackStackEntry.value?.destination?.route
-                    val startDestination = if (isOnboardingShown) {
-                        "home"
-                    } else {
-                        "onboarding"
+                when (val isOnboardingShown = isOnboardingShownState) {
+                    null -> {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator()
+                        }
                     }
-                    Scaffold(
-                        bottomBar = {
-                            AnimatedVisibility(currentDestination in bottomNavBarRoutes) {
-                                TudeeNavigationBar(
-                                    navBarItemDataList = navBarItemsList,
-                                    navController = navController,
-                                    modifier = Modifier.windowInsetsPadding(windowInsets)
-                                )
-                            }
+                    else -> {
+                        val startDestination = if (isOnboardingShown) {
+                            "home"
+                        } else {
+                            Log.d("sdasdsad", "onCreate: ")
+                            createPreDefineCategories()
+                            "onboarding"
+                        }
+                        val navController = rememberNavController()
+                        val navBackStackEntry = navController.currentBackStackEntryAsState()
+                        val currentDestination = navBackStackEntry.value?.destination?.route
 
-                        }) { innerPadding ->
-                        NavHost(
-                            navController = navController,
-                            startDestination = startDestination,
-                            modifier = Modifier.padding(innerPadding)
-                        ) {
-                            composable(route = "onboarding") {
-                                OnBoardingScreen(
-                                    onFinish = {
-                                        navController.navigate("home") {
-                                            popUpTo("onboarding") { inclusive = true }
-                                        }
-                                    },
-                                )
-                            }
-                            composable(route = "home") {
-                                HomeScreen()
-                            }
-                            composable(route = "task") {
-                                // tasks screen
-                            }
-                            composable(route = "category") {
-                                // Category screen
+                        Scaffold(
+                            bottomBar = {
+                                AnimatedVisibility(currentDestination in bottomNavBarRoutes) {
+                                    TudeeNavigationBar(
+                                        navBarItemDataList = navBarItemsList,
+                                        navController = navController,
+                                        modifier = Modifier.windowInsetsPadding(windowInsets)
+                                    )
+                                }
+
+                            }) { innerPadding ->
+                            NavHost(
+                                navController = navController,
+                                startDestination = startDestination,
+                                modifier = Modifier.padding(innerPadding)
+                            ) {
+                                composable(route = "onboarding") {
+                                    OnBoardingScreen(
+                                        onFinish = {
+                                            navController.navigate("home") {
+                                                popUpTo("onboarding") { inclusive = true }
+                                            }
+                                        },
+                                    )
+                                }
+                                composable(route = "home") {
+                                    HomeScreen()
+                                }
+                                composable(route = "task") {
+                                    // tasks screen
+                                }
+                                composable(route = "category") {
+                                    CategoriesScreen()
+                                }
                             }
                         }
                     }
-
                 }
             }
-        }
 
-    }
+
+            }
+        }
 
     private fun createPreDefineCategories() {
         CoroutineScope(Dispatchers.IO).launch {
