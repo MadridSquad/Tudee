@@ -6,5 +6,6 @@ data class TaskUiState(
     val taskTitle: String = "",
     val taskDescription: String = "",
     val taskPriority: String = "",
+    val taskStatus: String = "",
     val categoryImage: String = "",
 )
