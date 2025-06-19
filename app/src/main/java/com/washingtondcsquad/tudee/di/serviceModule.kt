@@ -12,7 +12,6 @@ import org.koin.dsl.module
 
 val serviceModule = module {
     singleOf(::TasksServiceImpl) bind TasksService::class
-    singleOf(::TasksServiceImpl) bind TasksService::class
     singleOf(::CategoriesServiceImpl) bind CategoriesService::class
     singleOf(::AppPreferencesServiceImpl) bind AppPreferencesService::class
 }
