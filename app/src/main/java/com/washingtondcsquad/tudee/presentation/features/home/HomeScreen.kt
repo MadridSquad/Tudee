@@ -26,6 +26,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -46,6 +47,8 @@ import com.washingtondcsquad.tudee.presentation.components.CustomSwitchButton
 import com.washingtondcsquad.tudee.presentation.components.TaskCard
 import com.washingtondcsquad.tudee.presentation.components.TextLogo
 import com.washingtondcsquad.tudee.presentation.components.analytics_components.AnalyticsCard
+import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarController
+import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarEvent
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import com.washingtondcsquad.tudee.presentation.utils.SetStatusBarIconsColor
@@ -65,10 +68,18 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = koinVie
 private fun HomeScreenContent(
     modifier: Modifier = Modifier,
     state: HomeUiState,
-    listener: HomeListener
+    viewModel: HomeViewModel
 ) {
     val isEmptyState =
         state.inProgressTasks.isEmpty() and state.todoTasks.isEmpty() and state.doneTasks.isEmpty()
+
+    LaunchedEffect(Unit){
+        SnackbarController.sendEvent(
+            SnackbarEvent(
+                message = "Successfully",
+            )
+        )
+    }
 
     Box(
         modifier = modifier
@@ -90,8 +101,6 @@ private fun HomeScreenContent(
         if (state.isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         } else {
-
-
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -140,7 +149,7 @@ private fun HomeScreenContent(
                         buttonWidth = 64.dp,
                         buttonHeight = 36.dp,
                         isDarkTheme = false,
-                        onToggle = { listener.onThemeSwitched(it) }
+                        onToggle = { viewModel.onThemeSwitched(it) }
                     )
                 }
                 Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
@@ -164,7 +173,7 @@ private fun HomeScreenContent(
                                 title = stringResource(R.string.in_progress_title),
                                 modifier = Modifier
                                     .padding(top = 16.dp),
-                                onTaskClick = listener::onTaskClicked,
+                                onTaskClick = viewModel::onTaskClicked,
                                 onSeeMoreClick = {}
                             )
                         if (state.todoTasks.isNotEmpty())
@@ -172,7 +181,7 @@ private fun HomeScreenContent(
                                 tasks = state.todoTasks,
                                 title = stringResource(R.string.to_do_title),
                                 modifier = Modifier.padding(top = 24.dp),
-                                onTaskClick = listener::onTaskClicked,
+                                onTaskClick = viewModel::onTaskClicked,
                                 onSeeMoreClick = {}
                             )
 
@@ -358,14 +367,7 @@ private fun NoTasksPlaceHolder(modifier: Modifier = Modifier) {
 private fun Preview() {
     HomeScreenContent(
         modifier = Modifier,
-        state = HomeUiState(
-        ),
-        listener = object : HomeListener {
-            override fun onTaskClicked(taskId: Int) {
-            }
-
-            override fun onThemeSwitched(isDarkMode: Boolean) {
-            }
-        }
+        state = HomeUiState(),
+        viewModel = koinViewModel<HomeViewModel>()
     )
 }
