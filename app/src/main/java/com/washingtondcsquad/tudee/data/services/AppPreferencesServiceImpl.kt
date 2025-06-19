@@ -18,6 +18,7 @@ class AppPreferencesServiceImpl(
 
     private object PreferencesKeys {
         val HAS_ONBOARDING_BEEN_SHOWN = booleanPreferencesKey("has_onboarding_been_shown")
+        val DARK_MODE_ENABLED = booleanPreferencesKey("dark_mode_enabled")
     }
 
     override fun hasOnboardingBeenShown(): Flow<Boolean> {
@@ -31,4 +32,17 @@ class AppPreferencesServiceImpl(
             preferences[PreferencesKeys.HAS_ONBOARDING_BEEN_SHOWN] = true
         }
     }
+
+    override fun isDarkModeEnabled(): Flow<Boolean> {
+        return context.appPreferencesDataStore.data.map { preferences ->
+            preferences[PreferencesKeys.DARK_MODE_ENABLED] ?: false
+        }
+    }
+
+    override suspend fun setDarkModeEnabled(isEnabled: Boolean) {
+        context.appPreferencesDataStore.edit { preferences ->
+            preferences[PreferencesKeys.DARK_MODE_ENABLED] = isEnabled
+        }
+    }
+
 }
