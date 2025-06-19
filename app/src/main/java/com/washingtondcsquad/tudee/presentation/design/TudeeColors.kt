@@ -34,6 +34,7 @@ data class TudeeColors(
     val errorVariant: Color,
     val darkSwitch: Color,
     val lightSwitch: Color,
+    val transparentColor : Color,
 ) {
 
     companion object {
@@ -67,6 +68,7 @@ data class TudeeColors(
             errorVariant = Color(0xFFFCE8E8),
             darkSwitch = Color(0xFF151535),
             lightSwitch = Color(0xFF49BAF2),
+            transparentColor = Color(0x00000000)
         )
 
         val dark = TudeeColors(
@@ -99,6 +101,7 @@ data class TudeeColors(
             errorVariant = Color(0xFF1F1111),
             darkSwitch = Color(0xFF151535),
             lightSwitch = Color(0xFF49BAF2),
+            transparentColor = Color(0x00000000)
         )
     }
 }

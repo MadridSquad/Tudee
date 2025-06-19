@@ -31,4 +31,5 @@ abstract class BaseViewModel<STATE>(initialValue: STATE) : ViewModel() {
         _state.value = _state.value.reducer()
     }
 
+
 }
