@@ -16,13 +16,17 @@ class HomeViewModel(
         loadData()
     }
 
-    fun loadData() = viewModelScope.launch {
+    private fun loadData() = viewModelScope.launch {
         updateState {
             copy(isLoading = false, error = null)
         }
+        var tasks: List<Task> = emptyList()
         tryToExecute(
             request = {
-                tasksService.getAllTasks()
+                tasksService.getAllTasks().collect {
+                    tasks = it
+                }
+                tasks
             },
             onSuccess = ::onSuccess,
             onError = ::onError

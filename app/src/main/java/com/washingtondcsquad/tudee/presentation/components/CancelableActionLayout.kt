@@ -44,24 +44,22 @@ fun CancelableActionLayout(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    brush = if (isEnabled) Brush.verticalGradient(actionBackgroundColor)
-                    else Brush.verticalGradient(
-                        listOf(
-                            colors.disable,
-                            colors.disable
-                        )
-                    ),
+                    Brush.verticalGradient(actionBackgroundColor),
                     shape = RoundedCornerShape(100)
                 ),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Transparent,
+                contentColor = actionTextColor,
+                disabledContainerColor = AppTheme.colors.disable,
+                disabledContentColor = AppTheme.colors.stroke,
+
             ),
             contentPadding = PaddingValues(vertical = 16.dp),
             shape = RoundedCornerShape(100)
         ) {
             Text(
                 text = actionText,
-                color =  if (isEnabled) actionTextColor else colors.stroke,
+                color = if(isEnabled) actionTextColor else AppTheme.colors.stroke,
                 style = AppTheme.textStyle.label.large,
             )
         }
