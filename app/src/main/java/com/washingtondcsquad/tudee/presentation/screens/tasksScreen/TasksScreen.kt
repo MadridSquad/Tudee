@@ -19,6 +19,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -41,6 +42,7 @@ import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.C
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.DatePickerModal
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.NoTasks
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.TasksTabRow
+import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -223,6 +225,11 @@ fun TasksScreenContent(
     }
 
     if (showSnackBar.value) {
+        LaunchedEffect(Unit) {
+            delay(3000)
+            showSnackBar.value = false
+        }
+
         SnackBarCard(
             message = stringResource(R.string.deleted_task_successfully),
             icon = painterResource(R.drawable.checkmark),
