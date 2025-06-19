@@ -11,13 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
+
 
 @Composable
 fun TaskPriorityCard(
@@ -29,19 +29,18 @@ fun TaskPriorityCard(
                 color = getBackgroundColor(priority),
                 shape = RoundedCornerShape(100)
             )
-            .padding(horizontal = 8.dp),
+            .padding(vertical = 6.dp, horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(2.dp)
     ) {
         Icon(
-            painter = getIcon(priority),
+            painter = painterResource(priority.getIconResource()),
             contentDescription = priority.name,
             tint = AppTheme.colors.onPrimary,
         )
         Text(
             text = priority.name.lowercase().replaceFirstChar { it.uppercase() },
-            color = AppTheme.colors.onPrimary,
-            style = AppTheme.textStyle.label.small
+            color = AppTheme.colors.onPrimary
         )
 
     }
@@ -56,14 +55,14 @@ private fun getBackgroundColor(priority: Priority): Color {
     }
 }
 
-@Composable
-private fun getIcon(priority: Priority): Painter {
-    return when (priority) {
-        Priority.LOW -> painterResource(R.drawable.low_icon)
-        Priority.MEDIUM -> painterResource(R.drawable.medium_icon)
-        Priority.HIGH -> painterResource(R.drawable.flag_icon)
+private fun Priority.getIconResource(): Int {
+    return when (this) {
+        Priority.LOW -> R.drawable.low_icon
+        Priority.MEDIUM -> R.drawable.medium_icon
+        Priority.HIGH -> R.drawable.flag_icon
     }
 }
+
 
 @Preview
 @Composable

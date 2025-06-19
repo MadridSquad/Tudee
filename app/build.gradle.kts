@@ -52,9 +52,12 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.koin.core)
     implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.navigation.compose.jvmstubs)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -86,4 +89,9 @@ dependencies {
 
     // Jetpack Compose integration
     implementation(libs.androidx.navigation.compose)
+
+
+    // SVG
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("io.coil-kt:coil-svg:2.4.0")
 }

@@ -3,14 +3,16 @@ package com.washingtondcsquad.tudee.domain.entity
 enum class Priority{
     LOW,
     MEDIUM,
-    HIGH,
-}
+    HIGH;
 
-fun fromStringToPriority(priority: String): Priority {
-    return when (priority.lowercase()) {
-        "low" -> Priority.LOW
-        "medium" -> Priority.MEDIUM
-        "high" -> Priority.HIGH
-        else -> Priority.LOW
+    companion object {
+        fun fromString(priority: String): Priority {
+            return when (priority.lowercase()) {
+                "low" -> LOW
+                "medium" -> MEDIUM
+                "high" -> HIGH
+                else -> LOW
+            }
+        }
     }
 }
