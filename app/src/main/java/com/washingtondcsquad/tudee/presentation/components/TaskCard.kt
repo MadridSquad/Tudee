@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,6 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
+import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 
@@ -79,9 +81,8 @@ fun TaskCard(
                 }
 
                 TaskPriorityCard(
-                    icon = painterResource(R.drawable.flag_icon),
-                    title = "High",
-                    backgroundColor = AppTheme.colors.pinkAccent,
+                    priority = taskUiState.taskPriority,
+                    modifier = Modifier.height(28.dp)
                 )
             }
         }
@@ -108,7 +109,7 @@ private fun Preview() {
         taskUiState = TaskUiState(
             taskTitle = "Task Title",
             taskDescription = "Task Description",
-            taskPriority = "High",
+            taskPriority = Priority.HIGH,
             taskDate = "2021-10-10",
         )
     )
