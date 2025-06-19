@@ -1,36 +1,42 @@
 package com.washingtondcsquad.tudee.data.localSource.mapper.category
 
 import com.washingtondcsquad.tudee.data.localSource.entities.TaskEntity
+import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
-import com.washingtondcsquad.tudee.domain.entity.fromStringToPriority
-import java.time.Instant
-import java.time.ZoneId
-import java.util.UUID
+import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 
 
 fun Task.toEntity(): TaskEntity {
     return TaskEntity(
-        id = id.toString(),
+        id = id,
         categoryId = categoryId,
         title = title,
         description = description,
-        date = date.toEpochDay(),
-        status = status,
-        priority = priority.name
+        date = date,
+        status = status.name,
+        priority = priority.name,
+        categoryImage =categoryImage
     )
 }
 
 
 fun TaskEntity.toDomain(): Task {
     return Task(
-        id = UUID.fromString(id),
+        id = id,
         categoryId = categoryId,
         title = title,
-        description = description?: "",
-        date = Instant.ofEpochMilli(date)
-            .atZone(ZoneId.systemDefault())
-            .toLocalDate(),
-        status = status,
-        priority = fromStringToPriority(priority)
+        description = description,
+        date = date,
+        status = when(status){
+            "TODO" -> TaskStatus.TODO
+            "IN_PROGRESS" -> TaskStatus.IN_PROGRESS
+            else -> TaskStatus.DONE
+        },
+        priority = when(priority){
+            "LOW" -> Priority.LOW
+            "MEDIUM" -> Priority.MEDIUM
+            else -> Priority.HIGH
+        },
+        categoryImage = categoryImage
     )
 }

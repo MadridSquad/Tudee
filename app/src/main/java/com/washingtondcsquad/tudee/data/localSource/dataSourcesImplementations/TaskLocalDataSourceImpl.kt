@@ -7,5 +7,8 @@ import com.washingtondcsquad.tudee.data.localSource.entities.TaskEntity
 class TaskLocalDataSourceImpl(
     private val dao: DaoTask
 ) : TaskLocalDataSource {
+    override suspend fun createTask(task: TaskEntity) {
+        dao.createTask(task)
+    }
     override suspend fun getAllTasks(): List<TaskEntity> = dao.getAllTasks()
 }

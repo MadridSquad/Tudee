@@ -18,6 +18,7 @@ import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.TudeeN
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.bottomNavBarRoutes
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.navBarItemsList
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
+import com.washingtondcsquad.tudee.presentation.screens.add_task.AddNewTaskScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

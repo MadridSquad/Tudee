@@ -3,7 +3,9 @@ package com.washingtondcsquad.tudee.data.localSource.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.washingtondcsquad.tudee.data.utils.DataBaseConstants
+import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
+import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 
 @Entity(tableName = DataBaseConstants.TASK_TABLE_NAME)
 data class TaskEntity(
@@ -24,8 +26,16 @@ data class TaskEntity(
         title = title,
         description = description,
         date = date,
-        status = status,
-        priority = priority
+        status = when(status) {
+            "TODO" -> TaskStatus.TODO
+            "IN_PROGRESS" -> TaskStatus.IN_PROGRESS
+            else -> TaskStatus.DONE
+        },
+        priority = when(priority) {
+            "LOW" -> Priority.LOW
+            "MEDIUM" -> Priority.MEDIUM
+            else -> Priority.HIGH
+        }
     )
 
     companion object {
@@ -36,8 +46,8 @@ data class TaskEntity(
             title = task.title,
             description = task.description,
             date = task.date,
-            status = task.status,
-            priority = task.priority
+            status = task.status.name,
+            priority = task.priority.name
         )
     }
 }

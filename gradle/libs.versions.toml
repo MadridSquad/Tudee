@@ -1,6 +1,5 @@
 [versions]
 agp = "8.10.0"
-junitJupiterParams = "5.10.1"
 junitJupiterVersion = "5.10.1"
 koinCore = "4.1.0"
 koinAndroidxCompose = "4.1.0"
@@ -52,7 +51,6 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
-androidx-navigation-compose-jvmstubs = { group = "androidx.navigation", name = "navigation-compose-jvmstubs", version.ref = "navigationComposeJvmstubs" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

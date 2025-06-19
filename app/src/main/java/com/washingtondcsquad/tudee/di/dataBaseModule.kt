@@ -5,8 +5,6 @@ import com.washingtondcsquad.tudee.data.dataSources.TaskLocalDataSource
 import com.washingtondcsquad.tudee.data.localSource.TudeeDataBase
 import com.washingtondcsquad.tudee.data.localSource.dataSourcesImplementations.CategoryLocalDataSourceImpl
 import com.washingtondcsquad.tudee.data.localSource.dataSourcesImplementations.TaskLocalDataSourceImpl
-import com.washingtondcsquad.tudee.data.services.CategoryLocalDataSource
-import com.washingtondcsquad.tudee.data.services.TaskLocalDataSource
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module

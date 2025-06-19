@@ -11,7 +11,6 @@ import com.washingtondcsquad.tudee.presentation.features.sharedUiState.AddTaskUi
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
-import java.util.UUID
 
 class AddTaskViewModel(
     private val tasksService: TasksService,
@@ -126,13 +125,14 @@ class AddTaskViewModel(
             request = {
                 tasksService.createTask(
                     Task(
-                        id = UUID.randomUUID(),
+                        id = 0,
+                        categoryId = _state.value.selectedCategory!!.id,
+                        categoryImage = _state.value.selectedCategory!!.icon,
                         title = _state.value.taskTitle,
                         description = _state.value.taskDescription,
-                        date = _state.value.taskDate,
+                        date = _state.value.taskDate.toString(),
+                        status =TaskStatus.TODO,
                         priority = _state.value.selectedPriority!!,
-                        categoryId = _state.value.selectedCategory!!.id,
-                        status = TaskStatus.TODO.name,
                     )
                 )
             },
