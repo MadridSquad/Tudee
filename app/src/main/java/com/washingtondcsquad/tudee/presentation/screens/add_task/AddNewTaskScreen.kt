@@ -26,7 +26,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
-import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.getPriorityIcon
 import com.washingtondcsquad.tudee.presentation.components.AppTextField
 import com.washingtondcsquad.tudee.presentation.components.CancelableActionLayout
@@ -35,6 +34,7 @@ import com.washingtondcsquad.tudee.presentation.components.DatePickerModal
 import com.washingtondcsquad.tudee.presentation.components.TaskPriorityCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyle
+import com.washingtondcsquad.tudee.presentation.screens.composable.getBackgroundColor
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import java.time.LocalDate
@@ -159,7 +159,7 @@ fun AddNewTaskScreen(
                                     TaskPriorityCard(
                                         icon = painterResource(getPriorityIcon(priority)),
                                         title = priority.name,
-                                        backgroundColor = getBackgroundColor(priority),
+                                        backgroundColor =  getBackgroundColor(priority),
                                         isSelected = state.selectedPriority == priority,
                                         onClick = { viewModel.onPrioritySelected(priority) },
                                     )
@@ -224,18 +224,6 @@ fun AddNewTaskScreen(
     }
 
 }
-
-@Composable
-private fun getBackgroundColor(
-    priority: Priority
-): Color {
-    return when(priority){
-        Priority.LOW -> AppTheme.colors.greenAccent
-        Priority.MEDIUM -> AppTheme.colors.yellowAccent
-        Priority.HIGH -> AppTheme.colors.pinkAccent
-    }
-}
-
 
 //@Preview
 @Composable
