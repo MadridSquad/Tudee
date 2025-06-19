@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.getPriorityIcon
@@ -58,7 +59,7 @@ fun AddNewTaskScreen(
     ) {
         ModalBottomSheet(
             onDismissRequest = { onCancelAddTaskBottomSheet() },
-            containerColor = Color(0xFFF9F9F9),
+            containerColor = AppTheme.colors.surface,
             sheetState = rememberModalBottomSheetState(
                 skipPartiallyExpanded = true
             ),
@@ -87,20 +88,18 @@ fun AddNewTaskScreen(
                         .weight(1f)
 
                 ) {
-                    // fixed Text (Add New Task)
                     item {
                         Text(
-                            text = "Add New Task",
+                            text = stringResource(R.string.add_new_task),
                             modifier = Modifier.offset(y = 4.dp),
                             style = defaultTextStyle.title.large
                         )
                     }
 
-                    // title
                     item {
                         AppTextField(
                             prefixIconPainter = painterResource(R.drawable.add_task_title),
-                            hintText = "Task Title",
+                            hintText = stringResource(R.string.task_title_hint),
                             value = state.taskTitle,
                             onValueChange = { viewModel.onTitleChange(it) },
                             modifier = Modifier
@@ -110,11 +109,10 @@ fun AddNewTaskScreen(
                         )
                     }
 
-                    // description
                     item {
                         AppTextField(
                             prefixIconPainter = null,
-                            hintText = "Description",
+                            hintText = stringResource(R.string.description_hint),
                             value = state.taskDescription,
                             onValueChange = { viewModel.onDescriptionChange(it) },
                             modifier = Modifier
@@ -123,11 +121,10 @@ fun AddNewTaskScreen(
                         )
                     }
 
-                    // calendar
                     item {
-                        val dateFormatter = DateTimeFormatter.ofPattern("d-M-yyyy")
+                        val dateFormatter = DateTimeFormatter.ofPattern( stringResource(R.string.date_format) )
                         val formattedDate =
-                            state.taskDate.format(dateFormatter)//(valueOfTaskDate ?: taskDate).format(dateFormatter)
+                            state.taskDate.format(dateFormatter)
                         AppTextField(
                             prefixIconPainter = painterResource(R.drawable.add_task_calendar),
                             hintText = formattedDate,
@@ -140,14 +137,13 @@ fun AddNewTaskScreen(
                     }
 
 
-                    // priority
                     item {
                         Column(
                             verticalArrangement = Arrangement.spacedBy(8.dp),
                             horizontalAlignment = Alignment.Start
                         ) {
                             Text(
-                                text = "Priority",
+                                text = stringResource(R.string.priority) ,
                                 style = defaultTextStyle.title.medium,
                                 color = AppTheme.colors.title
                             )
@@ -168,13 +164,12 @@ fun AddNewTaskScreen(
                         }
                     }
 
-                    // category
                     item {
                         Column(
                             horizontalAlignment = Alignment.Start
                         ) {
                             Text(
-                                text = "Category",
+                                text = stringResource(R.string.category) ,
                                 style = defaultTextStyle.title.medium,
                                 color = AppTheme.colors.title
                             )
@@ -210,7 +205,7 @@ fun AddNewTaskScreen(
 
                 CancelableActionLayout(
                     modifier = Modifier,
-                    actionText = "Add",
+                    actionText = stringResource(R.string.add),
                     actionTextColor = Color.White,
                     actionBackgroundColor = AppTheme.colors.primaryGradient,
                     onAction = { viewModel::onClickSaveButton },
@@ -218,11 +213,8 @@ fun AddNewTaskScreen(
                     isEnabled = state.isButtonActionEnable
                 )
             }
-
         }
-
     }
-
 }
 
 //@Preview

@@ -21,7 +21,17 @@ class CategoriesServiceImpl(
     }
 
     override suspend fun getAllCategories(): List<Category> {
-        return categoryLocalDataSource.getAllCategories().map { it.toDomain() }
+
+        return listOf(
+            Category(
+                id = 1L,
+                title = "Work",
+                icon = "ic_work",
+                taskCount = 5
+            ),
+        )
+
+//        return categoryLocalDataSource.getAllCategories().map { it.toDomain() }
     }
 
     override suspend fun getCategoryById(categoryId: Long): Category {

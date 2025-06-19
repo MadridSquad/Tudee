@@ -1,27 +1,37 @@
 package com.washingtondcsquad.tudee.data.services
 
+import android.util.Log
+import com.washingtondcsquad.tudee.data.localSource.mapper.category.toDomain
+import com.washingtondcsquad.tudee.data.localSource.mapper.category.toEntity
 import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import java.util.UUID
 
-class TasksServiceImpl : TasksService {
+class TasksServiceImpl(
+    private val taskLocalDataSource: TaskLocalDataSource
+) : TasksService {
     override suspend fun createTask(task: Task) {
-        TODO("Not yet implemented")
+        Log.d("TasksServiceImpl", "Creating task: $task")
+        taskLocalDataSource.createTask(task.toEntity())
     }
 
     override suspend fun deleteTask(id: UUID) {
-        TODO("Not yet implemented")
+        val taskEntity = taskLocalDataSource.getTaskById(id.toString())
+        taskEntity?.let {
+            taskLocalDataSource.deleteTask(it)
+        }
     }
 
     override suspend fun getAllTasks(): List<Task> {
-        TODO("Not yet implemented")
+        return taskLocalDataSource.getAllTasks().map { it.toDomain() }
     }
 
     override suspend fun getTaskById(id: UUID): Task {
-        TODO("Not yet implemented")
+        val taskEntity = taskLocalDataSource.getTaskById(id.toString())
+        return taskEntity?.toDomain() ?: throw NoSuchElementException("Task with ID $id not found in database.")
     }
 
     override suspend fun editTask(task: Task) {
-        TODO("Not yet implemented")
+        taskLocalDataSource.editTask(task.toEntity())
     }
 }
