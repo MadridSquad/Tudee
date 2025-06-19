@@ -1,7 +1,7 @@
 package com.washingtondcsquad.tudee.presentation.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,19 +14,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.washingtondcsquad.tudee.R
+import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 
 @Composable
 fun TaskCard(
-    categoryImagePainter: Painter,
     taskUiState: TaskUiState,
+    onTaskClicked: (task: TaskUiState) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -35,8 +39,9 @@ fun TaskCard(
                 color = AppTheme.colors.surfaceHigh,
                 shape = RoundedCornerShape(16.dp)
             )
-            .padding(horizontal = 16.dp)
-            .padding(top = 4.dp, bottom = 32.dp),
+            .clip(RoundedCornerShape(16.dp))
+            .clickable { onTaskClicked(taskUiState) }
+            .padding(start = 4.dp, end = 12.dp, top = 4.dp, bottom = 12.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
         Row(
@@ -44,8 +49,11 @@ fun TaskCard(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = categoryImagePainter,
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(taskUiState.categoryImage)
+                    .crossfade(true)
+                    .build(),
                 contentDescription = null,
                 modifier = Modifier
                     .padding(12.dp)
@@ -56,39 +64,38 @@ fun TaskCard(
                 verticalAlignment = Alignment.CenterVertically,
 
                 ) {
-                Row(
-                    modifier = Modifier
-                        .background(
-                            color = AppTheme.colors.surface,
-                            shape = RoundedCornerShape(100)
+                taskUiState.taskDate?.let { date ->
+                    Row(
+                        modifier = Modifier
+                            .background(
+                                color = AppTheme.colors.surface, shape = RoundedCornerShape(100)
+                            )
+                            .padding(horizontal = 8.dp, vertical = 6.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(2.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.calendar_icon),
+                            contentDescription = null,
+                            tint = AppTheme.colors.body
                         )
-                        .padding(horizontal = 8.dp, vertical = 6.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(2.dp)
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.calendar_icon),
-                        contentDescription = null,
-                        tint = AppTheme.colors.body
-                    )
-                    Text(
-                        text = taskUiState.taskDate,
-                        style = AppTheme.textStyle.label.small,
-                        color = AppTheme.colors.body
-                    )
+                        Text(
+                            text = date,
+                            style = AppTheme.textStyle.label.small,
+                            color = AppTheme.colors.body
+                        )
+                    }
                 }
 
-                TaskPriorityCard(
-                    icon = painterResource(R.drawable.flag_icon),
-                    title = "High",
-                    backgroundColor = AppTheme.colors.pinkAccent,
-                )
+
+                TaskPriorityCard(taskUiState.taskPriority)
             }
         }
         Text(
             text = taskUiState.taskTitle,
             style = AppTheme.textStyle.label.large,
             color = AppTheme.colors.body,
+            modifier = Modifier.padding(start = 8.dp)
         )
         Text(
             text = taskUiState.taskDescription,
@@ -96,6 +103,7 @@ fun TaskCard(
             color = AppTheme.colors.hint,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(start = 8.dp)
         )
     }
 }
@@ -104,11 +112,11 @@ fun TaskCard(
 @Composable
 private fun Preview() {
     TaskCard(
-        categoryImagePainter = painterResource(R.drawable.education_icon),
+        onTaskClicked = {},
         taskUiState = TaskUiState(
             taskTitle = "Task Title",
             taskDescription = "Task Description",
-            taskPriority = "High",
+            taskPriority = Priority.HIGH,
             taskDate = "2021-10-10",
         )
     )
