@@ -36,18 +36,16 @@ import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyle
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddNewTaskScreen(
+fun EditTaskScreen(
     onCancelAddTaskBottomSheet: () -> Unit,
-    taskDate: LocalDate = LocalDate.now(),
-    viewModel: AddTaskViewModel = koinViewModel(
+    taskId:Int,
+    viewModel: EditTaskViewModel = koinViewModel(
         parameters = {
             parametersOf(
-                taskDate,
+                taskId,
                 onCancelAddTaskBottomSheet
             )
         }
@@ -94,7 +92,7 @@ fun AddNewTaskScreen(
                 ) {
                     item {
                         Text(
-                            text = stringResource(R.string.add_new_task),
+                            text = stringResource(R.string.edit_task),
                             modifier = Modifier.offset(y = 4.dp),
                             style = defaultTextStyle.title.large
                         )
@@ -204,10 +202,10 @@ fun AddNewTaskScreen(
 
                 CancelableActionLayout(
                     modifier = Modifier,
-                    actionText = stringResource(R.string.add),
+                    actionText = stringResource(R.string.save),
                     actionTextColor = Color.White,
                     actionBackgroundColor = AppTheme.colors.primaryGradient,
-                    onAction = viewModel::onClickSaveButton ,
+                    onAction = viewModel::onClickEditButton ,
                     onCancel = onCancelAddTaskBottomSheet,
                     isEnabled = state.isButtonActionEnable
                 )
@@ -218,8 +216,8 @@ fun AddNewTaskScreen(
 
 //@Preview
 @Composable
-fun Preview() {
-    AddNewTaskScreen(
-        onCancelAddTaskBottomSheet = {}
-    )
+fun EditTaskPreview() {
+//    AddNewTaskScreen(
+//        onCancelAddTaskBottomSheet = {}
+//    )
 }
