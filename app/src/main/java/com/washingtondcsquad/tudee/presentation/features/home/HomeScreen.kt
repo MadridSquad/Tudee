@@ -3,6 +3,7 @@ package com.washingtondcsquad.tudee.presentation.features.home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,7 +29,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,6 +51,7 @@ import com.washingtondcsquad.tudee.presentation.components.TextLogo
 import com.washingtondcsquad.tudee.presentation.components.analytics_components.AnalyticsCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
+import com.washingtondcsquad.tudee.presentation.screens.add_task.AddNewTaskScreen
 import com.washingtondcsquad.tudee.presentation.utils.SetStatusBarIconsColor
 import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.noRippleClick
 import org.koin.androidx.compose.koinViewModel
@@ -69,6 +73,7 @@ private fun HomeScreenContent(
 ) {
     val isEmptyState =
         state.inProgressTasks.isEmpty() and state.todoTasks.isEmpty() and state.doneTasks.isEmpty()
+    var showBottomSheet by remember { mutableStateOf(false) }
 
     Box(
         modifier = modifier
@@ -182,8 +187,19 @@ private fun HomeScreenContent(
 
             }
         }
+
+        if (showBottomSheet){
+            AddNewTaskScreen(
+                onCancelAddTaskBottomSheet = {
+                    showBottomSheet=false
+                }
+            )
+        }
         FabIcon(
             modifier = Modifier
+                .clickable {
+                    showBottomSheet = true
+                }
                 .align(Alignment.BottomEnd)
         )
     }
