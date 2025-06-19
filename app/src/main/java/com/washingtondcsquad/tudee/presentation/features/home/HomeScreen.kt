@@ -27,7 +27,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,8 +49,6 @@ import com.washingtondcsquad.tudee.presentation.components.CustomSwitchButton
 import com.washingtondcsquad.tudee.presentation.components.TaskCard
 import com.washingtondcsquad.tudee.presentation.components.TextLogo
 import com.washingtondcsquad.tudee.presentation.components.analytics_components.AnalyticsCard
-import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarController
-import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarEvent
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import com.washingtondcsquad.tudee.presentation.screens.add_task.AddNewTaskScreen
@@ -77,14 +74,6 @@ private fun HomeScreenContent(
     val isEmptyState =
         state.inProgressTasks.isEmpty() and state.todoTasks.isEmpty() and state.doneTasks.isEmpty()
     var showBottomSheet by remember { mutableStateOf(false) }
-
-    LaunchedEffect(Unit){
-        SnackbarController.sendEvent(
-            SnackbarEvent(
-                message = "Successfully",
-            )
-        )
-    }
 
     Box(
         modifier = modifier
@@ -197,10 +186,10 @@ private fun HomeScreenContent(
             }
         }
 
-        if (showBottomSheet){
+        if (showBottomSheet) {
             AddNewTaskScreen(
                 onCancelAddTaskBottomSheet = {
-                    showBottomSheet=false
+                    showBottomSheet = false
                 }
             )
         }
