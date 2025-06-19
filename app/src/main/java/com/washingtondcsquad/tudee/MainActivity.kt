@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
                     val currentDestination = navBackStackEntry.value?.destination?.route
                     Scaffold(
                         bottomBar = {
-                            AnimatedVisibility(currentDestination in bottomNavBarRoutes) {
+                            if(currentDestination in bottomNavBarRoutes) {
                                 TudeeNavigationBar(
                                     navBarItemDataList = navBarItemsList,
                                     navController = navController,

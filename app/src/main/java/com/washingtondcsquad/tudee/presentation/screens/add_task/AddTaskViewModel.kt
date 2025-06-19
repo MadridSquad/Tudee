@@ -1,5 +1,6 @@
 package com.washingtondcsquad.tudee.presentation.screens.add_task
 
+import android.util.Log
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
@@ -138,11 +139,22 @@ class AddTaskViewModel(
             onSuccess = {
                 updateState {
                     copy(
-                        isDatePickerDisplayed = false
+                        isDatePickerDisplayed = false,
+                        taskTitle = "",
+                        taskDescription = "",
+                        taskDate = LocalDate.now(),
+                        selectedCategory = null,
+                        selectedPriority = null,
+                        isButtonActionEnable = false
+
                     )
                 }
+                Log.i("tasks", "on Click Save task Button: added successfully")
+
             },
-            onError = { exception -> }
+            onError = { exception ->
+                Log.i("tasks", "on Click Save task Button: ${exception.message}")
+            }
         )
     }
 }

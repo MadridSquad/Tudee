@@ -1,11 +1,13 @@
 package com.washingtondcsquad.tudee.presentation.features.home
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TudeeStatus
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
@@ -16,20 +18,33 @@ class HomeViewModel(
         loadData()
     }
 
+    fun refresh() {
+        updateState {
+            copy(isLoading = true)
+        }
+        loadData()
+        updateState {
+            copy(isLoading = false)
+        }
+    }
+
     private fun loadData() = viewModelScope.launch {
         updateState {
-            copy(isLoading = false, error = null)
+            copy(isLoading = true, error = null)
         }
         var tasks: List<Task> = emptyList()
+
         tryToExecute(
             request = {
                 tasksService.getAllTasks().collect {
-                    tasks = it
+                    onSuccess(it)
+                    Log.i("refresh", "all data ${it}")
+
                 }
                 tasks
-            },
-            onSuccess = ::onSuccess,
-            onError = ::onError
+
+
+            }, onSuccess = ::onSuccess, onError = ::onError
         )
     }
 
@@ -40,7 +55,8 @@ class HomeViewModel(
 
         updateState {
             copy(
-                isLoading = false, error = null,
+                isLoading = false,
+                error = null,
                 inProgressTasks = inProgressTasks.toUiState(),
                 doneTasks = doneTasks.toUiState(),
                 todoTasks = toDoTasks.toUiState(),

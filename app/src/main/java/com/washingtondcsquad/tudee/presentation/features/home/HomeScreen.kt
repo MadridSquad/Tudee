@@ -1,9 +1,9 @@
 package com.washingtondcsquad.tudee.presentation.features.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -61,7 +61,14 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = koinVie
     val state by viewModel.state.collectAsState()
 
     SetStatusBarIconsColor(false)
-    HomeScreenContent(modifier, state, viewModel)
+    HomeScreenContent(
+        modifier = modifier,
+        state = state,
+        listener = viewModel,
+        onRefreshData = {
+            viewModel.refresh()
+        }
+    )
 
 }
 
@@ -69,7 +76,8 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = koinVie
 private fun HomeScreenContent(
     modifier: Modifier = Modifier,
     state: HomeUiState,
-    listener: HomeListener
+    listener: HomeListener,
+    onRefreshData: () -> Unit
 ) {
     val isEmptyState =
         state.inProgressTasks.isEmpty() and state.todoTasks.isEmpty() and state.doneTasks.isEmpty()
@@ -163,6 +171,11 @@ private fun HomeScreenContent(
                     if (isEmptyState) {
                         NoTasksPlaceHolder(modifier = Modifier.padding(top = 48.dp))
                     } else {
+                        Log.i("Tasks", "HomeScreenContent: done tasks ${state.doneTasks}")
+                        Log.i(
+                            "Tasks",
+                            "HomeScreenContent: in progress tasks ${state.inProgressTasks}"
+                        )
                         if (state.inProgressTasks.isNotEmpty())
                             TaskStatusLayout(
                                 tasks = state.inProgressTasks,
@@ -188,16 +201,18 @@ private fun HomeScreenContent(
             }
         }
 
-        if (showBottomSheet){
+        if (showBottomSheet) {
             AddNewTaskScreen(
+                onRefreshTaskData = onRefreshData,
                 onCancelAddTaskBottomSheet = {
-                    showBottomSheet=false
+                    showBottomSheet = false
                 }
             )
         }
         FabIcon(
+
             modifier = Modifier
-                .clickable {
+                .noRippleClick {
                     showBottomSheet = true
                 }
                 .align(Alignment.BottomEnd)
@@ -206,7 +221,7 @@ private fun HomeScreenContent(
 }
 
 @Composable
-private fun FabIcon(modifier: Modifier) {
+private fun FabIcon(modifier: Modifier,) {
     Icon(
         painter = painterResource(R.drawable.note_add_icon),
         contentDescription = null,
@@ -382,6 +397,7 @@ private fun Preview() {
 
             override fun onThemeSwitched(isDarkMode: Boolean) {
             }
-        }
+        },
+        onRefreshData = {}
     )
 }
