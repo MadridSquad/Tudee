@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.components.DayCard
 import com.washingtondcsquad.tudee.presentation.components.SnackBarCard
-import com.washingtondcsquad.tudee.presentation.components.TaskCard
 import com.washingtondcsquad.tudee.presentation.deletetask.ConfirmDeleteTask
 import com.washingtondcsquad.tudee.presentation.deletetask.DeleteTaskScroll
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
@@ -42,11 +41,11 @@ import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.C
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.DatePickerModal
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.NoTasks
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.TasksTabRow
-import java.util.UUID
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun TasksScreen(tasksViewModel: TasksViewModel) {
+fun TasksScreen(tasksViewModel: TasksViewModel = koinViewModel()) {
 
     val tasksUiState by tasksViewModel.state.collectAsState()
     TasksScreenContent(
@@ -175,7 +174,7 @@ fun TasksScreenContent(
                 if (tasksToShow.isNotEmpty()) {
                     itemsIndexed(currentTasks) { index, item ->
                         DeleteTaskScroll(task = item) {
-                            selectedTaskToDelete.value=item
+                            selectedTaskToDelete.value = item
                         }
                     }
                 } else {

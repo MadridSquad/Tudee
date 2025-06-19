@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.BottomAppBarDefaults.windowInsets
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,6 +21,8 @@ import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.TudeeN
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.bottomNavBarRoutes
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.navBarItemsList
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
+import com.washingtondcsquad.tudee.presentation.features.home.HomeScreen
+import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.TasksScreen
 import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
@@ -55,10 +59,10 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding)
                     ) {
                         composable(route = "home") {
-                            // home screen
+                            HomeScreen()
                         }
                         composable(route = "task") {
-                            // tasks screen
+                            TasksScreen()
                         }
                         composable(route = "category") {
                             // Category screen

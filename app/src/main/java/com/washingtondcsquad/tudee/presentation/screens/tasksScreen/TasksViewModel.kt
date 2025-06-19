@@ -3,6 +3,7 @@ package com.washingtondcsquad.tudee.presentation.screens.tasksScreen
 import androidx.compose.runtime.mutableStateOf
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
+import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
@@ -30,6 +31,7 @@ class TasksViewModel(
         isFilterEnabled = false,
         tasksList = emptyList()
 
+
     )
 ) {
     init {
@@ -48,8 +50,8 @@ class TasksViewModel(
                     id = taskUi.taskId,
                     title = taskUi.taskTitle,
                     description = taskUi.taskDescription,
-                    priority = taskUi.taskPriority.name,
-                    status = taskUi.taskStatus,
+                    priority = Priority.fromString(taskUi.taskPriority.name),
+                    status = TaskStatus.valueOf(taskUi.taskStatus),
                     date =taskUi.taskDate,
                     categoryId =0L ,
                     categoryImage = taskUi.categoryImage
@@ -79,8 +81,8 @@ class TasksViewModel(
                     taskDate = it.date,
                     taskTitle = it.title,
                     taskDescription = it.description,
-                    taskPriority = Priority.fromString(it.priority),
-                    taskStatus = it.status,
+                    taskPriority = it.priority,
+                    taskStatus = it.status.toString(),
                     categoryImage = categoriesService.getCategoryById(
                         it.categoryId.toString().toLong()
                     ).icon
