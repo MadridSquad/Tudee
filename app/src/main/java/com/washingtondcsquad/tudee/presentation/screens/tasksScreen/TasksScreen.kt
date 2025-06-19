@@ -50,6 +50,7 @@ fun TasksScreen(tasksViewModel: TasksViewModel) {
         tasksViewModel::goToPreviousMonth,
         tasksViewModel::clearDatePicker,
         tasksViewModel::formatedSelectedDate,
+        tasksViewModel::onTaskClicked,
         tasksUiState
     )
 }
@@ -63,6 +64,7 @@ fun TasksScreenContent(
     gotToPreviousMonth: () -> Unit,
     clearDatePicker: () -> Long,
     formatedSelectedDate: (Long) -> String,
+    onTaskClicked: (Int) -> Unit,
     tasksUiState: TasksUiState,
 ) {
     val pagerState = rememberPagerState(pageCount = { 3 })
@@ -94,16 +96,13 @@ fun TasksScreenContent(
             ChangeMonthButton(R.drawable.left_arrow) { gotToPreviousMonth() }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.clickable {
-                    setShowDialog(true)
-                }
+                modifier = Modifier.clickable { setShowDialog(true) }
             ) {
                 Text(
                     tasksUiState.yearAndMonthTitle,
                     style = AppTheme.textStyle.label.medium,
                     color = AppTheme.colors.body,
-                    modifier = Modifier
-                        .padding(end = 4.dp)
+                    modifier = Modifier.padding(end = 4.dp)
                 )
                 Icon(
                     painter = painterResource(R.drawable.down_arrow),
@@ -127,13 +126,10 @@ fun TasksScreenContent(
                     isSelected = item.isSelected,
                     modifier = Modifier
                         .width(65.dp)
-                        .clickable {
-                            onDaySelectedFromLazyRow(item.dayNumber)
-                        }
+                        .clickable { onDaySelectedFromLazyRow(item.dayNumber) }
                 )
             }
         }
-
         TasksTabRow(selectedTabIndex, pagerState, tasksUiState)
 
         HorizontalPager(
@@ -152,15 +148,19 @@ fun TasksScreenContent(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 val tasksToShow = if (tasksUiState.isFilterEnabled) {
-                    currentTasks.filter { it.taskDate == formatedSelectedDate(tasksUiState.selectedDateInMillis) }
+                    currentTasks.filter {
+                        it.taskDate == formatedSelectedDate(
+                            tasksUiState.selectedDateInMillis
+                        )
+                    }
                 } else {
                     currentTasks
                 }
                 if (tasksToShow.isNotEmpty()) {
                     itemsIndexed(currentTasks) { index, item ->
                         TaskCard(
-                            categoryImagePainter = painterResource(item.categoryImage.toInt()),
                             taskUiState = item,
+                            onTaskClicked = onTaskClicked
                         )
                     }
                 } else {
@@ -175,11 +175,8 @@ fun TasksScreenContent(
                         }
                     }
                 }
-
             }
-
         }
-
         if (tasksUiState.showDateDialog) {
             DatePickerModal(
                 tasksUiState.selectedDateInMillis,
