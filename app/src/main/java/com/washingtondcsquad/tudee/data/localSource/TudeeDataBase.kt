@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.washingtondcsquad.tudee.data.localSource.daos.DaoCategory
+import com.washingtondcsquad.tudee.data.localSource.daos.DaoTask
 import com.washingtondcsquad.tudee.data.localSource.entities.CategoryEntity
 import com.washingtondcsquad.tudee.data.localSource.entities.TaskEntity
 import com.washingtondcsquad.tudee.data.utils.DataBaseConstants
@@ -12,13 +14,12 @@ import com.washingtondcsquad.tudee.data.utils.DataBaseConstants
 abstract class TudeeDataBase : RoomDatabase() {
     abstract fun daoCategory(): DaoCategory
     abstract fun daoTask(): DaoTask
+
     companion object {
         @Volatile
         private var instance: TudeeDataBase? = null
         fun getInstance(context: Context): TudeeDataBase {
-            instance =   instance ?: synchronized(this) { buildDatabase(context).also { instance = it } }
-            instance?.openHelper?.writableDatabase
-            return instance!!
+            return instance ?: synchronized(this) { buildDatabase(context).also { instance = it } }
         }
 
         private fun buildDatabase(context: Context): TudeeDataBase {
@@ -32,4 +33,3 @@ abstract class TudeeDataBase : RoomDatabase() {
 
     }
 }
-

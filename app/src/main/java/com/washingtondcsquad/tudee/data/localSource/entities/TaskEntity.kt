@@ -1,31 +1,43 @@
 package com.washingtondcsquad.tudee.data.localSource.entities
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.washingtondcsquad.tudee.data.utils.DataBaseConstants
+import com.washingtondcsquad.tudee.domain.entity.Task
 
 @Entity(tableName = DataBaseConstants.TASK_TABLE_NAME)
 data class TaskEntity(
-    @PrimaryKey
-    @ColumnInfo(name = "id")
-    val id: String,
-
-    @ColumnInfo(name = "category_id")
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
     val categoryId: Long,
-
-    @ColumnInfo(name = "title")
+    val categoryImage: String,
     val title: String,
-
-    @ColumnInfo(name = "description")
-    val description: String?,
-
-    @ColumnInfo(name = "date")
-    val date: Long,
-
-    @ColumnInfo(name = "status")
+    val description: String,
+    val date: String,
     val status: String,
-
-    @ColumnInfo(name = "priority")
     val priority: String,
-)
+) {
+    fun toDomain(): Task = Task(
+        id = id,
+        categoryId = categoryId,
+        categoryImage = categoryImage,
+        title = title,
+        description = description,
+        date = date,
+        status = status,
+        priority = priority
+    )
+
+    companion object {
+        fun fromDomain(task: Task): TaskEntity = TaskEntity(
+            id = task.id,
+            categoryId = task.categoryId,
+            categoryImage = task.categoryImage,
+            title = task.title,
+            description = task.description,
+            date = task.date,
+            status = task.status,
+            priority = task.priority
+        )
+    }
+}

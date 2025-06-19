@@ -2,6 +2,7 @@
 agp = "8.10.0"
 junitJupiterParams = "5.10.1"
 junitJupiterVersion = "5.10.1"
+koinCore = "4.1.0"
 koinAndroidxCompose = "4.1.0"
 kotlin = "2.0.21"
 coreKtx = "1.16.0"
@@ -19,6 +20,7 @@ roomVersion = "2.7.1"
 kspVersion = "2.0.21-1.0.27"
 truth = "1.4.4"
 coilCompose = "2.7.0"
+navigationComposeJvmstubs = "2.9.0"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
@@ -44,11 +46,13 @@ koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = 
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomVersion" }
 andoridx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomVersion" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroidxCompose" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
+androidx-navigation-compose-jvmstubs = { group = "androidx.navigation", name = "navigation-compose-jvmstubs", version.ref = "navigationComposeJvmstubs" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
