@@ -35,4 +35,9 @@
     <string name="done">Done</string>
     <string name="to_do_title">TO-DO</string>
     <string name="background_graphics">Background graphics</string>
+    <string name="ok">OK</string>
+    <string name="clear">Clear</string>
+
+
+
 </resources>
