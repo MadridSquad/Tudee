@@ -253,7 +253,7 @@ private fun TaskStatusLayout(
 
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(start = 16.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(items.take(numberOfItemPerRow)) { item ->
@@ -266,7 +266,7 @@ private fun TaskStatusLayout(
         }
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(start = 16.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(items.drop(numberOfItemPerRow).take(numberOfItemPerRow)) { item ->
