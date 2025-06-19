@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.BottomAppBarDefaults.windowInsets
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -21,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
@@ -43,8 +40,6 @@ import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.home.HomeScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import com.washingtondcsquad.tudee.presentation.features.home.HomeScreen
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
@@ -90,7 +85,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier.padding(innerPadding)
                         ) {
                             composable(route = "home") {
-                               HomeScreen()
+                                HomeScreen()
                             }
                             composable(route = "task") {
 
@@ -104,6 +99,7 @@ class MainActivity : ComponentActivity() {
 
                 }
             }
+            SnackbarHandler()
         }
 
     }
@@ -138,7 +134,7 @@ class MainActivity : ComponentActivity() {
                     ).toEntity()
                 )
             }
-            SnackbarHandler()
+
         }
     }
 }
@@ -172,7 +168,6 @@ fun SnackbarHandler() {
                     Pair(R.drawable.checkmark, AppTheme.colors.error)
 
 
-
                 else ->
                     Pair(R.drawable.information_diamond, AppTheme.colors.error)
             }
@@ -185,8 +180,6 @@ fun SnackbarHandler() {
                 iconBackgroundColor = AppTheme.colors.surface,
                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 48.dp)
             )
-
-
         }
     )
 }
