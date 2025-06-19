@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -43,15 +43,13 @@ fun DeleteTaskBackground(
         ) {
             Box(
                 modifier = Modifier
-                    .width(32.dp)
-                    .height(32.dp)
+                    .size(32.dp)
             ) {
                 Icon(
                     painter = painterResource(R.drawable.delete_icon),
                     contentDescription = "delete icon",
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 1.67.dp, end = 2.67.dp),
+                        .fillMaxSize(),
                     tint = AppTheme.colors.error
                 )
             }

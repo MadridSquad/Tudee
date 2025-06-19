@@ -83,8 +83,6 @@ fun ConfirmDeleteTask(
                 DeleteTaskIllustration()
 
             }
-            Spacer(modifier = Modifier.padding(bottom = 24.dp))
-
             // blur
             CancelableActionLayout(
                 actionText = stringResource(R.string.delete),
@@ -93,6 +91,7 @@ fun ConfirmDeleteTask(
                 onCancel = {cancelOnClick()},
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(top = 24.dp)
                     .height(148.dp)
                     .shadow(elevation = 20.dp, spotColor = Color.Black.copy(alpha = 0.08f)),
                 actionBackgroundColor = List(2) { AppTheme.colors.errorVariant },
