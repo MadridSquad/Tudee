@@ -3,15 +3,14 @@ package com.washingtondcsquad.tudee.presentation.features.taskdetails
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.utils.next
-import java.util.UUID
 
 class BottomSheetTaskViewModel(
     private val tasksService: TasksService
 ) : BaseViewModel<TaskState>(TaskState.Loading) {
 
-    private lateinit var currentTaskId: UUID
+    private var currentTaskId: Int = 1
 
-    fun loadTask(taskId: UUID) {
+    fun loadTask(taskId: Int) {
         currentTaskId = taskId
         tryToExecute(
             request = { tasksService.getTaskById(taskId) },

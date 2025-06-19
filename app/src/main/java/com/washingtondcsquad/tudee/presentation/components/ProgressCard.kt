@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
-import com.washingtondcsquad.tudee.presentation.design.Spacer
 
 @Composable
 fun ProgressCard(
@@ -34,10 +33,10 @@ fun ProgressCard(
             style = AppTheme.textStyle.title.small,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
-                .padding(start = 12.dp)
+                .padding(start = 12.dp, end = 4.dp)
 
         )
-        Spacer.ExtraSmall(vertical = false)
+
         Text(
             title.lowercase().replace("_", " "),
             color = backgroundColor.copy(alpha = 1.0f),
