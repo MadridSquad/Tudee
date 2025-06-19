@@ -7,10 +7,10 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.washingtondcsquad.tudee.data.localSource.entities.CategoryEntity
-import com.washingtondcsquad.tudee.data.utils.Constants
+import com.washingtondcsquad.tudee.data.utils.DataBaseConstants
 
 @Dao
-interface TudeeDaoCategory {
+interface DaoCategory {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun createCategory(category: CategoryEntity)
@@ -21,10 +21,10 @@ interface TudeeDaoCategory {
     @Update
     suspend fun editCategory(category: CategoryEntity)
 
-    @Query("SELECT * FROM ${Constants.ROOM_DATABASE_NAME}")
+    @Query("SELECT * FROM ${DataBaseConstants.ROOM_DATABASE_NAME}")
     suspend fun getAllCategories(): List<CategoryEntity>
 
-    @Query("SELECT * FROM ${Constants.ROOM_DATABASE_NAME} WHERE id = :categoryId")
+    @Query("SELECT * FROM ${DataBaseConstants.ROOM_DATABASE_NAME} WHERE id = :categoryId")
     suspend fun getCategoryById(categoryId: Long): CategoryEntity
 
 }
