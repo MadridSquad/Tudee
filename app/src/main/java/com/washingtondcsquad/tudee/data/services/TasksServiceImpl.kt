@@ -1,6 +1,7 @@
 package com.washingtondcsquad.tudee.data.services
 
 import com.washingtondcsquad.tudee.data.dataSources.TaskLocalDataSource
+import com.washingtondcsquad.tudee.data.localSource.entities.TaskEntity
 import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.services.TasksService
 
@@ -11,8 +12,9 @@ class TasksServiceImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun deleteTask(id: Int) {
-        TODO("Not yet implemented")
+    override suspend fun deleteTask(task: Task) {
+
+        dataSource.deleteTask(TaskEntity.fromDomain(task))
     }
 
     override suspend fun getAllTasks(): List<Task> = dataSource.getAllTasks().map { it.toDomain() }

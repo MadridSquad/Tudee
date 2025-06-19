@@ -96,8 +96,8 @@ fun DeleteTaskScroll(
         ) {
             TaskCard(
                 modifier = Modifier.height(111.dp),
-                categoryImagePainter = painterResource(R.drawable.delete_task_illustration),
-                taskUiState = task
+                taskUiState = task,
+                onTaskClicked = {}
             )
         }
     }

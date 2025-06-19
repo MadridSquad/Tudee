@@ -22,25 +22,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.components.DayCard
+import com.washingtondcsquad.tudee.presentation.components.SnackBarCard
 import com.washingtondcsquad.tudee.presentation.components.TaskCard
+import com.washingtondcsquad.tudee.presentation.deletetask.ConfirmDeleteTask
+import com.washingtondcsquad.tudee.presentation.deletetask.DeleteTaskScroll
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyle
+import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.ChangeMonthButton
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.DatePickerModal
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.NoTasks
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.TasksTabRow
-import org.koin.androidx.compose.koinViewModel
+import java.util.UUID
 
 
 @Composable
-fun TasksScreen(tasksViewModel: TasksViewModel = koinViewModel()) {
+fun TasksScreen(tasksViewModel: TasksViewModel) {
 
     val tasksUiState by tasksViewModel.state.collectAsState()
     TasksScreenContent(
@@ -52,7 +58,8 @@ fun TasksScreen(tasksViewModel: TasksViewModel = koinViewModel()) {
         tasksViewModel::clearDatePicker,
         tasksViewModel::formatedSelectedDate,
         tasksViewModel::onTaskClicked,
-        tasksUiState
+        tasksUiState,
+        tasksViewModel = tasksViewModel
     )
 }
 
@@ -67,6 +74,7 @@ fun TasksScreenContent(
     formatedSelectedDate: (Long) -> String,
     onTaskClicked: (Int) -> Unit,
     tasksUiState: TasksUiState,
+    tasksViewModel: TasksViewModel
 ) {
     val pagerState = rememberPagerState(pageCount = { 3 })
     val selectedTabIndex by remember { derivedStateOf { pagerState.currentPage } }
@@ -77,6 +85,9 @@ fun TasksScreenContent(
     )
 
     val selectedTaskToDelete = remember { mutableStateOf<TaskUiState?>(null) }
+
+    val showSnackBar = remember { mutableStateOf(false) }
+
 
     Column(
         modifier = Modifier
@@ -197,8 +208,9 @@ fun TasksScreenContent(
         selectedTaskToDelete.value?.let { taskToDelete ->
             ConfirmDeleteTask(
                 deleteOnClick = {
-                    tasksViewModel.deleteTask(UUID.fromString(taskToDelete.taskId))
+                    tasksViewModel.deleteTask(taskToDelete.taskId)
                     selectedTaskToDelete.value = null
+                    showSnackBar.value = true
                 },
                 cancelOnClick = {
                     selectedTaskToDelete.value = null
@@ -210,6 +222,18 @@ fun TasksScreenContent(
         }
 
     }
+
+    if (showSnackBar.value) {
+        SnackBarCard(
+            message = stringResource(R.string.deleted_task_successfully),
+            icon = painterResource(R.drawable.checkmark),
+            iconTint = AppTheme.colors.greenAccent,
+            iconBackgroundColor = AppTheme.colors.greenVariant,
+            modifier = Modifier
+                .padding(bottom = 16.dp)
+        )
+    }
+
 }
 
 

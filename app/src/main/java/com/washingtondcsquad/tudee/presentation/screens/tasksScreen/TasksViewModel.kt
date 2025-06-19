@@ -1,6 +1,8 @@
 package com.washingtondcsquad.tudee.presentation.screens.tasksScreen
 
+import androidx.compose.runtime.mutableStateOf
 import com.washingtondcsquad.tudee.domain.entity.Priority
+import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
@@ -8,12 +10,14 @@ import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiSta
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.utils.buildMonthDaysList
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.utils.getYearAndMonthTitleFromYearMonth
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.utils.todayInMillis
+import org.koin.mp.KoinPlatform.getKoin
 import java.time.Instant
 import java.time.YearMonth
 import java.time.ZoneId
+import java.util.UUID
 
 class TasksViewModel(
-    private val tasksService: TasksService,
+    private val tasksService: TasksService ,
     private val categoriesService: CategoriesService
 ) : BaseViewModel<TasksUiState>(
     TasksUiState(
@@ -32,11 +36,32 @@ class TasksViewModel(
         loadData()
     }
 
-    fun deleteTask(taskId: UUID) = tryToExecute(
+    var snackBarMessage = mutableStateOf<String?>(null)
+
+
+    fun deleteTask(taskId: Int) = tryToExecute(
         request = {
-            tasksService.deleteTask(taskId)
+            val taskUi = state.value.tasksList.find { it.taskId == taskId }
+
+            val task = taskUi?.taskDate?.let {
+                Task(
+                    id = taskUi.taskId,
+                    title = taskUi.taskTitle,
+                    description = taskUi.taskDescription,
+                    priority = taskUi.taskPriority.name,
+                    status = taskUi.taskStatus,
+                    date =taskUi.taskDate,
+                    categoryId =0L ,
+                    categoryImage = taskUi.categoryImage
+                )
+            }
+
+            if (task != null) {
+                tasksService.deleteTask(task)
+            }
         },
         onSuccess = {
+            snackBarMessage.value = "Deleted task successfully."
             loadData()
         },
         onError = {

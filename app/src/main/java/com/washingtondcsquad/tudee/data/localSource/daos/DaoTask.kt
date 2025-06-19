@@ -1,6 +1,7 @@
 package com.washingtondcsquad.tudee.data.localSource.daos
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Query
 import com.washingtondcsquad.tudee.data.localSource.entities.TaskEntity
 import com.washingtondcsquad.tudee.data.utils.DataBaseConstants
@@ -9,4 +10,7 @@ import com.washingtondcsquad.tudee.data.utils.DataBaseConstants
 interface DaoTask {
     @Query("SELECT * FROM ${DataBaseConstants.TASK_TABLE_NAME}")
     suspend fun getAllTasks(): List<TaskEntity>
+
+    @Delete
+    suspend fun deleteTask(task:TaskEntity)
 }

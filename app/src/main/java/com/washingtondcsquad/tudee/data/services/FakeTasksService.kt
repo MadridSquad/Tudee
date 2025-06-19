@@ -61,8 +61,8 @@ class FakeTasksService : TasksService {
         this.tasks.add(task)
     }
 
-    override suspend fun deleteTask(id: Int) {
-        tasks.removeIf { it.id == id }
+    override suspend fun deleteTask(task: Task) {
+        tasks.removeIf { it.id == task.id }
     }
 
     override suspend fun getAllTasks(): List<Task> {
