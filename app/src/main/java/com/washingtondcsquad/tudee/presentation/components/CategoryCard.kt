@@ -1,6 +1,5 @@
 package com.washingtondcsquad.tudee.presentation.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,7 +23,7 @@ import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.noRipple
 @Composable
 fun CategoryCard(
     title: String,
-    iconPainter: Painter,
+    iconPath: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
@@ -39,18 +37,15 @@ fun CategoryCard(
         Box(
             modifier = Modifier
         ) {
-            Image(
+            LoadImage(
+                path = iconPath,
                 modifier = Modifier
                     .background(
                         color = AppTheme.colors.surfaceHigh,
                         shape = CircleShape
                     )
                     .padding(24.dp)
-                    .size(32.dp),
-                painter = iconPainter,
-                contentDescription = title,
-
-                )
+                    .size(32.dp))
             if (isSelected) {
                 Icon(
                     painterResource(R.drawable.selection_icon),
@@ -59,7 +54,7 @@ fun CategoryCard(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .background(
-                            color = AppTheme.colors.greenAccent,
+                            color = AppTheme.colors.surfaceHigh,
                             shape = CircleShape
                         )
                         .padding(4.dp)
@@ -98,7 +93,7 @@ private fun Preview() {
 
     CategoryCard(
         title = "Test",
-        iconPainter = painterResource(R.drawable.education_icon),
+        iconPath = "",
         onClick = {},
         modifier = Modifier,
         isSelected = false,

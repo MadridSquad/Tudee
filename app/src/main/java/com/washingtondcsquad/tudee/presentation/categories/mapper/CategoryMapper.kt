@@ -3,19 +3,19 @@ package com.washingtondcsquad.tudee.presentation.categories.mapper
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.presentation.categories.CategoriesScreenStatus
 
-fun Category.toCategoriesScreenStatus(): CategoriesScreenStatus.Category {
+fun Category.toUi(): CategoriesScreenStatus.Category {
   return  CategoriesScreenStatus.Category(
       title = title,
-      iconPath = icon,
+      iconPath = iconPath,
       tasksCount = taskCount,
       id = id
   )
 }
 
-fun CategoriesScreenStatus.Category.toCategory(): Category {
+fun CategoriesScreenStatus.Category.toDomain(): Category {
     return Category(
         title = title,
-        icon = iconPath,
+        iconPath = iconPath,
         taskCount = tasksCount,
         id = id
     )
