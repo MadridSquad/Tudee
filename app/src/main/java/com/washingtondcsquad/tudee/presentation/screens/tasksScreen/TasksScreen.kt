@@ -79,11 +79,13 @@ fun TasksScreenContent(
 ) {
     val pagerState = rememberPagerState(pageCount = { 3 })
     val selectedTabIndex by remember { derivedStateOf { pagerState.currentPage } }
-    val filteredLists = listOf(
+    val filteredLists = remember {
+        listOf(
         tasksUiState.tasksList.filter { it.taskStatus == "IN_PROGRESS" },
         tasksUiState.tasksList.filter { it.taskStatus == "TODO" },
         tasksUiState.tasksList.filter { it.taskStatus == "DONE" }
     )
+    }
 
     val selectedTaskToDelete = remember { mutableStateOf<TaskUiState?>(null) }
 

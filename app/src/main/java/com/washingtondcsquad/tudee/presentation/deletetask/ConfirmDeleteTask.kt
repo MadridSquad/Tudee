@@ -1,14 +1,11 @@
 package com.washingtondcsquad.tudee.presentation.deletetask
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,10 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -40,14 +34,10 @@ import com.washingtondcsquad.tudee.presentation.design.AppTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConfirmDeleteTask(
-
     deleteOnClick: () -> Unit,
     cancelOnClick: () -> Unit,
     onDismiss: () -> Unit
-
-
 ) {
-
     val sheetState = rememberModalBottomSheetState()
     LaunchedEffect(Unit) {
         sheetState.show()
@@ -87,8 +77,8 @@ fun ConfirmDeleteTask(
             CancelableActionLayout(
                 actionText = stringResource(R.string.delete),
                 actionTextColor = AppTheme.colors.error,
-                onAction = {deleteOnClick()},
-                onCancel = {cancelOnClick()},
+                onAction = { deleteOnClick() },
+                onCancel = { cancelOnClick() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 24.dp)
