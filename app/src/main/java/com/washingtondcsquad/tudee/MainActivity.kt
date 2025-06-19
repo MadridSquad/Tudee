@@ -38,6 +38,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.washingtondcsquad.tudee.presentation.features.home.HomeScreen
 import com.washingtondcsquad.tudee.presentation.screen.onBoarding.OnBoardingScreen
+import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.TasksScreen
 import org.koin.android.ext.android.inject
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -105,7 +106,7 @@ class MainActivity : ComponentActivity() {
                                     HomeScreen()
                                 }
                                 composable(route = "task") {
-                                    // tasks screen
+                                     TasksScreen()
                                 }
                                 composable(route = "category") {
                                     CategoriesScreen()
