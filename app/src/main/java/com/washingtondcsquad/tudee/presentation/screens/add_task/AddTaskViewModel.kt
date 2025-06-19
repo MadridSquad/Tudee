@@ -23,19 +23,18 @@ class AddTaskViewModel(
     }
 
 
-    fun getAllCategories() {
-        var  allCategories : List<Category> =emptyList()
+    private fun getAllCategories() {
         tryToExecute(
             request = {
-                allCategories = categoryService.getAllCategories()
-            },
-            onSuccess = {
-                updateState {
-                    copy(
-                        categoryList = allCategories
-                    )
+                 categoryService.getAllCategories().collect{
+                     updateState {
+                         copy(
+                             categoryList = it
+                         )
+                     }
                 }
             },
+            onSuccess = {},
             onError = { exception -> }
         )
 
@@ -127,7 +126,7 @@ class AddTaskViewModel(
                     Task(
                         id = 0,
                         categoryId = _state.value.selectedCategory!!.id,
-                        categoryImage = _state.value.selectedCategory!!.icon,
+                        categoryImage = _state.value.selectedCategory!!.iconPath,
                         title = _state.value.taskTitle,
                         description = _state.value.taskDescription,
                         date = _state.value.taskDate.toString(),
@@ -136,7 +135,13 @@ class AddTaskViewModel(
                     )
                 )
             },
-            onSuccess = {},
+            onSuccess = {
+                updateState {
+                    copy(
+                        isDatePickerDisplayed = false
+                    )
+                }
+            },
             onError = { exception -> }
         )
     }
