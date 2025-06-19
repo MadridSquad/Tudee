@@ -1,5 +1,6 @@
 package com.washingtondcsquad.tudee.presentation.design
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
@@ -25,7 +26,7 @@ object AppTheme {
 
     @Composable
     operator fun invoke(
-        useDarkTheme: Boolean,
+        useDarkTheme: Boolean = isSystemInDarkTheme(),
         content: @Composable () -> Unit
     ) {
         val colors = if (!useDarkTheme) {

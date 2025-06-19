@@ -9,8 +9,11 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import java.time.LocalDate
+import com.washingtondcsquad.tudee.presentation.categories.CategoriesViewModel
+
 
 val viewModelModule = module {
+    viewModelOf(::CategoriesViewModel)
     viewModelOf(::OnboardingViewModel)
     viewModelOf(::HomeViewModel)
     viewModel{ TasksViewModel(

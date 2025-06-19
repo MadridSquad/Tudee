@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.washingtondcsquad.tudee.data.localSource.entities.CategoryEntity
 import com.washingtondcsquad.tudee.data.utils.DataBaseConstants
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DaoCategory {
@@ -22,7 +23,7 @@ interface DaoCategory {
     suspend fun editCategory(category: CategoryEntity)
 
     @Query("SELECT * FROM ${DataBaseConstants.ROOM_DATABASE_NAME}")
-    suspend fun getAllCategories(): List<CategoryEntity>
+     fun getAllCategories(): Flow<List<CategoryEntity>>
 
     @Query("SELECT * FROM ${DataBaseConstants.ROOM_DATABASE_NAME} WHERE id = :categoryId")
     suspend fun getCategoryById(categoryId: Long): CategoryEntity
