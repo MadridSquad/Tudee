@@ -10,7 +10,9 @@ import org.koin.dsl.module
 import java.time.LocalDate
 
 val viewModelModule = module {
-    viewModelOf(::OnboardingViewModel)
+    viewModel {
+        OnboardingViewModel(get())
+    }
     viewModelOf(::HomeViewModel)
     viewModel { BottomSheetTaskViewModel(get()) }
     viewModel {
