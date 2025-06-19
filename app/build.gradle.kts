@@ -79,9 +79,8 @@ dependencies {
     testImplementation(libs.kotlin.test)
 
     // serialization library helps with navigation
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+    implementation(libs.kotlinx.serialization.json)
 
-    val nav_version = "2.9.0"
     // Jetpack Compose integration
-    implementation("androidx.navigation:navigation-compose:$nav_version")
+    implementation(libs.androidx.navigation.compose)
 }
