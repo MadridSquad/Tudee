@@ -11,6 +11,8 @@ import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiSta
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.utils.buildMonthDaysList
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.utils.getYearAndMonthTitleFromYearMonth
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.utils.todayInMillis
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import org.koin.mp.KoinPlatform.getKoin
 import java.time.Instant
 import java.time.YearMonth
@@ -74,7 +76,7 @@ class TasksViewModel(
 
     fun loadData() = tryToExecute(
         request = {
-            val tasks = tasksService.getAllTasks()
+            val tasks = tasksService.getAllTasks().first()
             val tasksForUiState = tasks.map {
                 TaskUiState(
                     taskId = it.id,
@@ -85,7 +87,7 @@ class TasksViewModel(
                     taskStatus = it.status.toString(),
                     categoryImage = categoriesService.getCategoryById(
                         it.categoryId.toString().toLong()
-                    ).icon
+                    ).iconPath
                 )
             }
             updateState {
