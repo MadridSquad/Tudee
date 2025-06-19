@@ -1,7 +1,9 @@
 package com.washingtondcsquad.tudee.di
 
+import com.washingtondcsquad.tudee.data.services.AppPreferencesServiceImpl
 import com.washingtondcsquad.tudee.data.services.CategoriesServiceImpl
 import com.washingtondcsquad.tudee.data.services.TasksServiceImpl
+import com.washingtondcsquad.tudee.domain.services.AppPreferencesService
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import org.koin.core.module.dsl.singleOf
@@ -12,4 +14,5 @@ val serviceModule = module {
     singleOf(::TasksServiceImpl) bind TasksService::class
     singleOf(::TasksServiceImpl) bind TasksService::class
     singleOf(::CategoriesServiceImpl) bind CategoriesService::class
+    singleOf(::AppPreferencesServiceImpl) bind AppPreferencesService::class
 }
