@@ -1,11 +1,12 @@
-package com.washingtondcsquad.tudee.data.localSource
+package com.washingtondcsquad.tudee.data.localSource.dataSourcesImplementations
 
+import com.washingtondcsquad.tudee.data.dataSources.CategoryLocalDataSource
+import com.washingtondcsquad.tudee.data.localSource.daos.DaoCategory
 import com.washingtondcsquad.tudee.data.localSource.entities.CategoryEntity
-import com.washingtondcsquad.tudee.data.services.CategoryLocalDataSource
 
-class CategoryLocalDataSourceImpl (
+class CategoryLocalDataSourceImpl(
     private val daoCategory: DaoCategory
-): CategoryLocalDataSource {
+) : CategoryLocalDataSource {
 
 
     override suspend fun createCategory(category: CategoryEntity) {
@@ -27,7 +28,6 @@ class CategoryLocalDataSourceImpl (
     override suspend fun getCategoryById(categoryId: Long): CategoryEntity {
         return daoCategory.getCategoryById(categoryId)
     }
-
 
 
 }
