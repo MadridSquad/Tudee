@@ -4,20 +4,19 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-<<<<<<< HEAD
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.BottomAppBarDefaults.windowInsets
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.TudeeNavigationBar
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.bottomNavBarRoutes
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.navBarItemsList
-=======
->>>>>>> origin/feature/#20-home-screan
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 
 class MainActivity : ComponentActivity() {
@@ -30,7 +29,6 @@ class MainActivity : ComponentActivity() {
                 useDarkTheme = false
             ) {
 
-<<<<<<< HEAD
                 val navController = rememberNavController()
                 val navBackStackEntry = navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry.value?.destination?.route
@@ -61,9 +59,7 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
-=======
 
->>>>>>> origin/feature/#20-home-screan
             }
         }
     }
