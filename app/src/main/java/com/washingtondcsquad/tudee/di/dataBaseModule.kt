@@ -12,5 +12,4 @@ val dataBaseModule =
         single { TudeeDataBase.getInstance(context = get()).daoCategory() }
         singleOf(::SaveImageToInternalStorage)
         singleOf(::DeleteImageFromInternalStorage)
-
     }

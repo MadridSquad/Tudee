@@ -1,23 +1,23 @@
 package com.washingtondcsquad.tudee.data.services
 
+import com.washingtondcsquad.tudee.data.dataSources.TaskLocalDataSource
 import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.services.TasksService
-import java.util.UUID
 
-class TasksServiceImpl : TasksService {
+class TasksServiceImpl(
+    private val dataSource: TaskLocalDataSource
+) : TasksService {
     override suspend fun createTask(task: Task) {
         TODO("Not yet implemented")
     }
 
-    override suspend fun deleteTask(id: UUID) {
+    override suspend fun deleteTask(id: Int) {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getAllTasks(): List<Task> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getAllTasks(): List<Task> = dataSource.getAllTasks().map { it.toDomain() }
 
-    override suspend fun getTaskById(id: UUID): Task {
+    override suspend fun getTaskById(id: Int): Task {
         TODO("Not yet implemented")
     }
 

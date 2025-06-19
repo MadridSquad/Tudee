@@ -1,4 +1,4 @@
-package com.washingtondcsquad.tudee.data.localSource
+package com.washingtondcsquad.tudee.data.localSource.daos
 
 import androidx.room.Dao
 import androidx.room.Delete

@@ -32,6 +32,8 @@ data class TudeeColors(
     val greenVariant: Color,
     val purpleVariant: Color,
     val errorVariant: Color,
+    val darkSwitch: Color,
+    val lightSwitch: Color,
 ) {
 
     companion object {
@@ -63,6 +65,8 @@ data class TudeeColors(
             greenVariant = Color(0xFFE4F2EA),
             purpleVariant = Color(0xFFEEEDF7),
             errorVariant = Color(0xFFFCE8E8),
+            darkSwitch = Color(0xFF151535),
+            lightSwitch = Color(0xFF49BAF2),
         )
 
         val dark = TudeeColors(
@@ -93,6 +97,8 @@ data class TudeeColors(
             greenVariant = Color(0xFF1C1F1D),
             purpleVariant = Color(0xFF1C1A33),
             errorVariant = Color(0xFF1F1111),
+            darkSwitch = Color(0xFF151535),
+            lightSwitch = Color(0xFF49BAF2),
         )
     }
 }
