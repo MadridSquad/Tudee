@@ -1,9 +1,13 @@
 package com.washingtondcsquad.tudee.presentation.screen.onBoarding
 
+import android.util.Log
 import com.washingtondcsquad.tudee.R
+import com.washingtondcsquad.tudee.domain.services.AppPreferencesService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 
-class OnboardingViewModel : BaseViewModel<OnboardingUiState>(
+class OnboardingViewModel(
+    private val appPreferencesService: AppPreferencesService
+) : BaseViewModel<OnboardingUiState>(
     initialValue = OnboardingUiState(
         currentPage = 0,
         pages = listOf(
@@ -41,5 +45,14 @@ class OnboardingViewModel : BaseViewModel<OnboardingUiState>(
         val next = (state.value.currentPage + 1).coerceAtMost(lastIndex)
         onPageChanged(next)
     }
+    fun onboardingFinished() {
+        tryToExecute(
+            request = { appPreferencesService.setOnboardingShown() },
+            onSuccess = { },
+            onError = {
+                Log.e("OnboardingViewModel", "onboardingFinished: ", it)
+            }
+        )
 
+    }
 }

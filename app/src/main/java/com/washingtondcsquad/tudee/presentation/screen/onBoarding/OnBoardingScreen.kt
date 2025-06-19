@@ -45,6 +45,7 @@ fun OnBoardingScreen(
         uiState = state,
         onNextClick = {
             if (state.isLastPage) {
+                viewModel.onboardingFinished()
                 onFinish()
             } else {
                 scope.launch {
