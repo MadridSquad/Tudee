@@ -10,10 +10,8 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.BottomAppBarDefaults.windowInsets
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.TudeeNavigationBar
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.bottomNavBarRoutes
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.navBarItemsList
