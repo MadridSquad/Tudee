@@ -1,9 +1,8 @@
 package com.washingtondcsquad.tudee.data.services
 
-import android.content.Context
 import com.washingtondcsquad.tudee.data.localSource.DaoCategory
-import com.washingtondcsquad.tudee.data.localSource.imageStorageManager.deleteImageFromInternalStorage
-import com.washingtondcsquad.tudee.data.localSource.imageStorageManager.saveImageToInternalStorage
+import com.washingtondcsquad.tudee.data.localSource.imageStorageManager.DeleteImageFromInternalStorage
+import com.washingtondcsquad.tudee.data.localSource.imageStorageManager.SaveImageToInternalStorage
 import com.washingtondcsquad.tudee.data.localSource.mapper.category.toDomain
 import com.washingtondcsquad.tudee.data.localSource.mapper.category.toEntity
 import com.washingtondcsquad.tudee.domain.entity.Category
@@ -13,23 +12,24 @@ import kotlinx.coroutines.flow.map
 
 class CategoriesServiceImpl(
     private val daoCategory: DaoCategory,
-    private val context: Context
+    private val saveImageToInternalStorage: SaveImageToInternalStorage,
+    private val deleteImageFromInternalStorage: DeleteImageFromInternalStorage,
 
-) : CategoriesService {
+    ) : CategoriesService {
     override suspend fun createCategory(category: Category) {
-       saveImageToInternalStorage(context,category.iconPath) {
+        saveImageToInternalStorage.saveImageToInternalStorage(category.iconPath) {
             category.iconPath = it
         }
         daoCategory.createCategory(category.toEntity())
     }
 
     override suspend fun deleteCategory(category: Category) {
-        deleteImageFromInternalStorage(context,category.iconPath)
+        deleteImageFromInternalStorage.deleteImageFromInternalStorage(category.iconPath)
         daoCategory.deleteCategory(category.toEntity())
     }
 
     override suspend fun editCategory(category: Category) {
-        saveImageToInternalStorage(context,category.iconPath)
+        saveImageToInternalStorage.saveImageToInternalStorage(category.iconPath)
         daoCategory.editCategory(category.toEntity())
     }
 
