@@ -46,7 +46,7 @@ fun TudeeNavigationBar(
     ) {
         val selectedIconColor by animateColorAsState(AppTheme.colors.primary)
 
-        navBarItemDataList.forEach{  item ->
+        navBarItemDataList.forEach { item ->
             val isSelected = currentDestination == item.route
             Box(
                 modifier = Modifier
