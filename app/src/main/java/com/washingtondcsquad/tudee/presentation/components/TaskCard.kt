@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
+import java.time.LocalDate
 
 @Composable
 fun TaskCard(
@@ -101,8 +102,7 @@ private fun Preview() {
     TaskCard(
         categoryImagePainter = painterResource(R.drawable.education_icon),
         taskUiState = TaskUiState(
-            taskTitle = "Task Title",
-            taskDescription = "Task Description",
+            taskDate = LocalDate.now(),
         )
     )
 }

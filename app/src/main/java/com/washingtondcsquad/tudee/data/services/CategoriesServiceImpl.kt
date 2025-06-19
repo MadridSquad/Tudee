@@ -4,7 +4,6 @@ import com.washingtondcsquad.tudee.data.localSource.mapper.category.toDomain
 import com.washingtondcsquad.tudee.data.localSource.mapper.category.toEntity
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
-import java.util.UUID
 
 class CategoriesServiceImpl(
     private val categoryLocalDataSource: CategoryLocalDataSource,

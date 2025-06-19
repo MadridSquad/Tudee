@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
+import com.washingtondcsquad.tudee.presentation.screens.add_task.AddNewTaskScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,8 +15,9 @@ class MainActivity : ComponentActivity() {
             AppTheme(
                 useDarkTheme = false,
             ) {
-
-
+                AddNewTaskScreen(
+                    onCancelAddTaskBottomSheet = {}
+                )
             }
         }
     }
