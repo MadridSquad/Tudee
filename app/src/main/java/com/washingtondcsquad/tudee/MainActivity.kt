@@ -30,36 +30,40 @@ class MainActivity : ComponentActivity() {
                 useDarkTheme = false
             ) {
 
-                val navController = rememberNavController()
-                val navBackStackEntry = navController.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry.value?.destination?.route
-                Scaffold(
-                    bottomBar = {
-                        AnimatedVisibility(currentDestination in bottomNavBarRoutes) {
-                            TudeeNavigationBar(
-                                navBarItemDataList = navBarItemsList,
-                                navController = navController,
-                                modifier = Modifier.windowInsetsPadding(windowInsets)
-                            )
-                        }
+                AddNewTaskScreen(
+                    {}
+                )
 
-                    }) { innerPadding ->
-                    NavHost(
-                        navController = navController,
-                        startDestination = "home",
-                        modifier = Modifier.padding(innerPadding)
-                    ) {
-                        composable(route = "home") {
-                            // home screen
-                        }
-                        composable(route = "task") {
-                            // tasks screen
-                        }
-                        composable(route = "category") {
-                            // Category screen
-                        }
-                    }
-                }
+//                val navController = rememberNavController()
+//                val navBackStackEntry = navController.currentBackStackEntryAsState()
+//                val currentDestination = navBackStackEntry.value?.destination?.route
+//                Scaffold(
+//                    bottomBar = {
+//                        AnimatedVisibility(currentDestination in bottomNavBarRoutes) {
+//                            TudeeNavigationBar(
+//                                navBarItemDataList = navBarItemsList,
+//                                navController = navController,
+//                                modifier = Modifier.windowInsetsPadding(windowInsets)
+//                            )
+//                        }
+//
+//                    }) { innerPadding ->
+//                    NavHost(
+//                        navController = navController,
+//                        startDestination = "home",
+//                        modifier = Modifier.padding(innerPadding)
+//                    ) {
+//                        composable(route = "home") {
+//                            // home screen
+//                        }
+//                        composable(route = "task") {
+//                            // tasks screen
+//                        }
+//                        composable(route = "category") {
+//                            // Category screen
+//                        }
+//                    }
+//                }
 
             }
         }

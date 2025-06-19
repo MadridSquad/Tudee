@@ -1,42 +1,42 @@
 package com.washingtondcsquad.tudee.data.services
 
-import com.washingtondcsquad.tudee.data.dataSources.CategoryLocalDataSource
+import com.washingtondcsquad.tudee.R
+import com.washingtondcsquad.tudee.data.localSource.daos.DaoCategory
 import com.washingtondcsquad.tudee.data.localSource.mapper.category.toDomain
 import com.washingtondcsquad.tudee.data.localSource.mapper.category.toEntity
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 
 class CategoriesServiceImpl(
-    private val categoryLocalDataSource: CategoryLocalDataSource,
+    private val daoCategory: DaoCategory
 ) : CategoriesService {
+
     override suspend fun createCategory(category: Category) {
-        categoryLocalDataSource.createCategory(category.toEntity())
+        daoCategory.createCategory(category.toEntity())
     }
 
     override suspend fun deleteCategory(category: Category) {
-        categoryLocalDataSource.deleteCategory(category.toEntity())
+        daoCategory.deleteCategory(category.toEntity())
     }
 
     override suspend fun editCategory(category: Category) {
-        categoryLocalDataSource.editCategory(category.toEntity())
+        daoCategory.deleteCategory(category.toEntity())
     }
 
     override suspend fun getAllCategories(): List<Category> {
-
         return listOf(
             Category(
                 id = 1L,
                 title = "Work",
-                icon = "ic_work",
-                taskCount = 5
+                taskCount = 5,
+                icon = R.drawable.education_icon.toString()
             ),
         )
-
-//        return categoryLocalDataSource.getAllCategories().map { it.toDomain() }
+        //return daoCategory.getAllCategories()
     }
 
     override suspend fun getCategoryById(categoryId: Long): Category {
-        return categoryLocalDataSource.getCategoryById(categoryId).toDomain()
+        return daoCategory.getCategoryById(categoryId).toDomain()
     }
 
 }
