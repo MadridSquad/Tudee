@@ -59,7 +59,7 @@ fun TaskStatusCountCard(taskStatus: TaskStatus, count: Int, modifier: Modifier =
         }
 
         TaskStatus.IN_PROGRESS -> {
-            title = stringResource(R.string.in_progress)
+            title = stringResource(R.string.in_progress_title)
             bgColor = AppTheme.colors.yellowAccent
             icon = painterResource(R.drawable.inprogress_status_icon)
 
