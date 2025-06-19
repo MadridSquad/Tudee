@@ -33,7 +33,7 @@ class BottomSheetTaskViewModel(
             tryToExecute(
                 request = {
                     val task = tasksService.getTaskById(taskId)
-                    val updatedTask = task.copy(status = task.status.next())
+                    val updatedTask = task.copy(status = task.status)
                     tasksService.editTask(updatedTask)
                     updatedTask
                 },

@@ -30,9 +30,9 @@ class HomeViewModel(
     }
 
     private fun onSuccess(response: List<Task>) {
-        val inProgressTasks = response.filter { it.status == TaskStatus.IN_PROGRESS.name }
-        val doneTasks = response.filter { it.status == TaskStatus.DONE.name }
-        val toDoTasks = response.filter { it.status == TaskStatus.TODO.name }
+        val inProgressTasks = response.filter { it.status == TaskStatus.IN_PROGRESS }
+        val doneTasks = response.filter { it.status == TaskStatus.DONE }
+        val toDoTasks = response.filter { it.status == TaskStatus.TODO }
 
         updateState {
             copy(

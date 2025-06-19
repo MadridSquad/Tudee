@@ -22,7 +22,7 @@ fun Task.toTaskUiState(): TaskUiState =
         taskId = id,
         taskTitle = title,
         taskDescription = description,
-        taskPriority = Priority.fromString(priority),
+        taskPriority = priority,
         taskDate = date,
         categoryImage = categoryImage
     )

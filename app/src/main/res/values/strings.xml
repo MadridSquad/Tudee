@@ -35,6 +35,15 @@
     <string name="done">Done</string>
     <string name="to_do_title">TO-DO</string>
     <string name="background_graphics">Background graphics</string>
+    <string name="category">Category</string>
+    <string name="priority">Priority</string>
+    <string name="add">add</string>
+    <string name="date_format">d-M-yyyy</string>
+    <string name="add_new_task">Add New Task</string>
+    <string name="description_hint">Description</string>
+    <string name="task_title_hint">Task Title</string>
+
+
     <string name="ok">OK</string>
     <string name="clear">Clear</string>
 
