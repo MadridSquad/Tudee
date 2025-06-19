@@ -34,13 +34,13 @@ class AppPreferencesServiceImpl(
     }
 
     override fun isDarkModeEnabled(): Flow<Boolean> {
-        return context.appPreferencesDataStore.data.map { preferences ->
+        return dataStore.data.map { preferences ->
             preferences[PreferencesKeys.DARK_MODE_ENABLED] ?: false
         }
     }
 
     override suspend fun setDarkModeEnabled(isEnabled: Boolean) {
-        context.appPreferencesDataStore.edit { preferences ->
+        dataStore.edit { preferences ->
             preferences[PreferencesKeys.DARK_MODE_ENABLED] = isEnabled
         }
     }
