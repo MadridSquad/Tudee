@@ -36,10 +36,11 @@ import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.C
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.DatePickerModal
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.NoTasks
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.TasksTabRow
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun TasksScreen(tasksViewModel: TasksViewModel) {
+fun TasksScreen(tasksViewModel: TasksViewModel = koinViewModel()) {
 
     val tasksUiState by tasksViewModel.state.collectAsState()
     TasksScreenContent(
