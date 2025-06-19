@@ -15,9 +15,7 @@ class MainActivity : ComponentActivity() {
             AppTheme(
                 useDarkTheme = false,
             ) {
-                AddNewTaskScreen(
-                    onCancelAddTaskBottomSheet = {}
-                )
+
             }
         }
     }
