@@ -3,7 +3,6 @@ package com.washingtondcsquad.tudee.presentation.features.taskdetails
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
-import com.washingtondcsquad.tudee.presentation.utils.next
 
 class BottomSheetTaskViewModel(
     private val tasksService: TasksService
