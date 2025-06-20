@@ -124,7 +124,15 @@ class AddTaskViewModel(
                     selectedCategory = category
                 )
             }
-            updateButtonEnable()
+            tryToExecute(
+                request = {
+                    categoryService.editCategory(category.copy(taskCount = 1))
+                },
+                onSuccess = {},
+                onError = { exception ->
+                    Log.e("AddTaskViewModel", exception.message.toString())
+                }
+            )
         }
     }
 
@@ -147,10 +155,10 @@ class AddTaskViewModel(
             onSuccess = {
                 clearDate()
                 onCancelAddTaskBottomSheet()
-                onActionResult(true,"Add task successfully.")
+                onActionResult(true, "Add task successfully.")
             },
             onError = { exception ->
-                onActionResult(false,exception.message.toString())
+                onActionResult(false, exception.message.toString())
             }
         )
     }

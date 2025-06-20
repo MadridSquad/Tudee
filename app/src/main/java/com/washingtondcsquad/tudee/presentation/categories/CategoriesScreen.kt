@@ -138,7 +138,7 @@ fun CategoriesContent(
                     }
                     CategoryCard(
                         title = title,
-                        imageSource = imageSource,
+                        iconPath = category.iconPath,
                         onClick = { categoriesEvent.onCategoryClick(category) },
                         isSelected = false,
                         tasksCount = category.tasksCount

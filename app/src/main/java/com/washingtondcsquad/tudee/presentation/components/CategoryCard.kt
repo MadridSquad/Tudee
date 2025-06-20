@@ -39,14 +39,16 @@ fun CategoryCard(
             modifier = Modifier
         ) {
             LoadImage(
-                path = iconPath,
                 modifier = Modifier
                     .background(
                         color = AppTheme.colors.surfaceHigh,
                         shape = CircleShape
                     )
                     .padding(24.dp)
-                    .size(32.dp))
+                    .size(32.dp),
+                imageSource =    ImageSource.Path(value = iconPath)
+
+            )
             if (isSelected) {
                 Icon(
                     painterResource(R.drawable.selection_icon),
