@@ -48,7 +48,6 @@ import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.TasksScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import com.washingtondcsquad.tudee.presentation.screen.onBoarding.OnBoardingScreen
 import org.koin.android.ext.android.inject
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -130,7 +129,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
             SnackbarHandler()
-
         }
     }
 
