@@ -1,5 +1,7 @@
 package com.washingtondcsquad.tudee.presentation.screens.add_task
 
+import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
@@ -8,7 +10,11 @@ import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.EditTaskUiState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
@@ -30,9 +36,9 @@ class EditTaskViewModel(
     }
 
     private fun getTaskById() {
-        tryToExecute(
-            request = {
-                val task = tasksService.getTaskById(_state.value.taskId)
+        viewModelScope.launch {
+            val task = tasksService.getTaskById(_state.value.taskId)
+            withContext(Dispatchers.Main) {
                 updateState {
                     copy(
                         taskId = task.id,
@@ -43,12 +49,9 @@ class EditTaskViewModel(
                         selectedCategory = getCategory(task.categoryId),
                     )
                 }
-            },
-            onSuccess = {
+            }
+        }
 
-            },
-            onError = { exception -> }
-        )
 
     }
 
@@ -171,7 +174,7 @@ class EditTaskViewModel(
                 )
             },
             onSuccess = {
-
+                clearDate()
                 onCancelAddTaskBottomSheet()
                 onActionResult(true,"Edited task successfully.")
             },
@@ -179,5 +182,18 @@ class EditTaskViewModel(
                 onActionResult(false,exception.message.toString())
             }
         )
+    }
+    private fun clearDate() {
+        updateState {
+            copy(
+                taskId = 0,
+                taskTitle = "",
+                taskDescription = "",
+                taskDate = LocalDate.now().format(DateTimeFormatter.ofPattern("d-M-yyyy")),
+                selectedCategory = null,
+                selectedPriority = null,
+                isButtonActionEnable = false
+            )
+        }
     }
 }

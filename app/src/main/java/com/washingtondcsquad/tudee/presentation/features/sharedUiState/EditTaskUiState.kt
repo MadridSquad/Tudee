@@ -2,7 +2,6 @@ package com.washingtondcsquad.tudee.presentation.features.sharedUiState
 
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.Priority
-import java.time.LocalDate
 
 data class EditTaskUiState(
     val taskId: Int = 0,

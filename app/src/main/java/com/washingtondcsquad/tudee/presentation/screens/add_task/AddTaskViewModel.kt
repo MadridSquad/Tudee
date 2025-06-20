@@ -145,6 +145,7 @@ class AddTaskViewModel(
                 )
             },
             onSuccess = {
+                clearDate()
                 onCancelAddTaskBottomSheet()
                 onActionResult(true,"Add task successfully.")
             },
@@ -152,5 +153,19 @@ class AddTaskViewModel(
                 onActionResult(false,exception.message.toString())
             }
         )
+    }
+
+    private fun clearDate() {
+        updateState {
+            copy(
+                taskId = 0.toString(),
+                taskTitle = "",
+                taskDescription = "",
+                taskDate = LocalDate.now().format(DateTimeFormatter.ofPattern("d-M-yyyy")),
+                selectedCategory = null,
+                selectedPriority = null,
+                isButtonActionEnable = false
+            )
+        }
     }
 }
