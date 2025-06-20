@@ -17,7 +17,7 @@ import com.washingtondcsquad.tudee.presentation.design.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DatePickerModal(
+fun DatePickerModa(
     initialDateMillis: Long,
     onDateSelected: (Long?) -> Unit,
     onDismiss: () -> Unit,

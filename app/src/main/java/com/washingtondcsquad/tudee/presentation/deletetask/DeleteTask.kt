@@ -95,7 +95,6 @@ fun DeleteTaskScroll(
                 .height(111.dp)
         ) {
             TaskCard(
-                modifier = Modifier.height(111.dp),
                 taskUiState = task,
                 onTaskClicked = {}
             )

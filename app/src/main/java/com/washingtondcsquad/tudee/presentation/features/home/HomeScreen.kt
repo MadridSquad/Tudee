@@ -335,7 +335,7 @@ private fun TaskStatusLayout(
 
 
 @Composable
-private fun NoTasksPlaceHolder(modifier: Modifier = Modifier) {
+ fun NoTasksPlaceHolder(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxWidth()
