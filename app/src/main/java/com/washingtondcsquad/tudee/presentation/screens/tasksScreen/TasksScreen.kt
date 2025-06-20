@@ -32,16 +32,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
+import com.washingtondcsquad.tudee.presentation.components.DatePickerModal
 import com.washingtondcsquad.tudee.presentation.components.DayCard
 import com.washingtondcsquad.tudee.presentation.components.SnackBarCard
 import com.washingtondcsquad.tudee.presentation.deletetask.ConfirmDeleteTask
 import com.washingtondcsquad.tudee.presentation.deletetask.DeleteTaskScroll
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyle
+import com.washingtondcsquad.tudee.presentation.features.home.NoTasksPlaceHolder
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.ChangeMonthButton
-import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.DatePickerModal
-import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.NoTasks
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.TasksTabRow
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
@@ -197,7 +197,7 @@ fun TasksScreenContent(
                                 .padding(end = 4.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            NoTasks()
+                            NoTasksPlaceHolder()
                         }
                     }
                 }
@@ -205,14 +205,11 @@ fun TasksScreenContent(
         }
         if (tasksUiState.showDateDialog) {
             DatePickerModal(
-                tasksUiState.selectedDateInMillis,
-                onDateSelected = { millis ->
+                onDateSelected ={ millis ->
                     millis?.let { onDateSelectedFromDatePicker(it) }
                     setShowDialog(false)
                 },
                 onDismiss = { setShowDialog(false) },
-                onClear = clearDatePicker
-
             )
         }
 
@@ -249,6 +246,8 @@ fun TasksScreenContent(
                 .padding(bottom = 16.dp)
         )
     }
+
+
 
 }
 
