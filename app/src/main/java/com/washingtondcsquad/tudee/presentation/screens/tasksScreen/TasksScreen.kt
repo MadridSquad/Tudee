@@ -35,6 +35,8 @@ import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.presentation.components.DatePickerModal
 import com.washingtondcsquad.tudee.presentation.components.DayCard
 import com.washingtondcsquad.tudee.presentation.components.SnackBarCard
+import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarController
+import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarEvent
 import com.washingtondcsquad.tudee.presentation.deletetask.ConfirmDeleteTask
 import com.washingtondcsquad.tudee.presentation.deletetask.DeleteTaskScroll
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
@@ -231,21 +233,16 @@ fun TasksScreenContent(
 
     }
 
-    if (showSnackBar.value) {
-        LaunchedEffect(Unit) {
-            delay(3000)
+    val snackbarMessage = stringResource(R.string.deleted_task_successfully)
+
+    LaunchedEffect(showSnackBar.value) {
+        if (showSnackBar.value) {
+            SnackbarController.sendEvent(SnackbarEvent(message = snackbarMessage))
             showSnackBar.value = false
         }
-
-        SnackBarCard(
-            message = stringResource(R.string.deleted_task_successfully),
-            icon = painterResource(R.drawable.checkmark),
-            iconTint = AppTheme.colors.greenAccent,
-            iconBackgroundColor = AppTheme.colors.greenVariant,
-            modifier = Modifier
-                .padding(bottom = 16.dp)
-        )
     }
+
+
 
 
 
