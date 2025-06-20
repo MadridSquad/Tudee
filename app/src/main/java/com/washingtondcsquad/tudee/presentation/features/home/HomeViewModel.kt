@@ -8,6 +8,7 @@ import com.washingtondcsquad.tudee.domain.services.AppPreferencesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TudeeStatus
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
@@ -15,7 +16,29 @@ class HomeViewModel(
 ) : BaseViewModel<HomeUiState>(HomeUiState()), HomeListener {
 
     init {
+        loadThemeState()
         loadData()
+    }
+
+    fun loadThemeState(){
+        updateState {
+            copy(isLoading = true)
+        }
+        tryToExecute(
+            request = {
+                appPreferences.isDarkModeEnabled()
+
+            }, onSuccess = {
+                viewModelScope.launch {
+                    it.collectLatest {
+                        updateState {
+                            copy(isDarkTheme = it, isLoading = false)
+                        }
+                    }
+                }
+            }, onError = ::onError
+        )
+
     }
 
     fun refresh() {

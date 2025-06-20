@@ -89,7 +89,7 @@ fun TasksScreenContent(
     Column(
         modifier = Modifier
             .background(AppTheme.colors.surfaceHigh)
-            .padding(top = 70.dp)
+            .padding(top = 16.dp)
             .fillMaxSize()
     ) {
         Text(

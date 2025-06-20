@@ -24,7 +24,7 @@ import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.noRipple
 @Composable
 fun CategoryCard(
     title: String,
-    iconPath: String,
+    imageSource: ImageSource,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
@@ -46,7 +46,7 @@ fun CategoryCard(
                     )
                     .padding(24.dp)
                     .size(32.dp),
-                imageSource =    ImageSource.Path(value = iconPath)
+                imageSource = imageSource
 
             )
             if (isSelected) {
@@ -57,7 +57,7 @@ fun CategoryCard(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .background(
-                            color = AppTheme.colors.surfaceHigh,
+                            color = AppTheme.colors.greenAccent,
                             shape = CircleShape
                         )
                         .padding(4.dp)
@@ -96,10 +96,10 @@ private fun Preview() {
 
     CategoryCard(
         title = "Test",
-        iconPath = "",
+        imageSource = ImageSource.Drawable(id = R.drawable.education_icon),
         onClick = {},
         modifier = Modifier,
-        isSelected = false,
+        isSelected = true,
         tasksCount = 3
     )
 }

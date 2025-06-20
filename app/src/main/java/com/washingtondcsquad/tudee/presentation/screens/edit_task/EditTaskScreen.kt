@@ -240,7 +240,7 @@ fun EditTaskScreen(
 
                                         CategoryCard(
                                             title = title,
-                                            iconPath = category.iconPath,
+                                            imageSource = imageSource,
                                             onClick = { viewModel.onCategorySelected(category) },
                                             isSelected = state.selectedCategory == category,
                                             modifier = Modifier.weight(1f)

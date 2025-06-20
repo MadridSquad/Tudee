@@ -1,5 +1,6 @@
 package com.washingtondcsquad.tudee.presentation.screens.add_task
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -236,7 +237,7 @@ fun AddNewTaskScreen(
 
                                         CategoryCard(
                                             title = title,
-                                            iconPath = category.iconPath,
+                                            imageSource = imageSource,
                                             onClick = { viewModel.onCategorySelected(category) },
                                             isSelected = state.selectedCategory == category,
                                             modifier = Modifier.weight(1f)
