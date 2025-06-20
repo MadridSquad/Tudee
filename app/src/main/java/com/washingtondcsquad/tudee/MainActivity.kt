@@ -18,7 +18,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -33,12 +32,11 @@ import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.bottom
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.navBarItemsList
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.home.HomeScreen
+import com.washingtondcsquad.tudee.presentation.screen.onBoarding.OnBoardingScreen
+import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.TasksScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import com.washingtondcsquad.tudee.presentation.features.home.HomeScreen
-import com.washingtondcsquad.tudee.presentation.screen.onBoarding.OnBoardingScreen
-import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.TasksScreen
 import org.koin.android.ext.android.inject
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -61,10 +59,13 @@ class MainActivity : ComponentActivity() {
             ) {
                 when (val isOnboardingShown = isOnboardingShownState) {
                     null -> {
-                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+                        ) {
                             CircularProgressIndicator()
                         }
                     }
+
                     else -> {
                         val startDestination = if (isOnboardingShown) {
                             "home"
@@ -106,7 +107,7 @@ class MainActivity : ComponentActivity() {
                                     HomeScreen()
                                 }
                                 composable(route = "task") {
-                                     TasksScreen()
+                                    TasksScreen()
                                 }
                                 composable(route = "category") {
                                     CategoriesScreen()
@@ -118,8 +119,8 @@ class MainActivity : ComponentActivity() {
             }
 
 
-            }
         }
+    }
 
     private fun createPreDefineCategories() {
         CoroutineScope(Dispatchers.IO).launch {
@@ -144,10 +145,7 @@ class MainActivity : ComponentActivity() {
             ).forEach { image ->
                 TudeeDataBase.getInstance(this@MainActivity).daoCategory().createCategory(
                     Category(
-                        title = image,
-                        iconPath = "",
-                        taskCount = 0,
-                        id = 0
+                        title = image, iconPath = "", taskCount = 0, id = 0
                     ).toEntity()
                 )
             }
