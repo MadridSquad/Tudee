@@ -12,12 +12,10 @@ import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.utils.buildM
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.utils.getYearAndMonthTitleFromYearMonth
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.utils.todayInMillis
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
-import org.koin.mp.KoinPlatform.getKoin
 import java.time.Instant
 import java.time.YearMonth
 import java.time.ZoneId
-import java.util.UUID
+import java.time.format.DateTimeFormatter
 
 class TasksViewModel(
     private val tasksService: TasksService ,
@@ -151,10 +149,11 @@ class TasksViewModel(
     }
 
     fun formatedSelectedDate(millis: Long): String {
-        val date = Instant.ofEpochMilli(millis)
+        val dataInLocalDate = Instant.ofEpochMilli(millis)
             .atZone(ZoneId.systemDefault())
             .toLocalDate()
-        return "${date.year}-${date.monthValue}-${date.dayOfMonth}"
+        val realDate = dataInLocalDate.format(DateTimeFormatter.ofPattern("d-M-yyyy"))
+        return realDate
     }
 
     fun setShowDialog(show: Boolean) {

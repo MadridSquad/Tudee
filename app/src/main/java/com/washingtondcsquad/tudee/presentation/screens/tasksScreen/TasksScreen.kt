@@ -31,6 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
+import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.presentation.components.DayCard
 import com.washingtondcsquad.tudee.presentation.components.SnackBarCard
 import com.washingtondcsquad.tudee.presentation.deletetask.ConfirmDeleteTask
@@ -79,13 +80,6 @@ fun TasksScreenContent(
 ) {
     val pagerState = rememberPagerState(pageCount = { 3 })
     val selectedTabIndex by remember { derivedStateOf { pagerState.currentPage } }
-    val filteredLists = remember {
-        listOf(
-        tasksUiState.tasksList.filter { it.taskStatus == "IN_PROGRESS" },
-        tasksUiState.tasksList.filter { it.taskStatus == "TODO" },
-        tasksUiState.tasksList.filter { it.taskStatus == "DONE" }
-    )
-    }
 
     val selectedTaskToDelete = remember { mutableStateOf<TaskUiState?>(null) }
 
@@ -158,7 +152,24 @@ fun TasksScreenContent(
                 .weight(1f)
                 .background(AppTheme.colors.surface)
         ) {
-            val currentTasks = filteredLists[it]
+
+            val currentTasks : List<TaskUiState> = tasksUiState.tasksList
+                .filter {
+                    it.taskStatus == when (selectedTabIndex) {
+                        0 -> {
+                            TaskStatus.IN_PROGRESS
+                        }
+
+                        1 -> {
+                            TaskStatus.TODO
+                        }
+
+                        else -> {
+                            TaskStatus.DONE
+                        }
+                    }.name
+
+                }
 
             LazyColumn(
                 Modifier
@@ -166,17 +177,14 @@ fun TasksScreenContent(
                     .padding(top = 12.dp, start = 16.dp, end = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                val tasksToShow = if (tasksUiState.isFilterEnabled) {
-                    currentTasks.filter {
-                        it.taskDate == formatedSelectedDate(
-                            tasksUiState.selectedDateInMillis
-                        )
-                    }
-                } else {
-                    currentTasks
+                val tasksToShow = currentTasks.filter {
+                    it.taskDate == formatedSelectedDate(
+                        tasksUiState.selectedDateInMillis
+                    ).trim()
                 }
+
                 if (tasksToShow.isNotEmpty()) {
-                    itemsIndexed(currentTasks) { index, item ->
+                    itemsIndexed(tasksToShow) { index, item ->
                         DeleteTaskScroll(task = item) {
                             selectedTaskToDelete.value = item
                         }
