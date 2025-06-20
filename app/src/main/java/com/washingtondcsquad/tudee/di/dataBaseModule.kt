@@ -18,4 +18,6 @@ val dataBaseModule =
         single { TudeeDataBase.getInstance(context = get()).daoTask() }
         single { androidApplication().applicationContext.appPreferencesDataStore }
 
+        singleOf(::SaveImageToInternalStorage)
+        singleOf(::DeleteImageFromInternalStorage)
     }
