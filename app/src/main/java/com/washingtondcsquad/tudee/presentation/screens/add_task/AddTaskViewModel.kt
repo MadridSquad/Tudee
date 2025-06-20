@@ -18,7 +18,8 @@ class AddTaskViewModel(
     private val tasksService: TasksService,
     private val categoryService: CategoriesService,
     taskDate: LocalDate = LocalDate.now(),
-    private val onCancelAddTaskBottomSheet: () -> Unit
+    private val onCancelAddTaskBottomSheet: () -> Unit,
+    private val onActionResult:(success:Boolean,message:String)->Unit
 ) : BaseViewModel<AddTaskUiState>(
     AddTaskUiState(
         taskDate = taskDate.format(DateTimeFormatter.ofPattern("d-M-yyyy"))
@@ -146,8 +147,10 @@ class AddTaskViewModel(
             },
             onSuccess = {
                 onCancelAddTaskBottomSheet()
+                onActionResult(true,"Add task successfully.")
             },
             onError = { exception ->
+                onActionResult(false,exception.message.toString())
             }
         )
     }

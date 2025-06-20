@@ -43,12 +43,14 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun AddNewTaskScreen(
     onCancelAddTaskBottomSheet: () -> Unit,
+    onActionResult : (success:Boolean,message:String) ->Unit ,
     taskDate: LocalDate = LocalDate.now(),
     viewModel: AddTaskViewModel = koinViewModel(
         parameters = {
             parametersOf(
                 taskDate,
-                onCancelAddTaskBottomSheet
+                onCancelAddTaskBottomSheet,
+                onActionResult
             )
         }
     ),
@@ -217,9 +219,9 @@ fun AddNewTaskScreen(
 }
 
 //@Preview
-@Composable
-fun Preview() {
-    AddNewTaskScreen(
-        onCancelAddTaskBottomSheet = {}
-    )
-}
+//@Composable
+//fun Preview() {
+//    AddNewTaskScreen(
+//        onCancelAddTaskBottomSheet = {}
+//    )
+//}

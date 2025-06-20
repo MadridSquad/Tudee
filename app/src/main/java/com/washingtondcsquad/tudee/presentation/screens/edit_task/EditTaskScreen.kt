@@ -41,6 +41,7 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun EditTaskScreen(
     onCancelAddTaskBottomSheet: () -> Unit,
+    onActionResult : (success:Boolean,message:String) ->Unit ,
     taskId:Int,
     viewModel: EditTaskViewModel = koinViewModel(
         parameters = {

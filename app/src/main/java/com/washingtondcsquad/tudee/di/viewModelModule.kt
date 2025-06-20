@@ -14,21 +14,23 @@ val viewModelModule = module {
     viewModelOf(::OnboardingViewModel)
     viewModelOf(::HomeViewModel)
     viewModel { BottomSheetTaskViewModel(get()) }
-    viewModel { (taskDate: LocalDate, onCancel: () -> Unit) ->
+    viewModel { (taskDate: LocalDate, onCancel: () -> Unit, onActionResult: (success: Boolean, message: String) -> Unit) ->
         AddTaskViewModel(
             tasksService = get(),
             categoryService = get(),
             taskDate = taskDate,
-            onCancelAddTaskBottomSheet = onCancel
+            onCancelAddTaskBottomSheet = onCancel,
+            onActionResult = onActionResult
         )
     }
 
-    viewModel { (taskId:Int , onCancel: () -> Unit) ->
+    viewModel { (taskId:Int , onCancel: () -> Unit , onActionResult: (success: Boolean, message: String) -> Unit) ->
         EditTaskViewModel(
             tasksService = get(),
             categoryService = get(),
             taskId = taskId,
-            onCancelAddTaskBottomSheet = onCancel
+            onCancelAddTaskBottomSheet = onCancel,
+            onActionResult = onActionResult
         )
     }
 

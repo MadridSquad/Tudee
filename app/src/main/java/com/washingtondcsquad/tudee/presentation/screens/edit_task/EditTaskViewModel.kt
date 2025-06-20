@@ -17,24 +17,24 @@ import java.time.format.DateTimeFormatter
 class EditTaskViewModel(
     private val tasksService: TasksService,
     private val categoryService: CategoriesService,
-    taskId: Int = 0 ,
-    private val onCancelAddTaskBottomSheet: () -> Unit = {}
+    taskId: Int = 0,
+    private val onCancelAddTaskBottomSheet: () -> Unit = {},
+    private val onActionResult: (success: Boolean, message: String) -> Unit
 ) : BaseViewModel<EditTaskUiState>(
     EditTaskUiState(
         taskId = taskId,
     )
-)
-{
+) {
 
     init {
         getAllCategories()
         getTaskById()
     }
 
-    private fun getTaskById(){
+    private fun getTaskById() {
         tryToExecute(
             request = {
-               val task =  tasksService.getTaskById(_state.value.taskId)
+                val task = tasksService.getTaskById(_state.value.taskId)
                 updateState {
                     copy(
                         taskId = task.id,
@@ -53,6 +53,7 @@ class EditTaskViewModel(
         )
 
     }
+
     fun getAllCategories() {
         var allCategories: List<Category> = emptyList()
         tryToExecute(
@@ -71,8 +72,8 @@ class EditTaskViewModel(
 
     }
 
-    fun getCategory(categoryId : Long ): Category{
-        return _state.value.categoryList.find { it.id  == categoryId}!!
+    fun getCategory(categoryId: Long): Category {
+        return _state.value.categoryList.find { it.id == categoryId }!!
     }
 
 
@@ -120,10 +121,10 @@ class EditTaskViewModel(
     }
 
     fun onDateSelected(dateAsMilliseconds: Long) {
-        val   dataInLocalDate = Instant.ofEpochMilli(dateAsMilliseconds)
+        val dataInLocalDate = Instant.ofEpochMilli(dateAsMilliseconds)
             .atZone(ZoneId.systemDefault())
             .toLocalDate()
-        val realDate = dataInLocalDate.format(DateTimeFormatter.ofPattern( "d-M-yyyy" ))
+        val realDate = dataInLocalDate.format(DateTimeFormatter.ofPattern("d-M-yyyy"))
         updateState {
             copy(
                 taskDate = realDate
@@ -167,7 +168,7 @@ class EditTaskViewModel(
                         title = _state.value.taskTitle,
                         description = _state.value.taskDescription,
                         date = _state.value.taskDate,
-                        status =TaskStatus.TODO,
+                        status = TaskStatus.TODO,
                         priority = _state.value.selectedPriority!!,
                     )
                 )
@@ -175,9 +176,10 @@ class EditTaskViewModel(
             onSuccess = {
 
                 onCancelAddTaskBottomSheet()
+                onActionResult(true,"Edited task successfully.")
             },
             onError = { exception ->
-
+                onActionResult(false,exception.message.toString())
             }
         )
     }
