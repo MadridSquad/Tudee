@@ -10,7 +10,6 @@ import com.washingtondcsquad.tudee.data.localSource.entities.TaskEntity
 import com.washingtondcsquad.tudee.data.utils.DataBaseConstants
 import kotlinx.coroutines.flow.Flow
 
-
 @Dao
 interface DaoTask {
 
