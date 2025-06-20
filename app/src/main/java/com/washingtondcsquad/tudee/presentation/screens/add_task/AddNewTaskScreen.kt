@@ -42,8 +42,7 @@ import java.time.LocalDate
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddNewTaskScreen(
-    onCancelAddTaskBottomSheet: () -> Unit,
-    onActionResult : (success:Boolean,message:String) ->Unit ,
+    onCancelAddTaskBottomSheet: () -> Unit = {},    onActionResult : (success:Boolean,message:String) ->Unit ,
     taskDate: LocalDate = LocalDate.now(),
     viewModel: AddTaskViewModel = koinViewModel(
         parameters = {
@@ -54,6 +53,7 @@ fun AddNewTaskScreen(
             )
         }
     ),
+    onRefreshTaskData: () -> Unit,
 ) {
     val state by viewModel.state.collectAsState()
         ModalBottomSheet(
@@ -252,17 +252,21 @@ fun AddNewTaskScreen(
 
                 }
 
-                CancelableActionLayout(
-                    modifier = Modifier,
-                    actionText = stringResource(R.string.add),
-                    actionTextColor = Color.White,
-                    actionBackgroundColor = AppTheme.colors.primaryGradient,
-                    onAction = viewModel::onClickSaveButton ,
-                    onCancel = onCancelAddTaskBottomSheet,
-                    isEnabled = state.isButtonActionEnable
-                )
-            }
+            CancelableActionLayout(
+                modifier = Modifier,
+                actionText = stringResource(R.string.add),
+                actionTextColor = Color.White,
+                actionBackgroundColor = AppTheme.colors.primaryGradient,
+                onAction = {
+                    viewModel.onClickSaveButton()
+                    onRefreshTaskData()
+                    onCancelAddTaskBottomSheet()
+                },
+                onCancel = onCancelAddTaskBottomSheet,
+                isEnabled = state.isButtonActionEnable
+            )
         }
+    }
 }
 
 //@Preview
