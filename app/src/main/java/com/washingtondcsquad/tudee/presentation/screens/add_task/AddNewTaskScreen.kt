@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -20,9 +19,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,7 +38,6 @@ import com.washingtondcsquad.tudee.presentation.features.sharedUiState.ImageSour
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,6 +63,47 @@ fun AddNewTaskScreen(
                 skipPartiallyExpanded = true
             ),
         ) {
+            val drawablesOfCategories = remember {
+                listOf(
+                    R.drawable.education_icon,
+                    R.drawable.shopping,
+                    R.drawable.medical,
+                    R.drawable.gym,
+                    R.drawable.entertainment,
+                    R.drawable.cooking,
+                    R.drawable.family,
+                    R.drawable.traveling,
+                    R.drawable.agriculture,
+                    R.drawable.coding,
+                    R.drawable.adoration,
+                    R.drawable.fix_bug,
+                    R.drawable.cleaning,
+                    R.drawable.work,
+                    R.drawable.budgeting,
+                    R.drawable.self_care,
+                    R.drawable.event
+                )
+            }
+            val titlesOfCategories = remember {  listOf(
+                "Education",
+                "Shopping",
+                "Medical",
+                "Gym",
+                "Entertainment",
+                "Cooking",
+                "Family & friend",
+                "Traveling",
+                "Agriculture",
+                "Coding",
+                "Adoration",
+                "Fix bug",
+                "Cleaning",
+                "Work",
+                "Budgeting",
+                "Self care",
+                "Event"
+            ) }
+
             if (state.isDatePickerDisplayed) {
                 DatePickerModal(
                     onDateSelected = {selectedDateMillis->
@@ -164,36 +201,49 @@ fun AddNewTaskScreen(
                     }
 
                     item {
+                        Text(
+                            text = stringResource(R.string.category),
+                            style = defaultTextStyle.title.medium,
+                            color = AppTheme.colors.title,
+                            modifier = Modifier.padding(top = 2.dp , bottom = 8.dp)
+                        )
+                        val rows = state.categoryList.chunked(3)
                         Column(
-                            horizontalAlignment = Alignment.Start
+                            verticalArrangement = Arrangement.spacedBy(12.dp),
+                            modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text(
-                                text = stringResource(R.string.category) ,
-                                style = defaultTextStyle.title.medium,
-                                color = AppTheme.colors.title
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
+                            rows.forEach { rowCategories ->
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 16.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                ) {
+                                    rowCategories.forEach { category ->
+                                        val index = state.categoryList.indexOf(category)
 
-                            Column(
-                                verticalArrangement = Arrangement.spacedBy(24.dp)
-                            ) {
-                                state.categoryList.chunked(3).forEach { rowCategories ->
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                    ) {
-                                        rowCategories.forEach { category ->
-                                            CategoryCard(
-                                                title = category.title,
-                                                imageSource = ImageSource.Path(category.iconPath),
-                                                onClick = { viewModel.onCategorySelected(category) },
-                                                isSelected = state.selectedCategory == category,
-                                                modifier = Modifier.weight(1f)
-                                            )
+                                        val imageSource = if (index < drawablesOfCategories.size) {
+                                            ImageSource.Drawable(drawablesOfCategories[index])
+                                        } else {
+                                            ImageSource.Path(category.iconPath)
                                         }
-                                        repeat(3 - rowCategories.size) {
-                                            Spacer(modifier = Modifier.weight(1f))
+
+                                        val title = if (index < titlesOfCategories.size) {
+                                            titlesOfCategories[index]
+                                        } else {
+                                            category.title
                                         }
+
+                                        CategoryCard(
+                                            title = title,
+                                            imageSource = imageSource,
+                                            onClick = { viewModel.onCategorySelected(category) },
+                                            isSelected = state.selectedCategory == category,
+                                            modifier = Modifier.weight(1f)
+                                        )
+                                    }
+                                    repeat(3 - rowCategories.size) {
+                                        Spacer(modifier = Modifier.weight(1f))
                                     }
                                 }
                             }

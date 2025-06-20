@@ -1,7 +1,5 @@
 package com.washingtondcsquad.tudee.presentation.screens.add_task
 
-import androidx.compose.ui.res.stringResource
-import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
@@ -55,17 +53,16 @@ class EditTaskViewModel(
     }
 
     fun getAllCategories() {
-        var allCategories: List<Category> = emptyList()
         tryToExecute(
             request = {
-                allCategories = categoryService.getAllCategories()
+                categoryService.getAllCategories().collect{
+                    updateState {
+                        copy( categoryList =  it )
+                    }
+                }
             },
             onSuccess = {
-                updateState {
-                    copy(
-                        categoryList = allCategories
-                    )
-                }
+
             },
             onError = { exception -> }
         )
@@ -164,7 +161,7 @@ class EditTaskViewModel(
                     Task(
                         id = _state.value.taskId,
                         categoryId = _state.value.selectedCategory!!.id,
-                        categoryImage = _state.value.selectedCategory!!.icon,
+                        categoryImage = _state.value.selectedCategory!!.iconPath,
                         title = _state.value.taskTitle,
                         description = _state.value.taskDescription,
                         date = _state.value.taskDate,

@@ -74,6 +74,9 @@ private fun HomeScreenContent(
     val isEmptyState =
         state.inProgressTasks.isEmpty() and state.todoTasks.isEmpty() and state.doneTasks.isEmpty()
     var showBottomSheet by remember { mutableStateOf(false) }
+    var showSnackBar by remember { mutableStateOf(false) }
+    var isSnackBarDataSuccess by remember { mutableStateOf(false) }
+    var snackBarMessage by remember { mutableStateOf("") }
 
     Box(
         modifier = modifier
@@ -191,10 +194,16 @@ private fun HomeScreenContent(
         if (showBottomSheet){
             AddNewTaskScreen(
                 onCancelAddTaskBottomSheet = {
-                    showBottomSheet=false
-                }
+                    showBottomSheet = false
+                },
+                onActionResult = { isSuccess, message ->
+                    isSnackBarDataSuccess = isSuccess
+                    snackBarMessage = message
+                    showSnackBar = true
+                },
             )
         }
+
         FabIcon(
             modifier = Modifier
                 .clickable {
