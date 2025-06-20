@@ -43,6 +43,8 @@ import com.washingtondcsquad.tudee.presentation.components.snack_bar.ObserveAsEv
 import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarController
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.home.HomeScreen
+import com.washingtondcsquad.tudee.presentation.screen.onBoarding.OnBoardingScreen
+import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.TasksScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -69,10 +71,13 @@ class MainActivity : ComponentActivity() {
             ) {
                 when (val isOnboardingShown = isOnboardingShownState) {
                     null -> {
-                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+                        ) {
                             CircularProgressIndicator()
                         }
                     }
+
                     else -> {
                         val startDestination = if (isOnboardingShown) {
                             "home"
@@ -114,7 +119,7 @@ class MainActivity : ComponentActivity() {
                                     HomeScreen()
                                 }
                                 composable(route = "task") {
-                                    // tasks screen
+                                    TasksScreen()
                                 }
                                 composable(route = "category") {
                                     CategoriesScreen()
@@ -126,8 +131,8 @@ class MainActivity : ComponentActivity() {
             }
             SnackbarHandler()
 
-            }
         }
+    }
 
     private fun createPreDefineCategories() {
         CoroutineScope(Dispatchers.IO).launch {
@@ -152,10 +157,7 @@ class MainActivity : ComponentActivity() {
             ).forEach { image ->
                 TudeeDataBase.getInstance(this@MainActivity).daoCategory().createCategory(
                     Category(
-                        title = image,
-                        iconPath = "",
-                        taskCount = 0,
-                        id = 0
+                        title = image, iconPath = "", taskCount = 0, id = 0
                     ).toEntity()
                 )
             }

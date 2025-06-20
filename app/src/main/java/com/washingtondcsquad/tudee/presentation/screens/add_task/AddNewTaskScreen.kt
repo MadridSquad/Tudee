@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -20,9 +19,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,177 +42,176 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddNewTaskScreen(
-    onCancelAddTaskBottomSheet: () -> Unit={},
+    onCancelAddTaskBottomSheet: () -> Unit = {},
     taskDate: LocalDate = LocalDate.now(),
     viewModel: AddTaskViewModel = koinViewModel(
-        parameters = { parametersOf(taskDate) }
-    ),
+        parameters = { parametersOf(taskDate) }),
+    onRefreshTaskData: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
-        ModalBottomSheet(
-            onDismissRequest = { onCancelAddTaskBottomSheet() },
-            containerColor = AppTheme.colors.surface,
-            sheetState = rememberModalBottomSheetState(
-                skipPartiallyExpanded = true
-            ),
+    ModalBottomSheet(
+        onDismissRequest = { onCancelAddTaskBottomSheet() },
+        containerColor = AppTheme.colors.surface,
+        sheetState = rememberModalBottomSheetState(
+            skipPartiallyExpanded = true
+        ),
+    ) {
+        if (state.isDatePickerDisplayed) {
+            DatePickerModal(
+                onDateSelected = { selectedDateMillis ->
+                    if (selectedDateMillis != null) {
+                        viewModel.onDateSelected(selectedDateMillis)
+                    }
+                }, onDismiss = viewModel::onHideDatePicker
+            )
+
+
+        }
+
+        Column(
+            Modifier.fillMaxHeight(0.8f)
         ) {
-            if (state.isDatePickerDisplayed) {
-                DatePickerModal(
-                    onDateSelected = {selectedDateMillis->
-                        if (selectedDateMillis != null) {
-                            viewModel.onDateSelected(selectedDateMillis)
-                        }
-                    },
-                    onDismiss = viewModel::onHideDatePicker
-                )
 
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.Start,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .weight(1f)
 
-            }
-
-            Column(
-                Modifier.fillMaxHeight(0.8f)
             ) {
+                item {
+                    Text(
+                        text = stringResource(R.string.add_new_task),
+                        modifier = Modifier.offset(y = 4.dp),
+                        style = defaultTextStyle.title.large
+                    )
+                }
 
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    horizontalAlignment = Alignment.Start,
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .weight(1f)
+                item {
+                    AppTextField(
+                        prefixIconPainter = painterResource(R.drawable.add_task_title),
+                        hintText = stringResource(R.string.task_title_hint),
+                        value = state.taskTitle,
+                        onValueChange = { viewModel.onTitleChange(it) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp)
 
-                ) {
-                    item {
+                    )
+                }
+
+                item {
+                    AppTextField(
+                        prefixIconPainter = null,
+                        hintText = stringResource(R.string.description_hint),
+                        value = state.taskDescription,
+                        onValueChange = { viewModel.onDescriptionChange(it) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(168.dp)
+                    )
+                }
+
+                item {
+                    val dateFormatter =
+                        DateTimeFormatter.ofPattern(stringResource(R.string.date_format))
+                    val formattedDate = state.taskDate.format(dateFormatter)
+                    AppTextField(
+                        prefixIconPainter = painterResource(R.drawable.add_task_calendar),
+                        hintText = formattedDate,
+                        value = formattedDate,
+                        onValueChange = { },
+                        onPrefixIconClick = viewModel::onShowDatePicker,
+                        readOnly = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+
+
+                item {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
                         Text(
-                            text = stringResource(R.string.add_new_task),
-                            modifier = Modifier.offset(y = 4.dp),
-                            style = defaultTextStyle.title.large
+                            text = stringResource(R.string.priority),
+                            style = defaultTextStyle.title.medium,
+                            color = AppTheme.colors.title
                         )
-                    }
-
-                    item {
-                        AppTextField(
-                            prefixIconPainter = painterResource(R.drawable.add_task_title),
-                            hintText = stringResource(R.string.task_title_hint),
-                            value = state.taskTitle,
-                            onValueChange = { viewModel.onTitleChange(it) },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(56.dp)
-
-                        )
-                    }
-
-                    item {
-                        AppTextField(
-                            prefixIconPainter = null,
-                            hintText = stringResource(R.string.description_hint),
-                            value = state.taskDescription,
-                            onValueChange = { viewModel.onDescriptionChange(it) },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(168.dp)
-                        )
-                    }
-
-                    item {
-                        val dateFormatter = DateTimeFormatter.ofPattern( stringResource(R.string.date_format) )
-                        val formattedDate =
-                            state.taskDate.format(dateFormatter)
-                        AppTextField(
-                            prefixIconPainter = painterResource(R.drawable.add_task_calendar),
-                            hintText = formattedDate,
-                            value = formattedDate,
-                            onValueChange = { },
-                            onPrefixIconClick = viewModel::onShowDatePicker,
-                            readOnly = true,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-
-
-                    item {
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(8.dp),
-                            horizontalAlignment = Alignment.Start
+                        LazyRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
-                            Text(
-                                text = stringResource(R.string.priority) ,
-                                style = defaultTextStyle.title.medium,
-                                color = AppTheme.colors.title
-                            )
-                            LazyRow(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            ) {
-                                items(state.priorityList) { priority ->
-                                    TaskPriorityCard(
-                                        priority = priority,
-                                        isSelected = state.selectedPriority == priority,
-                                        onClick = { viewModel.onPrioritySelected(priority) },
-                                    )
-                                }
+                            items(state.priorityList) { priority ->
+                                TaskPriorityCard(
+                                    priority = priority,
+                                    isSelected = state.selectedPriority == priority,
+                                    onClick = { viewModel.onPrioritySelected(priority) },
+                                )
                             }
                         }
                     }
+                }
 
-                    item {
+                item {
+                    Column(
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(
+                            text = stringResource(R.string.category),
+                            style = defaultTextStyle.title.medium,
+                            color = AppTheme.colors.title
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+
                         Column(
-                            horizontalAlignment = Alignment.Start
+                            verticalArrangement = Arrangement.spacedBy(24.dp)
                         ) {
-                            Text(
-                                text = stringResource(R.string.category) ,
-                                style = defaultTextStyle.title.medium,
-                                color = AppTheme.colors.title
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-
-                            Column(
-                                verticalArrangement = Arrangement.spacedBy(24.dp)
-                            ) {
-                                state.categoryList.chunked(3).forEach { rowCategories ->
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                    ) {
-                                        rowCategories.forEach { category ->
-                                            CategoryCard(
-                                                title = category.title,
-                                                imageSource = ImageSource.Path(category.iconPath),
-                                                onClick = { viewModel.onCategorySelected(category) },
-                                                isSelected = state.selectedCategory == category,
-                                                modifier = Modifier.weight(1f)
-                                            )
-                                        }
-                                        repeat(3 - rowCategories.size) {
-                                            Spacer(modifier = Modifier.weight(1f))
-                                        }
+                            state.categoryList.chunked(3).forEach { rowCategories ->
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                ) {
+                                    rowCategories.forEach { category ->
+                                        CategoryCard(
+                                            title = category.title,
+                                            imageSource = ImageSource.Path(category.iconPath),
+                                            onClick = { viewModel.onCategorySelected(category) },
+                                            isSelected = state.selectedCategory == category,
+                                            modifier = Modifier.weight(1f)
+                                        )
+                                    }
+                                    repeat(3 - rowCategories.size) {
+                                        Spacer(modifier = Modifier.weight(1f))
                                     }
                                 }
                             }
                         }
                     }
-
                 }
 
-                CancelableActionLayout(
-                    modifier = Modifier,
-                    actionText = stringResource(R.string.add),
-                    actionTextColor = Color.White,
-                    actionBackgroundColor = AppTheme.colors.primaryGradient,
-                    onAction = viewModel::onClickSaveButton ,
-                    onCancel = onCancelAddTaskBottomSheet,
-                    isEnabled = state.isButtonActionEnable
-                )
             }
+
+            CancelableActionLayout(
+                modifier = Modifier,
+                actionText = stringResource(R.string.add),
+                actionTextColor = Color.White,
+                actionBackgroundColor = AppTheme.colors.primaryGradient,
+                onAction = {
+                    viewModel.onClickSaveButton()
+                    onRefreshTaskData()
+                    onCancelAddTaskBottomSheet()
+                },
+                onCancel = onCancelAddTaskBottomSheet,
+                isEnabled = state.isButtonActionEnable
+            )
         }
+    }
 }
 
 //@Preview
 @Composable
 fun Preview() {
-    AddNewTaskScreen(
-        onCancelAddTaskBottomSheet = {
-
-        }
-    )
+    AddNewTaskScreen(onCancelAddTaskBottomSheet = {}, onRefreshTaskData = {})
 }

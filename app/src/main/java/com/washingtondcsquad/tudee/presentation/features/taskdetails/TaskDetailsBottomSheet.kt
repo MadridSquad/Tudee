@@ -28,9 +28,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -53,73 +50,67 @@ fun TaskDetailsBottomSheet(
     taskId: Int,
     viewModel: BottomSheetTaskViewModel = koinViewModel<BottomSheetTaskViewModel>(),
     onClickTaskDetails: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    var isSheetOpen by rememberSaveable { mutableStateOf(true) }
 
     LaunchedEffect(taskId) {
         viewModel.loadTask(taskId)
     }
     val taskState by viewModel.state.collectAsState()
 
-    if (isSheetOpen) {
-        ModalBottomSheet(
-            sheetState = sheetState,
-            onDismissRequest = {
-                isSheetOpen = false
-                onDismiss()
-            },
-        ) {
-            when (taskState) {
-                is TaskState.Loading -> {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
-                    }
+    ModalBottomSheet(
+        sheetState = sheetState,
+        onDismissRequest = {
+            onDismiss()
+        },
+    ) {
+        when (taskState) {
+            is TaskState.Loading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
                 }
+            }
 
-                is TaskState.Error -> {
-                    val errorMessage = (taskState as TaskState.Error).message
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "Error loading task: $errorMessage",
-                            color = AppTheme.colors.error,
-                            modifier = Modifier.padding(bottom = 16.dp)
-                        )
-                        Button(onClick = { viewModel.loadTask(taskId) }) {
-                            Text("Retry")
-                        }
-                    }
-                }
-
-                is TaskState.Loaded -> {
-                    val task = (taskState as TaskState.Loaded).task
-                    TaskDetailsContent(
-                        task = task,
-                        onClickTaskDetails = onClickTaskDetails,
-                        onMoveToNextStatus = { viewModel.moveToNextStatus() }
+            is TaskState.Error -> {
+                val errorMessage = (taskState as TaskState.Error).message
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Error loading task: $errorMessage",
+                        color = AppTheme.colors.error,
+                        modifier = Modifier.padding(bottom = 16.dp)
                     )
+                    Button(onClick = { viewModel.loadTask(taskId) }) {
+                        Text("Retry")
+                    }
                 }
+            }
+
+            is TaskState.Loaded -> {
+                val task = (taskState as TaskState.Loaded).task
+                TaskDetailsContent(
+                    task = task,
+                    onClickTaskDetails = onClickTaskDetails,
+                    onMoveToNextStatus = { viewModel.moveToNextStatus() })
             }
         }
     }
 }
 
+
 @Composable
 private fun TaskDetailsContent(
-    task: Task,
-    onClickTaskDetails: () -> Unit,
-    onMoveToNextStatus: () -> Unit
+    task: Task, onClickTaskDetails: () -> Unit, onMoveToNextStatus: () -> Unit
 ) {
     val isFinalStatus = task.status == TaskStatus.DONE
 
@@ -137,14 +128,14 @@ private fun TaskDetailsContent(
             Text(
                 text = "Task details",
                 style = AppTheme.textStyle.title.large,
-                color = AppTheme.colors.title, modifier = Modifier.padding(bottom = 16.dp)
+                color = AppTheme.colors.title,
+                modifier = Modifier.padding(bottom = 16.dp)
             )
 
             Image(
                 modifier = Modifier
                     .background(
-                        color = AppTheme.colors.surfaceHigh,
-                        shape = CircleShape
+                        color = AppTheme.colors.surfaceHigh, shape = CircleShape
                     )
                     .padding(12.dp)
                     .size(32.dp),
@@ -166,8 +157,7 @@ private fun TaskDetailsContent(
             )
 
             HorizontalDivider(
-                modifier = Modifier.padding(vertical = 12.dp),
-                color = AppTheme.colors.stroke
+                modifier = Modifier.padding(vertical = 12.dp), color = AppTheme.colors.stroke
             )
 
             Row(Modifier.fillMaxWidth()) {
@@ -178,8 +168,7 @@ private fun TaskDetailsContent(
                 )
 
                 TaskPriorityCard(
-                    priority = task.priority,
-                    modifier = Modifier.height(28.dp)
+                    priority = task.priority, modifier = Modifier.height(28.dp)
                 )
             }
             if (!isFinalStatus) {
@@ -190,22 +179,19 @@ private fun TaskDetailsContent(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(
-                        Modifier.padding(end = 4.dp)
+                        Modifier
+                            .padding(end = 4.dp)
                             .height(52.dp)
                             .fillMaxWidth(0.25f)
                             .clip(RoundedCornerShape(100.dp))
                             .border(
-                                1.dp,
-                                AppTheme.colors.stroke,
-                                RoundedCornerShape(100.dp)
+                                1.dp, AppTheme.colors.stroke, RoundedCornerShape(100.dp)
                             )
-                            .clickable { onClickTaskDetails() }
-                    ) {
+                            .clickable { onClickTaskDetails() }) {
                         Image(
                             painter = painterResource(id = R.drawable.pencil_edit),
                             contentDescription = "edit screen",
-                            modifier = Modifier
-                                .align(Alignment.Center)
+                            modifier = Modifier.align(Alignment.Center)
 
                         )
                     }
@@ -216,13 +202,12 @@ private fun TaskDetailsContent(
                             .fillMaxWidth(1f)
                             .clip(RoundedCornerShape(100.dp))
                             .border(
-                                1.dp,
-                                AppTheme.colors.stroke,
-                                RoundedCornerShape(100.dp)
+                                1.dp, AppTheme.colors.stroke, RoundedCornerShape(100.dp)
                             )
                             .clickable(
-                                onClick = {onMoveToNextStatus() }
-                            )
+                                onClick = {
+                                    onMoveToNextStatus()
+                                })
                     ) {
                         Text(
                             text = "Move to ${task.status.next().toDisplayName()}",
@@ -240,6 +225,6 @@ private fun TaskDetailsContent(
 
 @Composable
 @Preview
-fun Preview(){
-    TaskDetailsBottomSheet(taskId = 1, onClickTaskDetails = {}, onDismiss = {})
+fun Preview() {
+    //  TaskDetailsBottomSheet(taskId = 1, onClickTaskDetails = {}, onDismiss = {}, isSheetOpen = false)
 }
