@@ -64,17 +64,18 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = koinVie
 
     SetStatusBarIconsColor(false)
     HomeScreenContent(
-        modifier = modifier, state = state, listener = viewModel, onRefreshData = {
+        modifier = modifier, state = state, viewmodel = viewModel, onRefreshData = {
             viewModel.refresh()
         })
 
 }
 
+
 @Composable
 private fun HomeScreenContent(
     modifier: Modifier = Modifier,
     state: HomeUiState,
-    listener: HomeListener,
+    viewmodel: HomeViewModel,
     onRefreshData: () -> Unit
 ) {
     val isEmptyState =
@@ -101,7 +102,6 @@ private fun HomeScreenContent(
         if (state.isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         } else {
-
 
             Column(
                 modifier = Modifier
@@ -149,8 +149,8 @@ private fun HomeScreenContent(
                         switchPadding = 8.dp,
                         buttonWidth = 64.dp,
                         buttonHeight = 36.dp,
-                        isDarkTheme = false,
-                        onToggle = { listener.onThemeSwitched(it) })
+                        isDarkTheme = state.isDarkTheme,
+                        onToggle = { viewmodel.onThemeSwitched(it) })
                 }
                 Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
 
@@ -197,21 +197,22 @@ private fun HomeScreenContent(
             }
         }
 
+        if (showAddNewTaskBottomSheet) {
+            AddNewTaskScreen(
+                onRefreshTaskData = onRefreshData,
+                onCancelAddTaskBottomSheet = {
+                    showAddNewTaskBottomSheet = false
+                },
+                onActionResult = { e, b -> },
+            )
+        }
 
         FabIcon(
-
             modifier = Modifier
                 .noRippleClick {
                     showAddNewTaskBottomSheet = true
                 }
                 .align(Alignment.BottomEnd))
-        if (showAddNewTaskBottomSheet) {
-            AddNewTaskScreen(
-                onRefreshTaskData = onRefreshData, onCancelAddTaskBottomSheet = {
-                    showAddNewTaskBottomSheet = false
-                })
-        }
-        // task details bottom sheet
         if (showTaskDetailBottomSheet) {
             ShowTaskDetails(currentTaskIdToShowDetail) {
                 showTaskDetailBottomSheet = false
@@ -334,7 +335,7 @@ private fun TaskStatusLayout(
 
 
 @Composable
-private fun NoTasksPlaceHolder(modifier: Modifier = Modifier) {
+ fun NoTasksPlaceHolder(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -388,11 +389,5 @@ private fun NoTasksPlaceHolder(modifier: Modifier = Modifier) {
 private fun Preview() {
     HomeScreenContent(
         modifier = Modifier, state = HomeUiState(
-    ), listener = object : HomeListener {
-        override fun onTaskClicked(taskId: Int) {
-        }
-
-        override fun onThemeSwitched(isDarkMode: Boolean) {
-        }
-    }, onRefreshData = {})
+        ), viewmodel = koinViewModel<HomeViewModel>(), onRefreshData = {})
 }

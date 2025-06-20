@@ -4,6 +4,7 @@ import com.washingtondcsquad.tudee.presentation.features.home.HomeViewModel
 import com.washingtondcsquad.tudee.presentation.features.taskdetails.BottomSheetTaskViewModel
 import com.washingtondcsquad.tudee.presentation.screen.onBoarding.OnboardingViewModel
 import com.washingtondcsquad.tudee.presentation.screens.add_task.AddTaskViewModel
+import com.washingtondcsquad.tudee.presentation.screens.add_task.EditTaskViewModel
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.TasksViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
@@ -21,11 +22,23 @@ val viewModelModule = module {
         get()
     ) }
     viewModel { BottomSheetTaskViewModel(get()) }
-    viewModel {
+    viewModel { (taskDate: LocalDate, onCancel: () -> Unit, onActionResult: (success: Boolean, message: String) -> Unit) ->
         AddTaskViewModel(
-            get(),
-            get(),
-            initialDate = LocalDate.now(),
+            tasksService = get(),
+            categoryService = get(),
+            taskDate = taskDate,
+            onCancelAddTaskBottomSheet = onCancel,
+            onActionResult = onActionResult
+        )
+    }
+
+    viewModel { (taskId:Int , onCancel: () -> Unit , onActionResult: (success: Boolean, message: String) -> Unit) ->
+        EditTaskViewModel(
+            tasksService = get(),
+            categoryService = get(),
+            taskId = taskId,
+            onCancelAddTaskBottomSheet = onCancel,
+            onActionResult = onActionResult
         )
     }
 

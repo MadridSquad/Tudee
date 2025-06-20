@@ -31,16 +31,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
+import com.washingtondcsquad.tudee.domain.entity.TaskStatus
+import com.washingtondcsquad.tudee.presentation.components.DatePickerModal
 import com.washingtondcsquad.tudee.presentation.components.DayCard
 import com.washingtondcsquad.tudee.presentation.components.SnackBarCard
+import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarController
+import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarEvent
 import com.washingtondcsquad.tudee.presentation.deletetask.ConfirmDeleteTask
 import com.washingtondcsquad.tudee.presentation.deletetask.DeleteTaskScroll
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyle
+import com.washingtondcsquad.tudee.presentation.features.home.NoTasksPlaceHolder
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.ChangeMonthButton
-import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.DatePickerModal
-import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.NoTasks
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.TasksTabRow
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
@@ -79,13 +82,6 @@ fun TasksScreenContent(
 ) {
     val pagerState = rememberPagerState(pageCount = { 3 })
     val selectedTabIndex by remember { derivedStateOf { pagerState.currentPage } }
-    val filteredLists = remember {
-        listOf(
-        tasksUiState.tasksList.filter { it.taskStatus == "IN_PROGRESS" },
-        tasksUiState.tasksList.filter { it.taskStatus == "TODO" },
-        tasksUiState.tasksList.filter { it.taskStatus == "DONE" }
-    )
-    }
 
     val selectedTaskToDelete = remember { mutableStateOf<TaskUiState?>(null) }
 
@@ -158,7 +154,24 @@ fun TasksScreenContent(
                 .weight(1f)
                 .background(AppTheme.colors.surface)
         ) {
-            val currentTasks = filteredLists[it]
+
+            val currentTasks : List<TaskUiState> = tasksUiState.tasksList
+                .filter {
+                    it.taskStatus == when (selectedTabIndex) {
+                        0 -> {
+                            TaskStatus.IN_PROGRESS
+                        }
+
+                        1 -> {
+                            TaskStatus.TODO
+                        }
+
+                        else -> {
+                            TaskStatus.DONE
+                        }
+                    }.name
+
+                }
 
             LazyColumn(
                 Modifier
@@ -166,17 +179,14 @@ fun TasksScreenContent(
                     .padding(top = 12.dp, start = 16.dp, end = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                val tasksToShow = if (tasksUiState.isFilterEnabled) {
-                    currentTasks.filter {
-                        it.taskDate == formatedSelectedDate(
-                            tasksUiState.selectedDateInMillis
-                        )
-                    }
-                } else {
-                    currentTasks
+                val tasksToShow = currentTasks.filter {
+                    it.taskDate == formatedSelectedDate(
+                        tasksUiState.selectedDateInMillis
+                    ).trim()
                 }
+
                 if (tasksToShow.isNotEmpty()) {
-                    itemsIndexed(currentTasks) { index, item ->
+                    itemsIndexed(tasksToShow) { index, item ->
                         DeleteTaskScroll(task = item) {
                             selectedTaskToDelete.value = item
                         }
@@ -189,7 +199,7 @@ fun TasksScreenContent(
                                 .padding(end = 4.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            NoTasks()
+                            NoTasksPlaceHolder()
                         }
                     }
                 }
@@ -197,14 +207,11 @@ fun TasksScreenContent(
         }
         if (tasksUiState.showDateDialog) {
             DatePickerModal(
-                tasksUiState.selectedDateInMillis,
-                onDateSelected = { millis ->
+                onDateSelected ={ millis ->
                     millis?.let { onDateSelectedFromDatePicker(it) }
                     setShowDialog(false)
                 },
                 onDismiss = { setShowDialog(false) },
-                onClear = clearDatePicker
-
             )
         }
 
@@ -226,21 +233,18 @@ fun TasksScreenContent(
 
     }
 
-    if (showSnackBar.value) {
-        LaunchedEffect(Unit) {
-            delay(3000)
+    val snackbarMessage = stringResource(R.string.deleted_task_successfully)
+
+    LaunchedEffect(showSnackBar.value) {
+        if (showSnackBar.value) {
+            SnackbarController.sendEvent(SnackbarEvent(message = snackbarMessage))
             showSnackBar.value = false
         }
-
-        SnackBarCard(
-            message = stringResource(R.string.deleted_task_successfully),
-            icon = painterResource(R.drawable.checkmark),
-            iconTint = AppTheme.colors.greenAccent,
-            iconBackgroundColor = AppTheme.colors.greenVariant,
-            modifier = Modifier
-                .padding(bottom = 16.dp)
-        )
     }
+
+
+
+
 
 }
 

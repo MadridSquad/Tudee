@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -37,25 +38,69 @@ import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyl
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.ImageSource
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
-import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddNewTaskScreen(
-    onCancelAddTaskBottomSheet: () -> Unit = {},    onActionResult : (success:Boolean,message:String) ->Unit ,
-    taskDate: LocalDate = LocalDate.now(),
-    viewModel: AddTaskViewModel = koinViewModel(
+fun EditTaskScreen(
+    onCancelAddTaskBottomSheet: () -> Unit,
+    onActionResult : (success:Boolean,message:String) ->Unit ,
+    taskId:Int,
+    viewModel: EditTaskViewModel = koinViewModel(
         parameters = {
             parametersOf(
-                taskDate,
+                taskId,
                 onCancelAddTaskBottomSheet,
                 onActionResult
             )
         }
     ),
-    onRefreshTaskData: () -> Unit,
 ) {
+    val drawablesOfCategories = remember {
+        listOf(
+            R.drawable.education_icon,
+            R.drawable.shopping,
+            R.drawable.medical,
+            R.drawable.gym,
+            R.drawable.entertainment,
+            R.drawable.cooking,
+            R.drawable.family,
+            R.drawable.traveling,
+            R.drawable.agriculture,
+            R.drawable.coding,
+            R.drawable.adoration,
+            R.drawable.fix_bug,
+            R.drawable.cleaning,
+            R.drawable.work,
+            R.drawable.budgeting,
+            R.drawable.self_care,
+            R.drawable.event
+        )
+    }
+    val titlesOfCategories = remember {  listOf(
+        "Education",
+        "Shopping",
+        "Medical",
+        "Gym",
+        "Entertainment",
+        "Cooking",
+        "Family & friend",
+        "Traveling",
+        "Agriculture",
+        "Coding",
+        "Adoration",
+        "Fix bug",
+        "Cleaning",
+        "Work",
+        "Budgeting",
+        "Self care",
+        "Event"
+    ) }
     val state by viewModel.state.collectAsState()
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Bottom
+    ) {
         ModalBottomSheet(
             onDismissRequest = { onCancelAddTaskBottomSheet() },
             containerColor = AppTheme.colors.surface,
@@ -63,47 +108,6 @@ fun AddNewTaskScreen(
                 skipPartiallyExpanded = true
             ),
         ) {
-            val drawablesOfCategories = remember {
-                listOf(
-                    R.drawable.education_icon,
-                    R.drawable.shopping,
-                    R.drawable.medical,
-                    R.drawable.gym,
-                    R.drawable.entertainment,
-                    R.drawable.cooking,
-                    R.drawable.family,
-                    R.drawable.traveling,
-                    R.drawable.agriculture,
-                    R.drawable.coding,
-                    R.drawable.adoration,
-                    R.drawable.fix_bug,
-                    R.drawable.cleaning,
-                    R.drawable.work,
-                    R.drawable.budgeting,
-                    R.drawable.self_care,
-                    R.drawable.event
-                )
-            }
-            val titlesOfCategories = remember {  listOf(
-                "Education",
-                "Shopping",
-                "Medical",
-                "Gym",
-                "Entertainment",
-                "Cooking",
-                "Family & friend",
-                "Traveling",
-                "Agriculture",
-                "Coding",
-                "Adoration",
-                "Fix bug",
-                "Cleaning",
-                "Work",
-                "Budgeting",
-                "Self care",
-                "Event"
-            ) }
-
             if (state.isDatePickerDisplayed) {
                 DatePickerModal(
                     onDateSelected = {selectedDateMillis->
@@ -131,7 +135,7 @@ fun AddNewTaskScreen(
                 ) {
                     item {
                         Text(
-                            text = stringResource(R.string.add_new_task),
+                            text = stringResource(R.string.edit_task),
                             modifier = Modifier.offset(y = 4.dp),
                             style = defaultTextStyle.title.large
                         )
@@ -248,31 +252,29 @@ fun AddNewTaskScreen(
                                 }
                             }
                         }
+
                     }
 
                 }
 
-            CancelableActionLayout(
-                modifier = Modifier,
-                actionText = stringResource(R.string.add),
-                actionTextColor = Color.White,
-                actionBackgroundColor = AppTheme.colors.primaryGradient,
-                onAction = {
-                    viewModel.onClickSaveButton()
-                    onRefreshTaskData()
-                    onCancelAddTaskBottomSheet()
-                },
-                onCancel = onCancelAddTaskBottomSheet,
-                isEnabled = state.isButtonActionEnable
-            )
+                CancelableActionLayout(
+                    modifier = Modifier,
+                    actionText = stringResource(R.string.save),
+                    actionTextColor = Color.White,
+                    actionBackgroundColor = AppTheme.colors.primaryGradient,
+                    onAction = viewModel::onClickEditButton ,
+                    onCancel = onCancelAddTaskBottomSheet,
+                    isEnabled = state.isButtonActionEnable
+                )
+            }
         }
     }
 }
 
 //@Preview
-//@Composable
-//fun Preview() {
+@Composable
+fun EditTaskPreview() {
 //    AddNewTaskScreen(
 //        onCancelAddTaskBottomSheet = {}
 //    )
-//}
+}

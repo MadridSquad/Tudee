@@ -12,7 +12,8 @@ data class HomeUiState(
     val inProgressTasks: List<TaskUiState> = emptyList<TaskUiState>(),
     val todoTasks: List<TaskUiState> = emptyList<TaskUiState>(),
     val doneTasks: List<TaskUiState> = emptyList(),
-    val tudeeStatus: TudeeStatus = TudeeStatus.ZERO_TASK
+    val tudeeStatus: TudeeStatus = TudeeStatus.ZERO_TASK,
+    val isDarkTheme: Boolean = false
 )
 
 fun List<Task>.toUiState(): List<TaskUiState> = this.map { it.toTaskUiState() }

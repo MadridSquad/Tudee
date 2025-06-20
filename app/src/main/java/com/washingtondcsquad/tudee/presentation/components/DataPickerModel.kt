@@ -27,7 +27,8 @@ import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyl
 @Composable
 fun DatePickerModal(
     onDateSelected: (Long?) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+
 ) {
     val datePickerState = rememberDatePickerState(initialDisplayMode = DisplayMode.Picker,
         initialSelectedDateMillis = System.currentTimeMillis()
@@ -69,6 +70,7 @@ fun DatePickerModal(
                     TextButton(onClick = {
                         datePickerState.selectedDateMillis = null
                         onDismiss()
+
                     }) {
                         Text(
                             text = stringResource(id = R.string.clear),

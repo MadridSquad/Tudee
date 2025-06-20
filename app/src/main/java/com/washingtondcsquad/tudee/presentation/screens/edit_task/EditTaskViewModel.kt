@@ -1,6 +1,7 @@
 package com.washingtondcsquad.tudee.presentation.screens.add_task
 
 import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
@@ -8,45 +9,73 @@ import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
-import com.washingtondcsquad.tudee.presentation.features.sharedUiState.AddTaskUiState
+import com.washingtondcsquad.tudee.presentation.features.sharedUiState.EditTaskUiState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-class AddTaskViewModel(
+class EditTaskViewModel(
     private val tasksService: TasksService,
     private val categoryService: CategoriesService,
-    taskDate: LocalDate = LocalDate.now(),
-    private val onCancelAddTaskBottomSheet: () -> Unit,
-    private val onActionResult:(success:Boolean,message:String)->Unit
-) : BaseViewModel<AddTaskUiState>(
-    AddTaskUiState(
-        taskDate = taskDate.format(DateTimeFormatter.ofPattern("d-M-yyyy"))
+    taskId: Int = 0,
+    private val onCancelAddTaskBottomSheet: () -> Unit = {},
+    private val onActionResult: (success: Boolean, message: String) -> Unit
+) : BaseViewModel<EditTaskUiState>(
+    EditTaskUiState(
+        taskId = taskId,
     )
 ) {
 
     init {
         getAllCategories()
+        getTaskById()
     }
 
+    private fun getTaskById() {
+        viewModelScope.launch {
+            val task = tasksService.getTaskById(_state.value.taskId)
+            withContext(Dispatchers.Main) {
+                updateState {
+                    copy(
+                        taskId = task.id,
+                        taskTitle = task.title,
+                        taskDescription = task.description,
+                        taskDate = task.date,
+                        selectedPriority = task.priority,
+                        selectedCategory = getCategory(task.categoryId),
+                    )
+                }
+            }
+        }
 
-    private fun getAllCategories() {
+
+    }
+
+    fun getAllCategories() {
         tryToExecute(
             request = {
-                 categoryService.getAllCategories().collect{
-                     updateState {
-                         copy(
-                             categoryList = it
-                         )
-                     }
+                categoryService.getAllCategories().collect{
+                    updateState {
+                        copy( categoryList =  it )
+                    }
                 }
             },
-            onSuccess = {},
+            onSuccess = {
+
+            },
             onError = { exception -> }
         )
 
     }
+
+    fun getCategory(categoryId: Long): Category {
+        return _state.value.categoryList.find { it.id == categoryId }!!
+    }
+
 
     fun onShowDatePicker() {
         updateState {
@@ -128,12 +157,12 @@ class AddTaskViewModel(
         }
     }
 
-    fun onClickSaveButton() {
+    fun onClickEditButton() {
         tryToExecute(
             request = {
-                tasksService.createTask(
+                tasksService.editTask(
                     Task(
-                        id = 0,
+                        id = _state.value.taskId,
                         categoryId = _state.value.selectedCategory!!.id,
                         categoryImage = _state.value.selectedCategory!!.iconPath,
                         title = _state.value.taskTitle,
@@ -147,18 +176,17 @@ class AddTaskViewModel(
             onSuccess = {
                 clearDate()
                 onCancelAddTaskBottomSheet()
-                onActionResult(true,"Add task successfully.")
+                onActionResult(true,"Edited task successfully.")
             },
             onError = { exception ->
                 onActionResult(false,exception.message.toString())
             }
         )
     }
-
     private fun clearDate() {
         updateState {
             copy(
-                taskId = 0.toString(),
+                taskId = 0,
                 taskTitle = "",
                 taskDescription = "",
                 taskDate = LocalDate.now().format(DateTimeFormatter.ofPattern("d-M-yyyy")),

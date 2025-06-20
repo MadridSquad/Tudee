@@ -1,6 +1,7 @@
 package com.washingtondcsquad.tudee.presentation.screens.tasksScreen
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
@@ -12,12 +13,11 @@ import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.utils.buildM
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.utils.getYearAndMonthTitleFromYearMonth
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.utils.todayInMillis
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
-import org.koin.mp.KoinPlatform.getKoin
+import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.YearMonth
 import java.time.ZoneId
-import java.util.UUID
+import java.time.format.DateTimeFormatter
 
 class TasksViewModel(
     private val tasksService: TasksService ,
@@ -37,9 +37,8 @@ class TasksViewModel(
     )
 ) {
     init {
-        loadData()
+        observeTasks()
     }
-
     var snackBarMessage = mutableStateOf<String?>(null)
 
 
@@ -66,7 +65,7 @@ class TasksViewModel(
         },
         onSuccess = {
             snackBarMessage.value = "Deleted task successfully."
-            loadData()
+            observeTasks()
         },
         onError = {
             onError(it)
@@ -74,30 +73,28 @@ class TasksViewModel(
     )
 
 
-    fun loadData() = tryToExecute(
-        request = {
-            val tasks = tasksService.getAllTasks().first()
-            val tasksForUiState = tasks.map {
-                TaskUiState(
-                    taskId = it.id,
-                    taskDate = it.date,
-                    taskTitle = it.title,
-                    taskDescription = it.description,
-                    taskPriority = it.priority,
-                    taskStatus = it.status.toString(),
-                    categoryImage = categoriesService.getCategoryById(
-                        it.categoryId.toString().toLong()
-                    ).iconPath
-                )
+    private fun observeTasks() {
+       viewModelScope.launch {
+            tasksService.getAllTasks().collect { tasks ->
+                val tasksForUiState = tasks.map {
+                    TaskUiState(
+                        taskId = it.id,
+                        taskDate = it.date,
+                        taskTitle = it.title,
+                        taskDescription = it.description,
+                        taskPriority = it.priority,
+                        taskStatus = it.status.toString(),
+                        categoryImage = categoriesService.getCategoryById(
+                            it.categoryId.toString().toLong()
+                        ).iconPath
+                    )
+                }
+                updateState {
+                    copy(tasksList = tasksForUiState)
+                }
             }
-            updateState {
-                copy(tasksList = tasksForUiState)
-            }
-        },
-        onSuccess = ::onSuccess,
-        onError = ::onError
-    )
-
+        }
+    }
     private fun onSuccess(response: Unit) {
 
     }
@@ -151,10 +148,11 @@ class TasksViewModel(
     }
 
     fun formatedSelectedDate(millis: Long): String {
-        val date = Instant.ofEpochMilli(millis)
+        val dataInLocalDate = Instant.ofEpochMilli(millis)
             .atZone(ZoneId.systemDefault())
             .toLocalDate()
-        return "${date.year}-${date.monthValue}-${date.dayOfMonth}"
+        val realDate = dataInLocalDate.format(DateTimeFormatter.ofPattern("d-M-yyyy"))
+        return realDate
     }
 
     fun setShowDialog(show: Boolean) {
