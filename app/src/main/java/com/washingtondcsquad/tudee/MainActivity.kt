@@ -1,5 +1,6 @@
 package com.washingtondcsquad.tudee
 
+import SplashScreen
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
@@ -123,6 +124,15 @@ class MainActivity : ComponentActivity() {
                                 composable(route = "category") {
                                     CategoriesScreen()
                                 }
+
+                                composable(route = "splash") {
+                                    SplashScreen(
+                                        title = "Tudee",
+                                        isDarkTheme = isDarkMode,
+                                        onNavigateNext = { navController.navigate("home") }
+                                    )
+                                }
+
                             }
                         }
                     }
