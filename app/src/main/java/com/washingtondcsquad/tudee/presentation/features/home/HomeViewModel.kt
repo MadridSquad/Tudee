@@ -102,9 +102,7 @@ class HomeViewModel(
         }
     }
 
-    override fun onTaskClicked(taskId: Int) {
-
-    }
+    override fun onTaskClicked(taskId: Int) {}
 
     override fun onThemeSwitched(isDarkMode: Boolean) {
         tryToExecute(request = {
