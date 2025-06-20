@@ -39,10 +39,8 @@ class HomeViewModel(
                 tasksService.getAllTasks().collect {
                     onSuccess(it)
                     Log.i("refresh", "all data ${it}")
-
                 }
                 tasks
-
 
             }, onSuccess = ::onSuccess, onError = ::onError
         )
@@ -60,29 +58,34 @@ class HomeViewModel(
                 inProgressTasks = inProgressTasks.toUiState(),
                 doneTasks = doneTasks.toUiState(),
                 todoTasks = toDoTasks.toUiState(),
-                tudeeStatus = calculateOverviewAnalytics()
+                tudeeStatus = calculateOverviewAnalytics(
+                    inProgressCount = inProgressTasks.size,
+                    todoCount = toDoTasks.size,
+                    doneCount = doneTasks.size
+                )
             )
         }
 
     }
 
-    private fun calculateOverviewAnalytics(): TudeeStatus {
-        val state = state.value
+    private fun calculateOverviewAnalytics(
+        inProgressCount: Int, todoCount: Int, doneCount: Int
+    ): TudeeStatus {
+        val totalCount = inProgressCount + todoCount + doneCount
         return when {
-            state.doneTasks.size == 3 && state.todoTasks.size == 7 -> {
+            totalCount == 0 ->{
+                TudeeStatus.ZERO_TASK
+            }
+            doneCount != 0 && doneCount <= totalCount / 2 -> {
                 TudeeStatus.STAY_WORKING
             }
 
-            state.doneTasks.isNotEmpty() && state.todoTasks.isEmpty() && state.inProgressTasks.isEmpty() -> {
+            doneCount >= totalCount / 2 -> {
                 TudeeStatus.DOING_AMAZING
             }
 
-            state.doneTasks.isEmpty() && state.todoTasks.isNotEmpty() && state.inProgressTasks.isEmpty() -> {
+            inProgressCount == 0 && todoCount == 0 -> {
                 TudeeStatus.ZERO_PROGRESS
-            }
-
-            state.inProgressTasks.isEmpty() && state.todoTasks.isEmpty() -> {
-                TudeeStatus.ZERO_TASK
             }
 
             else -> {
