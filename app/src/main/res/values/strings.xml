@@ -17,7 +17,7 @@
     <string name="budgeting">Budgeting</string>
     <string name="self_care">Self Care</string>
     <string name="event">Event</string>
-
+    <string name="deleted_task_successfully">Deleted task successfully.</string>
 
 
     <string name="onboarding_title_1">Uh-oh! Procrastinating again\n</string>
@@ -46,7 +46,9 @@
 
     <string name="ok">OK</string>
     <string name="clear">Clear</string>
-
+    <string name="delete_task">Delete task</string>
+    <string name="are_you_sure_to_continue">Are you sure to continue?</string>
+    <string name="delete">Delete</string>
 
 
 </resources>

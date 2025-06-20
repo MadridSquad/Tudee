@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val tasksService: TasksService, private val appPreferences: AppPreferencesService
-
+    private val tasksService: TasksService,
+    private val appPreferences: AppPreferencesService
 ) : BaseViewModel<HomeUiState>(HomeUiState()), HomeListener {
 
     init {
@@ -28,23 +28,6 @@ class HomeViewModel(
         updateState {
             copy(isLoading = false)
         }
-    }
-
-
-    fun toggleTheme(isDark: Boolean) {
-        tryToExecute(request = {
-            appPreferences.setDarkModeEnabled(isDark)
-            isDark
-        }, onSuccess = {
-            updateState {
-                copy(isDarkTheme = isDark)
-            }
-        }, onError = {
-            updateState {
-                copy(error = it.message)
-            }
-        })
-
     }
 
     private fun loadData() = viewModelScope.launch {
@@ -126,6 +109,20 @@ class HomeViewModel(
     }
 
     override fun onThemeSwitched(isDarkMode: Boolean) {
-        toggleTheme(isDarkMode)
+        tryToExecute(
+            request = {
+                appPreferences.setDarkModeEnabled(isDarkMode)
+            },
+            onSuccess = {
+                updateState {
+                    copy(isDarkMode = isDarkMode)
+                }
+            },
+            onError = {
+                updateState {
+                    copy(error = it.message)
+                }
+            }
+        )
     }
 }

@@ -1,4 +1,4 @@
-package com.washingtondcsquad.tudee.presentation.design.colors
+package com.washingtondcsquad.tudee.presentation.design.colorStyle
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
