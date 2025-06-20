@@ -209,7 +209,9 @@ private fun HomeScreenContent(
             AddNewTaskScreen(
                 onRefreshTaskData = onRefreshData, onCancelAddTaskBottomSheet = {
                     showAddNewTaskBottomSheet = false
-                })
+                },
+                onActionResult = { a,b ->  },
+            )
         }
         // task details bottom sheet
         if (showTaskDetailBottomSheet) {
