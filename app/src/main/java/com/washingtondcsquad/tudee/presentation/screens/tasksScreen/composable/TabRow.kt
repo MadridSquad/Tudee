@@ -11,10 +11,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.TasksUiState
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TasksTabRow(selectedTabIndex: Int, pagerState: PagerState, tasksUiState: TasksUiState) {
+fun TasksTabRow(
+    selectedTabIndex: Int, pagerState: PagerState, tasksUiState: TasksUiState
+    ,
+) {
     PrimaryTabRow(
         selectedTabIndex = selectedTabIndex,
         modifier = Modifier
@@ -29,26 +35,32 @@ fun TasksTabRow(selectedTabIndex: Int, pagerState: PagerState, tasksUiState: Tas
             )
         }
     ) {
+        val dataInLocalDate = Instant.ofEpochMilli(tasksUiState.selectedDateInMillis)
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate()
+        val realDate = dataInLocalDate.format(DateTimeFormatter.ofPattern("d-M-yyyy"))
         TasksTab(
             selectedTabIndex = selectedTabIndex,
             index = 0,
             tabName = "In progress",
             pagerState = pagerState,
-            tasksNumber = tasksUiState.tasksList.filter { it.taskStatus == "IN_PROGRESS" }.size
+            tasksNumber = tasksUiState.tasksList.filter { it.taskStatus == "IN_PROGRESS" &&
+                    it.taskDate == realDate}.size
         )
         TasksTab(
             selectedTabIndex = selectedTabIndex,
             index = 1,
             tabName = "To Do",
             pagerState = pagerState,
-            tasksNumber = tasksUiState.tasksList.filter { it.taskStatus == "TODO" }.size
+            tasksNumber = tasksUiState.tasksList.filter { it.taskStatus == "TODO" &&
+                    it.taskDate == realDate}.size
         )
         TasksTab(
             selectedTabIndex = selectedTabIndex,
             index = 2,
             tabName = "Done",
             pagerState = pagerState,
-            tasksNumber = tasksUiState.tasksList.filter { it.taskStatus == "DONE" }.size
+            tasksNumber = tasksUiState.tasksList.filter { it.taskStatus == "DONE" &&  it.taskDate == realDate}.size
         )
     }
 }
