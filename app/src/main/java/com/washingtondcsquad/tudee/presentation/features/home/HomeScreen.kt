@@ -29,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -51,6 +52,7 @@ import com.washingtondcsquad.tudee.presentation.components.TextLogo
 import com.washingtondcsquad.tudee.presentation.components.analytics_components.AnalyticsCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
+import com.washingtondcsquad.tudee.presentation.features.taskdetails.TaskDetailsBottomSheet
 import com.washingtondcsquad.tudee.presentation.screens.add_task.AddNewTaskScreen
 import com.washingtondcsquad.tudee.presentation.utils.SetStatusBarIconsColor
 import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.noRippleClick
@@ -62,13 +64,9 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = koinVie
 
     SetStatusBarIconsColor(false)
     HomeScreenContent(
-        modifier = modifier,
-        state = state,
-        listener = viewModel,
-        onRefreshData = {
+        modifier = modifier, state = state, listener = viewModel, onRefreshData = {
             viewModel.refresh()
-        }
-    )
+        })
 
 }
 
@@ -81,15 +79,15 @@ private fun HomeScreenContent(
 ) {
     val isEmptyState =
         state.inProgressTasks.isEmpty() and state.todoTasks.isEmpty() and state.doneTasks.isEmpty()
-    var showBottomSheet by remember { mutableStateOf(false) }
-
+    var showAddNewTaskBottomSheet by remember { mutableStateOf(false) }
+    var showTaskDetailBottomSheet by remember { mutableStateOf(false) }
+    var currentTaskIdToShowDetail by remember { mutableIntStateOf(0) }
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(
                 color = AppTheme.colors.primary
-            ),
-        contentAlignment = Alignment.TopCenter
+            ), contentAlignment = Alignment.TopCenter
     ) {
         Box(
             modifier = Modifier
@@ -122,8 +120,7 @@ private fun HomeScreenContent(
                         contentDescription = null,
                         modifier = Modifier
                             .background(
-                                color = Color.White.copy(.4f),
-                                shape = RoundedCornerShape(12.dp)
+                                color = Color.White.copy(.4f), shape = RoundedCornerShape(12.dp)
                             )
                             .border(
                                 width = 1.dp,
@@ -153,8 +150,7 @@ private fun HomeScreenContent(
                         buttonWidth = 64.dp,
                         buttonHeight = 36.dp,
                         isDarkTheme = false,
-                        onToggle = { listener.onThemeSwitched(it) }
-                    )
+                        onToggle = { listener.onThemeSwitched(it) })
                 }
                 Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
 
@@ -173,26 +169,26 @@ private fun HomeScreenContent(
                     } else {
                         Log.i("Tasks", "HomeScreenContent: done tasks ${state.doneTasks}")
                         Log.i(
-                            "Tasks",
-                            "HomeScreenContent: in progress tasks ${state.inProgressTasks}"
+                            "Tasks", "HomeScreenContent: in progress tasks ${state.inProgressTasks}"
                         )
-                        if (state.inProgressTasks.isNotEmpty())
-                            TaskStatusLayout(
-                                tasks = state.inProgressTasks,
-                                title = stringResource(R.string.in_progress_title),
-                                modifier = Modifier
-                                    .padding(top = 16.dp),
-                                onTaskClick = listener::onTaskClicked,
-                                onSeeMoreClick = {}
-                            )
-                        if (state.todoTasks.isNotEmpty())
-                            TaskStatusLayout(
-                                tasks = state.todoTasks,
-                                title = stringResource(R.string.to_do_title),
-                                modifier = Modifier.padding(top = 24.dp),
-                                onTaskClick = listener::onTaskClicked,
-                                onSeeMoreClick = {}
-                            )
+                        if (state.inProgressTasks.isNotEmpty()) TaskStatusLayout(
+                            tasks = state.inProgressTasks,
+                            title = stringResource(R.string.in_progress_title),
+                            modifier = Modifier.padding(top = 16.dp),
+                            onTaskClick = {
+                                showTaskDetailBottomSheet = true
+                                currentTaskIdToShowDetail = it
+                            },
+                            onSeeMoreClick = {})
+                        if (state.todoTasks.isNotEmpty()) TaskStatusLayout(
+                            tasks = state.todoTasks,
+                            title = stringResource(R.string.to_do_title),
+                            modifier = Modifier.padding(top = 24.dp),
+                            onTaskClick = {
+                                showTaskDetailBottomSheet = true
+                                currentTaskIdToShowDetail = it
+                            },
+                            onSeeMoreClick = {})
 
                     }
                 }
@@ -201,27 +197,37 @@ private fun HomeScreenContent(
             }
         }
 
-        if (showBottomSheet) {
-            AddNewTaskScreen(
-                onRefreshTaskData = onRefreshData,
-                onCancelAddTaskBottomSheet = {
-                    showBottomSheet = false
-                }
-            )
-        }
+
         FabIcon(
 
             modifier = Modifier
                 .noRippleClick {
-                    showBottomSheet = true
+                    showAddNewTaskBottomSheet = true
                 }
-                .align(Alignment.BottomEnd)
-        )
+                .align(Alignment.BottomEnd))
+        if (showAddNewTaskBottomSheet) {
+            AddNewTaskScreen(
+                onRefreshTaskData = onRefreshData, onCancelAddTaskBottomSheet = {
+                    showAddNewTaskBottomSheet = false
+                })
+        }
+        // task details bottom sheet
+        if (showTaskDetailBottomSheet) {
+            ShowTaskDetails(currentTaskIdToShowDetail) {
+                showTaskDetailBottomSheet = false
+            }
+        }
     }
 }
 
 @Composable
-private fun FabIcon(modifier: Modifier,) {
+private fun ShowTaskDetails(taskId: Int, onDismiss: () -> Unit) {
+    TaskDetailsBottomSheet(
+        taskId = taskId, onDismiss = onDismiss, onClickTaskDetails = {})
+}
+
+@Composable
+private fun FabIcon(modifier: Modifier) {
     Icon(
         painter = painterResource(R.drawable.note_add_icon),
         contentDescription = null,
@@ -234,8 +240,7 @@ private fun FabIcon(modifier: Modifier,) {
                 clip = false,
             )
             .background(
-                brush = Brush.linearGradient(AppTheme.colors.primaryGradient),
-                shape = CircleShape
+                brush = Brush.linearGradient(AppTheme.colors.primaryGradient), shape = CircleShape
             )
             .padding(18.dp)
             .size(28.dp)
@@ -258,9 +263,7 @@ private fun TaskStatusLayout(
     val density = LocalDensity.current
     val widthDp = with(density) { widthPx.toDp() }
     Column(
-        modifier = modifier
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
 
         Row(
@@ -279,8 +282,7 @@ private fun TaskStatusLayout(
                 modifier = Modifier
                     .padding(end = 16.dp)
                     .background(
-                        color = AppTheme.colors.surfaceHigh,
-                        shape = RoundedCornerShape(100)
+                        color = AppTheme.colors.surfaceHigh, shape = RoundedCornerShape(100)
                     )
                     .noRippleClick(onSeeMoreClick)
                     .padding(horizontal = 8.dp, vertical = 6.dp),
@@ -344,12 +346,10 @@ private fun NoTasksPlaceHolder(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .shadow(
-                    elevation = 4.dp,
-                    shape = shape
+                    elevation = 4.dp, shape = shape
                 )
                 .background(
-                    color = AppTheme.colors.surfaceHigh,
-                    shape = shape
+                    color = AppTheme.colors.surfaceHigh, shape = shape
                 )
                 .padding(vertical = 8.dp, horizontal = 12.dp),
 
@@ -368,8 +368,7 @@ private fun NoTasksPlaceHolder(modifier: Modifier = Modifier) {
         Image(
             painter = painterResource(id = R.drawable.empty_tasks_palceholder_background),
             contentDescription = null,
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
+            modifier = Modifier.align(Alignment.BottomEnd)
         )
         Image(
             painter = painterResource(id = R.drawable.empty_tasks_palce_holder_image),
@@ -388,16 +387,12 @@ private fun NoTasksPlaceHolder(modifier: Modifier = Modifier) {
 @Composable
 private fun Preview() {
     HomeScreenContent(
-        modifier = Modifier,
-        state = HomeUiState(
-        ),
-        listener = object : HomeListener {
-            override fun onTaskClicked(taskId: Int) {
-            }
+        modifier = Modifier, state = HomeUiState(
+    ), listener = object : HomeListener {
+        override fun onTaskClicked(taskId: Int) {
+        }
 
-            override fun onThemeSwitched(isDarkMode: Boolean) {
-            }
-        },
-        onRefreshData = {}
-    )
+        override fun onThemeSwitched(isDarkMode: Boolean) {
+        }
+    }, onRefreshData = {})
 }
