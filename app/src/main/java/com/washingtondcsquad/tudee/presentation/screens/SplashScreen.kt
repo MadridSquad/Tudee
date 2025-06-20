@@ -20,6 +20,10 @@ fun SplashScreen(
     isDarkTheme: Boolean,
     onNavigateNext: () -> Unit
 ){
+    LaunchedEffect(Unit) {
+        delay(3000)
+        onNavigateNext()
+    }
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -27,11 +31,8 @@ fun SplashScreen(
         contentAlignment = Alignment.Center
 
     ){
-        LaunchedEffect(Unit) {
-            delay(3000)
-            onNavigateNext()
-        }
-       Image(
+
+    Image(
            painter = if (isDarkTheme) painterResource(R.drawable.background_graphics_dark) else painterResource(
                R.drawable.background_graphics
            ),
