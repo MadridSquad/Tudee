@@ -42,56 +42,51 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         createPreDefineCategories()
         setContent {
-            AppTheme {
-                CategoriesScreen(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 48.dp)
-                )
-                val isDarkMode by appPreferencesService.isDarkModeEnabled()
-                    .collectAsState(initial = false)
-
-                AppTheme(
-                    useDarkTheme = isDarkMode
-                ) {
-
-                    val navController = rememberNavController()
-                    val navBackStackEntry = navController.currentBackStackEntryAsState()
-                    val currentDestination = navBackStackEntry.value?.destination?.route
-                    Scaffold(
-                        bottomBar = {
-                            if(currentDestination in bottomNavBarRoutes) {
-                                TudeeNavigationBar(
-                                    navBarItemDataList = navBarItemsList,
-                                    navController = navController,
-                                    modifier = Modifier.windowInsetsPadding(windowInsets)
-                                )
-                            }
-
-                        }) { innerPadding ->
-                        NavHost(
-                            navController = navController,
-                            startDestination = "home",
-                            modifier = Modifier.padding(innerPadding)
-                        ) {
-                            composable(route = "home") {
-                               HomeScreen()
-                            }
-                            composable(route = "task") {
 
 
-                            }
-                            composable(route = "category") {
-                                CategoriesScreen()
-                            }
+            val isDarkMode by appPreferencesService.isDarkModeEnabled()
+                .collectAsState(initial = false)
+
+            AppTheme(
+                useDarkTheme = isDarkMode
+            ) {
+
+                val navController = rememberNavController()
+                val navBackStackEntry = navController.currentBackStackEntryAsState()
+                val currentDestination = navBackStackEntry.value?.destination?.route
+                Scaffold(
+                    bottomBar = {
+                        if (currentDestination in bottomNavBarRoutes) {
+                            TudeeNavigationBar(
+                                navBarItemDataList = navBarItemsList,
+                                navController = navController,
+                                modifier = Modifier.windowInsetsPadding(windowInsets)
+                            )
+                        }
+
+                    }) { innerPadding ->
+                    NavHost(
+                        navController = navController,
+                        startDestination = "home",
+                        modifier = Modifier.padding(innerPadding)
+                    ) {
+                        composable(route = "home") {
+                            HomeScreen()
+                        }
+                        composable(route = "task") {
+
+
+                        }
+                        composable(route = "category") {
+                            CategoriesScreen()
                         }
                     }
-
                 }
+
             }
         }
-
     }
+
 
     private fun createPreDefineCategories() {
         CoroutineScope(Dispatchers.IO).launch {
@@ -116,17 +111,14 @@ class MainActivity : ComponentActivity() {
             ).forEach { image ->
                 TudeeDataBase.getInstance(this@MainActivity).daoCategory().createCategory(
                     Category(
-                        title = image,
-                        iconPath = "",
-                        taskCount = 0,
-                        id = 0
+                        title = image, iconPath = "", taskCount = 0, id = 0
                     ).toEntity()
                 )
             }
         }
+
     }
 }
-
 
 
 

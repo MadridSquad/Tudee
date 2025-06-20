@@ -149,7 +149,7 @@ private fun HomeScreenContent(
                         switchPadding = 8.dp,
                         buttonWidth = 64.dp,
                         buttonHeight = 36.dp,
-                        isDarkTheme = false,
+                        isDarkTheme = state.isDarkTheme,
                         onToggle = { listener.onThemeSwitched(it) })
                 }
                 Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
