@@ -3,6 +3,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -10,12 +11,14 @@ import androidx.compose.ui.res.stringResource
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.components.TextLogo
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
+import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
     modifier: Modifier = Modifier,
     title: String,
     isDarkTheme: Boolean,
+    onNavigateNext: () -> Unit
 ){
     Box(
         modifier = modifier
@@ -24,6 +27,10 @@ fun SplashScreen(
         contentAlignment = Alignment.Center
 
     ){
+        LaunchedEffect(Unit) {
+            delay(3000)
+            onNavigateNext()
+        }
        Image(
            painter = if (isDarkTheme) painterResource(R.drawable.background_graphics_dark) else painterResource(
                R.drawable.background_graphics
