@@ -1,5 +1,7 @@
 package com.washingtondcsquad.tudee.presentation.categories
 
+
+
 data class CategoriesScreenStatus(
     val categories: List<Category> = listOf(),
 ) {

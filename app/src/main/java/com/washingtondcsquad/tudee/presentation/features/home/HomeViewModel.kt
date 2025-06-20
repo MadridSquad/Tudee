@@ -1,68 +1,92 @@
 package com.washingtondcsquad.tudee.presentation.features.home
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
+import com.washingtondcsquad.tudee.domain.services.AppPreferencesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TudeeStatus
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val tasksService: TasksService
+    private val tasksService: TasksService, private val appPreferences: AppPreferencesService
 ) : BaseViewModel<HomeUiState>(HomeUiState()), HomeListener {
 
     init {
         loadData()
     }
 
-    fun loadData() = viewModelScope.launch {
+    fun refresh() {
         updateState {
-            copy(isLoading = false, error = null)
+            copy(isLoading = true)
         }
+        loadData()
+        updateState {
+            copy(isLoading = false)
+        }
+    }
+
+    private fun loadData() = viewModelScope.launch {
+        updateState {
+            copy(isLoading = true, error = null)
+        }
+        var tasks: List<Task> = emptyList()
+
         tryToExecute(
             request = {
-                tasksService.getAllTasks()
-            },
-            onSuccess = ::onSuccess,
-            onError = ::onError
+                tasksService.getAllTasks().collect {
+                    onSuccess(it)
+                    Log.i("refresh", "all data ${it}")
+                }
+                tasks
+
+            }, onSuccess = ::onSuccess, onError = ::onError
         )
     }
 
     private fun onSuccess(response: List<Task>) {
-        val inProgressTasks = response.filter { it.status == TaskStatus.IN_PROGRESS.name }
-        val doneTasks = response.filter { it.status == TaskStatus.DONE.name }
-        val toDoTasks = response.filter { it.status == TaskStatus.TODO.name }
+        val inProgressTasks = response.filter { it.status == TaskStatus.IN_PROGRESS }
+        val doneTasks = response.filter { it.status == TaskStatus.DONE }
+        val toDoTasks = response.filter { it.status == TaskStatus.TODO }
 
         updateState {
             copy(
-                isLoading = false, error = null,
+                isLoading = false,
+                error = null,
                 inProgressTasks = inProgressTasks.toUiState(),
                 doneTasks = doneTasks.toUiState(),
                 todoTasks = toDoTasks.toUiState(),
-                tudeeStatus = calculateOverviewAnalytics()
+                tudeeStatus = calculateOverviewAnalytics(
+                    inProgressCount = inProgressTasks.size,
+                    todoCount = toDoTasks.size,
+                    doneCount = doneTasks.size
+                )
             )
         }
 
     }
 
-    private fun calculateOverviewAnalytics(): TudeeStatus {
-        val state = state.value
+    private fun calculateOverviewAnalytics(
+        inProgressCount: Int, todoCount: Int, doneCount: Int
+    ): TudeeStatus {
+        val totalCount = inProgressCount + todoCount + doneCount
         return when {
-            state.doneTasks.size == 3 && state.todoTasks.size == 7 -> {
+            totalCount == 0 -> {
+                TudeeStatus.ZERO_TASK
+            }
+
+            doneCount != 0 && doneCount <= totalCount / 2 -> {
                 TudeeStatus.STAY_WORKING
             }
 
-            state.doneTasks.isNotEmpty() && state.todoTasks.isEmpty() && state.inProgressTasks.isEmpty() -> {
+            doneCount >= totalCount / 2 -> {
                 TudeeStatus.DOING_AMAZING
             }
 
-            state.doneTasks.isEmpty() && state.todoTasks.isNotEmpty() && state.inProgressTasks.isEmpty() -> {
+            inProgressCount == 0 && todoCount == 0 -> {
                 TudeeStatus.ZERO_PROGRESS
-            }
-
-            state.inProgressTasks.isEmpty() && state.todoTasks.isEmpty() -> {
-                TudeeStatus.ZERO_TASK
             }
 
             else -> {
@@ -78,11 +102,19 @@ class HomeViewModel(
         }
     }
 
-    override fun onTaskClicked(taskId: Int) {
-
-    }
+    override fun onTaskClicked(taskId: Int) {}
 
     override fun onThemeSwitched(isDarkMode: Boolean) {
-
+        tryToExecute(request = {
+            appPreferences.setDarkModeEnabled(isDarkMode)
+        }, onSuccess = {
+            updateState {
+                copy(isDarkMode = isDarkMode)
+            }
+        }, onError = {
+            updateState {
+                copy(error = it.message)
+            }
+        })
     }
 }

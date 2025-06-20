@@ -29,21 +29,17 @@ import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiSta
 
 @Composable
 fun TaskCard(
-    taskUiState: TaskUiState,
-    onTaskClicked: (taskId: Int) -> Unit,
-    modifier: Modifier = Modifier
+    taskUiState: TaskUiState, onTaskClicked: (taskId: Int) -> Unit, modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
             .background(
-                color = AppTheme.colors.surfaceHigh,
-                shape = RoundedCornerShape(16.dp)
+                color = AppTheme.colors.surfaceHigh, shape = RoundedCornerShape(16.dp)
             )
             .clip(RoundedCornerShape(16.dp))
             .clickable { onTaskClicked(taskUiState.taskId) }
             .padding(start = 4.dp, end = 12.dp, top = 4.dp, bottom = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(2.dp)
-    ) {
+        verticalArrangement = Arrangement.spacedBy(2.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -52,8 +48,7 @@ fun TaskCard(
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(taskUiState.categoryImage.ifEmpty { R.drawable.education_icon })
-                    .crossfade(true)
-                    .build(),
+                    .crossfade(true).build(),
                 contentDescription = null,
                 modifier = Modifier
                     .padding(12.dp)
@@ -88,7 +83,7 @@ fun TaskCard(
                 }
 
 
-                TaskPriorityCard(taskUiState.taskPriority)
+                TaskPriorityCard(taskUiState.taskPriority, isSelected = true)
             }
         }
         Text(
@@ -112,8 +107,7 @@ fun TaskCard(
 @Composable
 private fun Preview() {
     TaskCard(
-        onTaskClicked = {},
-        taskUiState = TaskUiState(
+        onTaskClicked = {}, taskUiState = TaskUiState(
             taskTitle = "Task Title",
             taskDescription = "Task Description",
             taskPriority = Priority.HIGH,

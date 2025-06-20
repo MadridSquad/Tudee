@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
+import com.washingtondcsquad.tudee.presentation.design.AppTheme.colors
 
 @Composable
 fun CancelableActionLayout(
@@ -37,7 +38,6 @@ fun CancelableActionLayout(
             .padding(vertical = 12.dp, horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-
         Button(
             onClick = onAction,
             enabled = isEnabled,

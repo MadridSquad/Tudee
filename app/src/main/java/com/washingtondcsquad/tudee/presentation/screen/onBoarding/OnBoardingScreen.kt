@@ -8,10 +8,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Text
@@ -25,10 +23,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun OnBoardingScreen(
-    modifier: Modifier = Modifier, onFinish: () -> Unit, viewModel: OnboardingViewModel
+    modifier: Modifier = Modifier,
+    onFinish: () -> Unit,
+    viewModel: OnboardingViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
     val pagerState = rememberPagerState(
@@ -45,6 +46,7 @@ fun OnBoardingScreen(
         uiState = state,
         onNextClick = {
             if (state.isLastPage) {
+                viewModel.onboardingFinished()
                 onFinish()
             } else {
                 scope.launch {
@@ -75,8 +77,6 @@ fun OnBoardingScreenContent(
         modifier
             .fillMaxSize()
             .background(AppTheme.colors.overlay)
-            .statusBarsPadding()
-            .navigationBarsPadding()
     ) {
         AnimatedContent(pagerState.currentPage != pagerState.pageCount - 1) {
             if (it) {
