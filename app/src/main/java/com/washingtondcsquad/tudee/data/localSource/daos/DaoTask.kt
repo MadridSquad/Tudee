@@ -8,7 +8,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.washingtondcsquad.tudee.data.localSource.entities.TaskEntity
 import com.washingtondcsquad.tudee.data.utils.DataBaseConstants
-
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DaoTask {
@@ -29,7 +29,7 @@ interface DaoTask {
 
 
     @Query("SELECT * FROM ${DataBaseConstants.TASK_TABLE_NAME}")
-    suspend fun getAllTasks(): List<TaskEntity>
+     fun getAllTasks(): Flow<List<TaskEntity>>
 
 
 }

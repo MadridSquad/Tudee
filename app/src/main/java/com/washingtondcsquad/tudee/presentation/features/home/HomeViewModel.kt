@@ -3,26 +3,32 @@ package com.washingtondcsquad.tudee.presentation.features.home
 import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
+import com.washingtondcsquad.tudee.domain.services.AppPreferencesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TudeeStatus
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val tasksService: TasksService
+    private val tasksService: TasksService,
+    private val appPreferences: AppPreferencesService
 ) : BaseViewModel<HomeUiState>(HomeUiState()), HomeListener {
 
     init {
         loadData()
     }
 
-    fun loadData() = viewModelScope.launch {
+    private fun loadData() = viewModelScope.launch {
         updateState {
             copy(isLoading = false, error = null)
         }
+        var tasks: List<Task> = emptyList()
         tryToExecute(
             request = {
-                tasksService.getAllTasks()
+                tasksService.getAllTasks().collect {
+                    tasks = it
+                }
+                tasks
             },
             onSuccess = ::onSuccess,
             onError = ::onError
@@ -83,6 +89,20 @@ class HomeViewModel(
     }
 
     override fun onThemeSwitched(isDarkMode: Boolean) {
-
+        tryToExecute(
+            request = {
+                appPreferences.setDarkModeEnabled(isDarkMode)
+            },
+            onSuccess = {
+                updateState {
+                    copy(isDarkMode = isDarkMode)
+                }
+            },
+            onError = {
+                updateState {
+                    copy(error = it.message)
+                }
+            }
+        )
     }
 }

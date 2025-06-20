@@ -6,6 +6,7 @@ import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiSta
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TudeeStatus
 
 data class HomeUiState(
+    val isDarkMode: Boolean = false,
     val isLoading: Boolean = false,
     val error: String? = null,
     val inProgressTasks: List<TaskUiState> = dummyTasks,
