@@ -1,18 +1,18 @@
 package com.washingtondcsquad.tudee.data.services
 
 
-import com.washingtondcsquad.tudee.data.localSource.daos.DaoCategory
+import com.washingtondcsquad.tudee.data.localSource.daos.CategoryDao
 import com.washingtondcsquad.tudee.data.localSource.imageStorageManager.DeleteImageFromInternalStorage
 import com.washingtondcsquad.tudee.data.localSource.imageStorageManager.SaveImageToInternalStorage
-import com.washingtondcsquad.tudee.data.localSource.mapper.category.toDomain
-import com.washingtondcsquad.tudee.data.localSource.mapper.category.toEntity
+import com.washingtondcsquad.tudee.data.localSource.mapper.toDomain
+import com.washingtondcsquad.tudee.data.localSource.mapper.toEntity
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class CategoriesServiceImpl(
-    private val daoCategory: DaoCategory,
+    private val daoCategory: CategoryDao,
     private val saveImageToInternalStorage: SaveImageToInternalStorage,
     private val deleteImageFromInternalStorage: DeleteImageFromInternalStorage,
 

@@ -14,17 +14,14 @@ import java.io.FileOutputStream
 
 class SaveImageToInternalStorage(private val context: Context) {
     suspend fun saveImageToInternalStorage(
-        imageUrl: String,
-        getFilePath: suspend (String) -> Unit = {}
+        imageUrl: String, getFilePath: suspend (String) -> Unit
     ) {
-        val request = ImageRequest.Builder(context)
-            .data(imageUrl)
-            .build()
+        val request = ImageRequest.Builder(context).data(imageUrl).build()
 
         val result = context.imageLoader.execute(request)
         if (result is SuccessResult) {
             val bitmap = (result.drawable as BitmapDrawable).bitmap
-                ?: throw IllegalStateException("Failed to extract bitmap")
+                ?: throw IllegalStateException("Failed to extract bitmap") //TODO remove any text to string file
             val fileName = imageUrl.toMD5() + ".png"
 
             val file = File(context.filesDir, fileName)
@@ -41,12 +38,9 @@ class SaveImageToInternalStorage(private val context: Context) {
     }
 
     suspend fun saveImageToInternalStorage(
-        drawableResId: Int,
-        getFilePath: suspend (String) -> Unit
+        drawableResId: Int, getFilePath: suspend (String) -> Unit
     ) {
-        val request = ImageRequest.Builder(context)
-            .data(drawableResId)
-            .build()
+        val request = ImageRequest.Builder(context).data(drawableResId).build()
         val result = context.imageLoader.execute(request)
         if (result is SuccessResult) {
             val bitmap = (result.drawable as? BitmapDrawable)?.bitmap
