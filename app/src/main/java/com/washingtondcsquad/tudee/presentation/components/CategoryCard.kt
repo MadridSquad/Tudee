@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,14 +39,16 @@ fun CategoryCard(
             modifier = Modifier
         ) {
             LoadImage(
-                imageSource = imageSource,
                 modifier = Modifier
                     .background(
                         color = AppTheme.colors.surfaceHigh,
                         shape = CircleShape
                     )
                     .padding(24.dp)
-                    .size(32.dp))
+                    .size(32.dp),
+                imageSource = imageSource
+
+            )
             if (isSelected) {
                 Icon(
                     painterResource(R.drawable.selection_icon),
@@ -56,7 +57,7 @@ fun CategoryCard(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .background(
-                            color = AppTheme.colors.surfaceHigh,
+                            color = AppTheme.colors.greenAccent,
                             shape = CircleShape
                         )
                         .padding(4.dp)
@@ -95,10 +96,10 @@ private fun Preview() {
 
     CategoryCard(
         title = "Test",
-        imageSource = ImageSource.Path(""),
+        imageSource = ImageSource.Drawable(id = R.drawable.education_icon),
         onClick = {},
         modifier = Modifier,
-        isSelected = false,
+        isSelected = true,
         tasksCount = 3
     )
 }

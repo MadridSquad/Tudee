@@ -43,6 +43,7 @@ import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyle
 import com.washingtondcsquad.tudee.presentation.features.home.NoTasksPlaceHolder
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
+import com.washingtondcsquad.tudee.presentation.screens.add_task.EditTaskScreen
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.ChangeMonthButton
 import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.composable.TasksTabRow
 import kotlinx.coroutines.delay
@@ -61,7 +62,6 @@ fun TasksScreen(tasksViewModel: TasksViewModel = koinViewModel()) {
         tasksViewModel::goToPreviousMonth,
         tasksViewModel::clearDatePicker,
         tasksViewModel::formatedSelectedDate,
-        tasksViewModel::onTaskClicked,
         tasksUiState,
         tasksViewModel = tasksViewModel
     )
@@ -76,7 +76,6 @@ fun TasksScreenContent(
     gotToPreviousMonth: () -> Unit,
     clearDatePicker: () -> Long,
     formatedSelectedDate: (Long) -> String,
-    onTaskClicked: (Int) -> Unit,
     tasksUiState: TasksUiState,
     tasksViewModel: TasksViewModel
 ) {
@@ -87,11 +86,34 @@ fun TasksScreenContent(
 
     val showSnackBar = remember { mutableStateOf(false) }
 
+    val showTaskDetails = remember { mutableStateOf(false) }
+
+    val editTaskResult = remember { mutableStateOf(false to "") }
+
+    if(showTaskDetails.value){
+        EditTaskScreen(
+            onCancelAddTaskBottomSheet = {showTaskDetails.value = false},
+            onActionResult = {a,b->
+                editTaskResult.value = a to b
+            },
+            taskId = TODO(),
+            viewModel = TODO()
+        )
+    }
+
+        LaunchedEffect(editTaskResult.value) {
+         if(editTaskResult.value.second.isNotEmpty()){
+                SnackbarController.sendEvent(SnackbarEvent(message = editTaskResult.value.second))
+                editTaskResult.value = false to ""
+        }
+
+    }
+
 
     Column(
         modifier = Modifier
             .background(AppTheme.colors.surfaceHigh)
-            .padding(top = 70.dp)
+            .padding(top = 16.dp)
             .fillMaxSize()
     ) {
         Text(

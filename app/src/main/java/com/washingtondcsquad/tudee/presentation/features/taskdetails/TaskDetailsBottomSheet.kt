@@ -61,6 +61,7 @@ fun TaskDetailsBottomSheet(
 
     ModalBottomSheet(
         sheetState = sheetState,
+        containerColor = AppTheme.colors.surface,
         onDismissRequest = {
             onDismiss()
         },
