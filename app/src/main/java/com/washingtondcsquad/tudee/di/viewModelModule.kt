@@ -1,16 +1,16 @@
 package com.washingtondcsquad.tudee.di
 
 import com.washingtondcsquad.tudee.presentation.features.home.HomeViewModel
-import com.washingtondcsquad.tudee.presentation.features.taskdetails.BottomSheetTaskViewModel
-import com.washingtondcsquad.tudee.presentation.screen.onBoarding.OnboardingViewModel
-import com.washingtondcsquad.tudee.presentation.screens.add_task.AddTaskViewModel
+import com.washingtondcsquad.tudee.presentation.features.task_details.BottomSheetTaskViewModel
+import com.washingtondcsquad.tudee.presentation.features.onBoarding.OnboardingViewModel
+import com.washingtondcsquad.tudee.presentation.features.add_task.AddTaskViewModel
 import com.washingtondcsquad.tudee.presentation.screens.add_task.EditTaskViewModel
-import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.TasksViewModel
+import com.washingtondcsquad.tudee.presentation.features.tasks_screen.TasksViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import java.time.LocalDate
-import com.washingtondcsquad.tudee.presentation.categories.CategoriesViewModel
+import com.washingtondcsquad.tudee.presentation.features.categories.CategoriesViewModel
 
 
 val viewModelModule = module {

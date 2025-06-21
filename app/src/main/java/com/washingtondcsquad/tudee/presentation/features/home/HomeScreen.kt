@@ -52,8 +52,8 @@ import com.washingtondcsquad.tudee.presentation.components.TextLogo
 import com.washingtondcsquad.tudee.presentation.components.analytics_components.AnalyticsCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
-import com.washingtondcsquad.tudee.presentation.features.taskdetails.TaskDetailsBottomSheet
-import com.washingtondcsquad.tudee.presentation.screens.add_task.AddNewTaskScreen
+import com.washingtondcsquad.tudee.presentation.features.task_details.TaskDetailsBottomSheet
+import com.washingtondcsquad.tudee.presentation.features.add_task.AddNewTaskScreen
 import com.washingtondcsquad.tudee.presentation.utils.SetStatusBarIconsColor
 import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.noRippleClick
 import org.koin.androidx.compose.koinViewModel
