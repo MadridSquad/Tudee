@@ -129,7 +129,7 @@ class HomeViewModel(
 
     override fun onThemeSwitched(isDarkMode: Boolean) {
         tryToExecute(request = {
-            appPreferences.setDarkModeEnabled(isDarkMode)
+            appPreferences.setDarkMode(isDarkMode)
         }, onSuccess = {
             updateState {
                 copy(isDarkMode = isDarkMode)
