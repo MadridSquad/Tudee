@@ -1,6 +1,6 @@
-package com.washingtondcsquad.tudee.data.localSource.mapper.category
+package com.washingtondcsquad.tudee.data.localSource.mapper
 
-import com.washingtondcsquad.tudee.data.localSource.entities.TaskEntity
+import com.washingtondcsquad.tudee.data.localSource.model.TaskEntity
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
@@ -15,7 +15,6 @@ fun Task.toEntity(): TaskEntity {
         date = date,
         status = status.name,
         priority = priority.name,
-        categoryImage =categoryImage
     )
 }
 
@@ -37,6 +36,5 @@ fun TaskEntity.toDomain(): Task {
             "MEDIUM" -> Priority.MEDIUM
             else -> Priority.HIGH
         },
-        categoryImage = categoryImage
     )
 }

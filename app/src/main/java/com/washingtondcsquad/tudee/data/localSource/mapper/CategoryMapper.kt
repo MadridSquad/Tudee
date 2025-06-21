@@ -1,6 +1,6 @@
-package com.washingtondcsquad.tudee.data.localSource.mapper.category
+package com.washingtondcsquad.tudee.data.localSource.mapper
 
-import com.washingtondcsquad.tudee.data.localSource.entities.CategoryEntity
+import com.washingtondcsquad.tudee.data.localSource.model.CategoryEntity
 import com.washingtondcsquad.tudee.domain.entity.Category
 
 
