@@ -5,6 +5,7 @@ enum class Priority{
     MEDIUM,
     HIGH;
 
+    //TODO replace it by mapping from domain to presentation
     companion object {
         fun fromString(priority: String): Priority {
             return when (priority.lowercase()) {

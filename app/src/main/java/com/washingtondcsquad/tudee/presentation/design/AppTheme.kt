@@ -16,19 +16,14 @@ import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyl
 object AppTheme {
 
     val textStyle: TudeeTextStyle
-        @Composable
-        @ReadOnlyComposable
-        get() = LocalTudeeTextStyle.current
+        @Composable @ReadOnlyComposable get() = LocalTudeeTextStyle.current
 
     val colors: TudeeColors
-        @Composable
-        @ReadOnlyComposable
-        get() = LocalTudeeColors.current
+        @Composable @ReadOnlyComposable get() = LocalTudeeColors.current
 
     @Composable
     operator fun invoke(
-        useDarkTheme: Boolean = isSystemInDarkTheme(),
-        content: @Composable () -> Unit
+        useDarkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit
     ) {
         val colors = if (!useDarkTheme) {
             light
@@ -37,8 +32,7 @@ object AppTheme {
         }
 
         CompositionLocalProvider(
-            LocalTudeeTextStyle provides defaultTextStyle,
-            LocalTudeeColors provides colors
+            LocalTudeeTextStyle provides defaultTextStyle, LocalTudeeColors provides colors
         ) {
             content()
         }
