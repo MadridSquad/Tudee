@@ -7,7 +7,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.core.view.WindowInsetsControllerCompat
 
 @Composable
-fun SetStatusBarIconsColor(backgroundColor: Color,isDarkIcons: Boolean) {
+fun SetStatusBarIconsColor(backgroundColor: Color, isDarkIcons: Boolean) {
     val activity = LocalActivity.current
     val window = activity?.window
 
