@@ -3,13 +3,16 @@ package com.washingtondcsquad.tudee
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
+import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.BottomAppBarDefaults.windowInsets
 import androidx.compose.material3.CircularProgressIndicator
@@ -81,83 +84,76 @@ class MainActivity : ComponentActivity() {
                         val startDestination = if (isOnboardingShown) {
                             "home"
                         } else {
-                            Log.d("sdasdsad", "onCreate: ")
-                            createPreDefineCategories()
                             "onboarding"
                         }
                         val navController = rememberNavController()
                         val navBackStackEntry = navController.currentBackStackEntryAsState()
                         val currentDestination = navBackStackEntry.value?.destination?.route
 
-                        Scaffold(
-                            bottomBar = {
-                                AnimatedVisibility(currentDestination in bottomNavBarRoutes) {
-                                    TudeeNavigationBar(
-                                        navBarItemDataList = navBarItemsList,
-                                        navController = navController,
-                                        modifier = Modifier.windowInsetsPadding(windowInsets)
-                                    )
-                                }
+                        NavHost(
+                            navController = navController,
+                            startDestination = startDestination,
+                            modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)
+                        ) {
+                            composable(route = "onboarding") {
+                                OnBoardingScreen(
+                                    onFinish = {
+                                        navController.navigate("home") {
+                                            popUpTo("onboarding") { inclusive = true }
+                                        }
+                                    },
+                                )
+                            }
+                            composable(route = "home") {
+                                Scaffold(
+                                    bottomBar = {
+                                        if (currentDestination in bottomNavBarRoutes) {
+                                            TudeeNavigationBar(
+                                                navBarItemDataList = navBarItemsList,
+                                                navController = navController,
+                                                modifier = Modifier.windowInsetsPadding(windowInsets)
+                                            )
+                                        }
 
-                            }) { innerPadding ->
-                            NavHost(
-                                navController = navController,
-                                startDestination = startDestination,
-                                modifier = Modifier.padding(innerPadding)
-                            ) {
-                                composable(route = "onboarding") {
-                                    OnBoardingScreen(
-                                        onFinish = {
-                                            navController.navigate("home") {
-                                                popUpTo("onboarding") { inclusive = true }
-                                            }
-                                        },
-                                    )
-                                }
-                                composable(route = "home") {
+                                    }) {
                                     HomeScreen()
+
                                 }
-                                composable(route = "task") {
+                            }
+                            composable(route = "task") {
+                                Scaffold(bottomBar = {
+                                    if (currentDestination in bottomNavBarRoutes) {
+                                        TudeeNavigationBar(
+                                            navBarItemDataList = navBarItemsList,
+                                            navController = navController,
+                                            modifier = Modifier.windowInsetsPadding(windowInsets)
+                                        )
+                                    }
+
+                                }) {
                                     TasksScreen()
+
                                 }
-                                composable(route = "category") {
+                            }
+                            composable(route = "category") {
+                                Scaffold(
+                                    bottomBar = {
+                                        if (currentDestination in bottomNavBarRoutes) {
+                                            TudeeNavigationBar(
+                                                navBarItemDataList = navBarItemsList,
+                                                navController = navController,
+                                                modifier = Modifier.windowInsetsPadding(windowInsets)
+                                            )
+                                        }
+
+                                    }) {
                                     CategoriesScreen()
+
                                 }
                             }
                         }
                     }
                 }
-            }
-            SnackbarHandler()
-        }
-    }
-
-    private fun createPreDefineCategories() {
-        CoroutineScope(Dispatchers.IO).launch {
-            listOf(
-                "Education",
-                "Shopping",
-                "Medical",
-                "Gym",
-                "Entertainment",
-                "Cooking",
-                "Family & friend",
-                "Traveling",
-                "Agriculture",
-                "Coding",
-                "Adoration",
-                "Fix bug",
-                "Cleaning",
-                "Work",
-                "Budgeting",
-                "Self care",
-                "Event"
-            ).forEach { image ->
-                TudeeDataBase.getInstance(this@MainActivity).daoCategory().createCategory(
-                    Category(
-                        title = image, iconPath = "", taskCount = 0, id = 0
-                    ).toEntity()
-                )
             }
         }
     }
@@ -169,30 +165,27 @@ fun SnackbarHandler() {
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     ObserveAsEvent(
-        flow = SnackbarController.event,
-        onEvent = { event ->
+        flow = SnackbarController.event, onEvent = { event ->
             coroutineScope.launch {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 snackbarHostState.showSnackbar(
-                    message = event.message,
-                    duration = SnackbarDuration.Short
+                    message = event.message, duration = SnackbarDuration.Short
                 )
             }
-        }
-    )
+        })
 
     SnackbarHost(
-        hostState = snackbarHostState,
-        snackbar = { snackbarData ->
+        hostState = snackbarHostState, snackbar = { snackbarData ->
             val (iconRes, iconTint) = when {
-                snackbarData.visuals.message.contains("success", ignoreCase = true) ->
-                    Pair(R.drawable.checkmark, AppTheme.colors.greenAccent)
+                snackbarData.visuals.message.contains(
+                    "success", ignoreCase = true
+                ) -> Pair(R.drawable.checkmark, AppTheme.colors.greenAccent)
 
-                snackbarData.visuals.message.contains("error", ignoreCase = true) ->
-                    Pair(R.drawable.checkmark, AppTheme.colors.error)
+                snackbarData.visuals.message.contains(
+                    "error", ignoreCase = true
+                ) -> Pair(R.drawable.checkmark, AppTheme.colors.error)
 
-                else ->
-                    Pair(R.drawable.information_diamond, AppTheme.colors.error)
+                else -> Pair(R.drawable.information_diamond, AppTheme.colors.error)
             }
 
             SnackBarCard(
@@ -203,7 +196,6 @@ fun SnackbarHandler() {
                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 48.dp)
             )
 
-        }
-    )
+        })
 }
 
