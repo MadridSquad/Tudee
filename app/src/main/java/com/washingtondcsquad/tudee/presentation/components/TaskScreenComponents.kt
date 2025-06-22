@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -48,13 +47,12 @@ fun TaskScreenComponents(
     LazyVerticalGrid(
         modifier = modifier,
         columns = GridCells.Adaptive(minSize = 100.dp),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp),
     ) {
         item(span = { GridItemSpan(maxLineSpan) }) {
             Text(
                 text = header,
-                modifier = Modifier.offset(y = 4.dp),
+                modifier = Modifier.padding(bottom = 8.dp),
                 style = defaultTextStyle.title.large
             )
         }
@@ -66,6 +64,7 @@ fun TaskScreenComponents(
                 value = taskTitle,
                 onValueChange = { onTitleChange(it) },
                 modifier = Modifier
+                    .padding(bottom = 16.dp)
                     .fillMaxWidth()
                     .height(56.dp)
 
@@ -79,6 +78,7 @@ fun TaskScreenComponents(
                 value = taskDescription,
                 onValueChange = { onDescriptionChange(it) },
                 modifier = Modifier
+                    .padding(bottom = 16.dp)
                     .fillMaxWidth()
                     .height(168.dp)
             )
@@ -92,11 +92,14 @@ fun TaskScreenComponents(
                 onValueChange = { },
                 onPrefixIconClick = onShowDatePicker,
                 readOnly = true,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
+                    .fillMaxWidth()
             )
         }
         item(span = { GridItemSpan(maxLineSpan) }) {
             Text(
+                modifier = Modifier.padding(bottom = 8.dp),
                 text = stringResource(R.string.priority),
                 style = defaultTextStyle.title.medium,
                 color = AppTheme.colors.title
@@ -104,7 +107,9 @@ fun TaskScreenComponents(
         }
         item(span = { GridItemSpan(maxLineSpan) }) {
             LazyRow(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 items(priorityList) { priority ->
@@ -122,7 +127,7 @@ fun TaskScreenComponents(
                 text = stringResource(R.string.category),
                 style = defaultTextStyle.title.medium,
                 color = AppTheme.colors.title,
-                modifier = Modifier.padding(top = 2.dp, bottom = 8.dp)
+                modifier = Modifier.padding( bottom = 8.dp)
             )
         }
 
@@ -132,7 +137,7 @@ fun TaskScreenComponents(
                 imageSource = ImageSource.Drawable(id = R.drawable.gym),
                 onClick = { onCategorySelected(category) },
                 isSelected = selectedCategory == category,
-                modifier = Modifier//.weight(1f)
+                modifier = Modifier.padding(bottom = 16.dp)
             )
         }
     }
@@ -140,7 +145,7 @@ fun TaskScreenComponents(
 
 @Preview(showSystemUi = true)
 @Composable
-fun TaskScreenComponentsPreview() {
+private fun TaskScreenComponentsPreview() {
     Column(
         modifier = Modifier
             .fillMaxSize()
