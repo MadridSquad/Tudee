@@ -57,7 +57,7 @@ fun AddNewTaskScreen(
         onCategorySelected = viewModel::onCategorySelected,
         onSuccessAddTask = onSuccessAddTask,
         onErrorAddTask = onErrorAddTask,
-        onClickAdd = viewModel::onClickSaveButton,
+        onClickAdd = viewModel::onClickAdd,
         onClickCancel = onClickCancel,
         modifier = modifier
     )

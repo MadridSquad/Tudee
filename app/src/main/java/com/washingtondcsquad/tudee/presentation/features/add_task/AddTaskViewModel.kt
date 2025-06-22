@@ -1,14 +1,18 @@
 package com.washingtondcsquad.tudee.presentation.features.add_task
 
 import android.util.Log
+import androidx.lifecycle.viewModelScope
+import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.Priority
-import com.washingtondcsquad.tudee.domain.entity.Task
-import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.AddTaskUiState
+import com.washingtondcsquad.tudee.presentation.provider.StringProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -17,14 +21,14 @@ import java.time.format.DateTimeFormatter
 class AddTaskViewModel(
     private val tasksService: TasksService,
     private val categoryService: CategoriesService,
-    taskDate: LocalDate = LocalDate.now(),
-    private val onCancelAddTaskBottomSheet: () -> Unit,
-    private val onActionResult:(success:Boolean,message:String)->Unit
+    private val stringProvider: StringProvider,
+    taskDate: kotlinx.datetime.LocalDate,
 ) : BaseViewModel<AddTaskUiState>(
     AddTaskUiState(
-        taskDate = taskDate.format(DateTimeFormatter.ofPattern("d-M-yyyy"))
+        taskDate = taskDate.toString()
     )
 ) {
+
 
     init {
         getAllCategories()
@@ -32,47 +36,17 @@ class AddTaskViewModel(
 
 
     private fun getAllCategories() {
-        tryToExecute(
-            request = {
-                 categoryService.getAllCategories().collect{
-                     updateState {
-                         copy(
-                             categoryList = it
-                         )
-                     }
+        viewModelScope.launch {
+            categoryService.getAllCategories().collect {
+                withContext(Dispatchers.Main) {
+                    updateState {
+                        copy(categoryList = it)
+                    }
                 }
-            },
-            onSuccess = {},
-            onError = { exception -> }
-        )
-
-    }
-
-    fun onShowDatePicker() {
-        updateState {
-            copy(isDatePickerDisplayed = true)
+            }
         }
     }
 
-    fun onHideDatePicker() {
-        updateState {
-            copy(
-                isDatePickerDisplayed = false
-            )
-        }
-    }
-
-    fun updateButtonEnable() {
-        updateState {
-            copy(
-                isButtonActionEnable =
-                    _state.value.taskTitle.isNotEmpty() &&
-                            _state.value.taskTitle.isNotBlank() &&
-                            _state.value.selectedCategory != null &&
-                            _state.value.selectedPriority != null
-            )
-        }
-    }
 
     fun onTitleChange(newTitle: String) {
         updateState {
@@ -87,6 +61,20 @@ class AddTaskViewModel(
         updateState {
             copy(
                 taskDescription = newDescription
+            )
+        }
+    }
+
+    fun onShowDatePicker() {
+        updateState {
+            copy(isDatePickerDisplayed = true)
+        }
+    }
+
+    fun onHideDatePicker() {
+        updateState {
+            copy(
+                isDatePickerDisplayed = false
             )
         }
     }
@@ -130,35 +118,42 @@ class AddTaskViewModel(
                 },
                 onSuccess = {},
                 onError = { exception ->
-                    Log.e("AddTaskViewModel", exception.message.toString())
+
                 }
+            )
+            updateButtonEnable()
+        }
+    }
+
+    fun updateButtonEnable() {
+        updateState {
+            copy(
+                isButtonActionEnable =
+                    _state.value.taskTitle.isNotEmpty() &&
+                            _state.value.taskTitle.isNotBlank() &&
+                            _state.value.selectedPriority != null &&
+                            _state.value.selectedCategory != null
             )
         }
     }
 
-    fun onClickSaveButton() {
+
+    fun onClickAdd(
+        onSuccess: (message: String) -> Unit,
+        onError: (message: String) -> Unit,
+    ) {
         tryToExecute(
             request = {
-                tasksService.createTask(
-                    Task(
-                        id = 0,
-                        categoryId = _state.value.selectedCategory!!.id,
-                        categoryImage = _state.value.selectedCategory!!.iconPath,
-                        title = _state.value.taskTitle,
-                        description = _state.value.taskDescription,
-                        date = _state.value.taskDate,
-                        status = TaskStatus.TODO,
-                        priority = _state.value.selectedPriority!!,
-                    )
-                )
+//                tasksService.createTask(
+//
+//                )
             },
             onSuccess = {
+                onSuccess(stringProvider.getString(R.string.add_task_successfully))
                 clearDate()
-                onCancelAddTaskBottomSheet()
-                onActionResult(true, "Add task successfully.")
             },
             onError = { exception ->
-                onActionResult(false, exception.message.toString())
+                onError(stringProvider.getString(R.string.some_error_happened))
             }
         )
     }
