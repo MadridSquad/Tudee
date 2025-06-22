@@ -25,9 +25,11 @@ val viewModelModule = module {
         AddTaskViewModel(
             tasksService = get(),
             categoryService = get(),
+            stringProvider = get(),
             taskDate = taskDate,
         )
     }
+
 
     viewModel { (taskId:Int , onCancel: () -> Unit , onActionResult: (success: Boolean, message: String) -> Unit) ->
         EditTaskViewModel(
