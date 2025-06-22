@@ -1,16 +1,17 @@
 package com.washingtondcsquad.tudee.di
 
-import com.washingtondcsquad.tudee.presentation.features.home.HomeViewModel
-import com.washingtondcsquad.tudee.presentation.features.task_details.BottomSheetTaskViewModel
-import com.washingtondcsquad.tudee.presentation.features.onBoarding.OnboardingViewModel
+import com.washingtondcsquad.tudee.MainViewModel
 import com.washingtondcsquad.tudee.presentation.features.add_task.AddTaskViewModel
-import com.washingtondcsquad.tudee.presentation.screens.add_task.EditTaskViewModel
+import com.washingtondcsquad.tudee.presentation.features.categories.CategoriesViewModel
+import com.washingtondcsquad.tudee.presentation.features.home.HomeViewModel
+import com.washingtondcsquad.tudee.presentation.features.onBoarding.OnboardingViewModel
+import com.washingtondcsquad.tudee.presentation.features.task_details.BottomSheetTaskViewModel
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.TasksViewModel
+import com.washingtondcsquad.tudee.presentation.screens.add_task.EditTaskViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import java.time.LocalDate
-import com.washingtondcsquad.tudee.presentation.features.categories.CategoriesViewModel
 
 
 val viewModelModule = module {
@@ -21,6 +22,7 @@ val viewModelModule = module {
         get(),
         get()
     ) }
+    viewModelOf(::MainViewModel)
     viewModel { BottomSheetTaskViewModel(get()) }
     viewModel { (taskDate: LocalDate, onCancel: () -> Unit, onActionResult: (success: Boolean, message: String) -> Unit) ->
         AddTaskViewModel(

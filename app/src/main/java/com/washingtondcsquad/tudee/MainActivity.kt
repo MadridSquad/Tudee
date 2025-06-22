@@ -33,8 +33,6 @@ import androidx.navigation.compose.rememberNavController
 import com.washingtondcsquad.tudee.data.localSource.TudeeDataBase
 import com.washingtondcsquad.tudee.data.localSource.mapper.toEntity
 import com.washingtondcsquad.tudee.domain.entity.Category
-import com.washingtondcsquad.tudee.domain.services.AppPreferencesService
-import com.washingtondcsquad.tudee.presentation.features.categories.CategoriesScreen
 import com.washingtondcsquad.tudee.presentation.components.SnackBarCard
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.TudeeNavigationBar
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.bottomNavBarRoutes
@@ -42,6 +40,7 @@ import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.navBar
 import com.washingtondcsquad.tudee.presentation.components.snack_bar.ObserveAsEvent
 import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarController
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
+import com.washingtondcsquad.tudee.presentation.features.categories.CategoriesScreen
 import com.washingtondcsquad.tudee.presentation.features.home.HomeScreen
 import com.washingtondcsquad.tudee.presentation.features.onBoarding.OnBoardingScreen
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.TasksScreen
@@ -52,23 +51,19 @@ import org.koin.android.ext.android.inject
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 class MainActivity : ComponentActivity() {
-    private val appPreferencesService: AppPreferencesService by inject()
-
+    private val mainViewModel: MainViewModel by inject()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
 
         setContent {
-            val isDarkMode by appPreferencesService.isDarkModeEnabled()
-                .collectAsState(initial = false)
-            val isOnboardingShownFlow = appPreferencesService.hasOnboardingBeenShown()
-            val isOnboardingShownState by isOnboardingShownFlow.collectAsState(initial = null)
+            val mainState by mainViewModel.state.collectAsState()
 
             AppTheme(
-                useDarkTheme = isDarkMode
+                useDarkTheme = mainState.isDarkTheme
             ) {
-                when (val isOnboardingShown = isOnboardingShownState) {
+                when (val isOnboardingShown = mainState.hasOnBoardingShown) {
                     null -> {
                         Box(
                             modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
