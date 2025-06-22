@@ -24,4 +24,7 @@ interface CategoriesService {
     suspend fun getTaskCountByCategoryID(categoryId: CategoryID): Int
 
     suspend fun getTasksByCategoryID(categoryId: CategoryID): List<Task>
+
+    suspend fun createPreDefinedCategories()
+
 }
