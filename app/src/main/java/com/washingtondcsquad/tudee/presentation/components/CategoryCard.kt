@@ -18,13 +18,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
-import com.washingtondcsquad.tudee.presentation.features.sharedUiState.ImageSource
+import com.washingtondcsquad.tudee.domain.entity.ImageCategory
 import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.noRippleClick
 
 @Composable
 fun CategoryCard(
     title: String,
-    imageSource: ImageSource,
+    imageSource: ImageCategory,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
@@ -96,7 +96,7 @@ private fun Preview() {
 
     CategoryCard(
         title = "Test",
-        imageSource = ImageSource.Drawable(id = R.drawable.education_icon),
+        imageSource = ImageCategory.PredefinedDrawable(id = R.drawable.education_icon),
         onClick = {},
         modifier = Modifier,
         isSelected = true,

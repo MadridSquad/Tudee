@@ -66,10 +66,10 @@ class AddTaskViewModel(
         updateState {
             copy(
                 isButtonActionEnable =
-                    _state.value.taskTitle.isNotEmpty() &&
-                            _state.value.taskTitle.isNotBlank() &&
-                            _state.value.selectedCategory != null &&
-                            _state.value.selectedPriority != null
+                    _uiState.value.taskTitle.isNotEmpty() &&
+                            _uiState.value.taskTitle.isNotBlank() &&
+                            _uiState.value.selectedCategory != null &&
+                            _uiState.value.selectedPriority != null
             )
         }
     }
@@ -105,7 +105,7 @@ class AddTaskViewModel(
     }
 
     fun onPrioritySelected(priority: Priority) {
-        val currentPriority = _state.value.selectedPriority
+        val currentPriority = _uiState.value.selectedPriority
         if (currentPriority?.name != priority.name) {
             updateState {
                 copy(
@@ -117,7 +117,7 @@ class AddTaskViewModel(
     }
 
     fun onCategorySelected(category: Category) {
-        val currentCategory = _state.value.selectedCategory
+        val currentCategory = _uiState.value.selectedCategory
         if (currentCategory != category) {
             updateState {
                 copy(
@@ -142,13 +142,13 @@ class AddTaskViewModel(
                 tasksService.createTask(
                     Task(
                         id = 0,
-                        categoryId = _state.value.selectedCategory!!.id,
-                        categoryImage = _state.value.selectedCategory!!.iconPath,
-                        title = _state.value.taskTitle,
-                        description = _state.value.taskDescription,
-                        date = _state.value.taskDate,
+                        categoryId = _uiState.value.selectedCategory!!.id,
+                        categoryImage = _uiState.value.selectedCategory!!.iconPath,
+                        title = _uiState.value.taskTitle,
+                        description = _uiState.value.taskDescription,
+                        date = _uiState.value.taskDate,
                         status = TaskStatus.TODO,
-                        priority = _state.value.selectedPriority!!,
+                        priority = _uiState.value.selectedPriority!!,
                     )
                 )
             },

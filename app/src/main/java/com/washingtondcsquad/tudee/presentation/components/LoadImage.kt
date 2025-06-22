@@ -8,13 +8,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.washingtondcsquad.tudee.presentation.features.sharedUiState.ImageSource
+import com.washingtondcsquad.tudee.domain.entity.ImageCategory
 
 @Composable
-fun LoadImage(imageSource: ImageSource, modifier: Modifier = Modifier) {
+fun LoadImage(imageSource: ImageCategory, modifier: Modifier = Modifier) {
 
     when (imageSource) {
-        is ImageSource.Path -> {
+        is ImageCategory.AddedByUser -> {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(imageSource.value)
@@ -26,7 +26,7 @@ fun LoadImage(imageSource: ImageSource, modifier: Modifier = Modifier) {
             )
         }
 
-        is ImageSource.Drawable -> {
+        is ImageCategory.PredefinedDrawable -> {
             Image(
                 painter = painterResource(id = imageSource.id),
                 contentDescription = "",
