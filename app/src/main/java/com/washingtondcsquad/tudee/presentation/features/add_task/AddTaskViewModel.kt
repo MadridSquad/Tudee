@@ -25,7 +25,7 @@ class AddTaskViewModel(
     taskDate: kotlinx.datetime.LocalDate,
 ) : BaseViewModel<AddTaskUiState>(
     AddTaskUiState(
-        taskDate = taskDate.toString()
+        taskDate = "${taskDate.dayOfMonth}-${taskDate.monthNumber}-${taskDate.year}"//taskDate.toString()
     )
 ) {
 
