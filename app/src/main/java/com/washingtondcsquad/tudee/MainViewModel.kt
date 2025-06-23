@@ -6,6 +6,7 @@ import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 class MainViewModel(
     private val appPreferencesService: AppPreferencesService
@@ -14,6 +15,7 @@ class MainViewModel(
     init {
         getIsDarkTheme()
         getOnBoardingState()
+        getAppLocale()
     }
 
     private fun getIsDarkTheme() {
@@ -49,6 +51,22 @@ class MainViewModel(
             updateState {
                 copy(hasOnBoardingShown = it)
             }
+        }
+    }
+
+    private fun getAppLocale() {
+        tryToCollect(
+            request = {
+                appPreferencesService.getCurrentLocale()
+            },
+            onChange = ::onAppLanguageChanged,
+            onError = {},
+        )
+    }
+
+    private fun onAppLanguageChanged(newLocale: Locale) {
+        updateState {
+            copy(currentAppLocale = newLocale)
         }
     }
 }
