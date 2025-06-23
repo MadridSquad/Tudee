@@ -4,7 +4,7 @@ import com.washingtondcsquad.tudee.presentation.features.add_task.AddTaskViewMod
 import com.washingtondcsquad.tudee.presentation.features.home.HomeViewModel
 import com.washingtondcsquad.tudee.presentation.features.task_details.BottomSheetTaskViewModel
 import com.washingtondcsquad.tudee.presentation.features.onBoarding.OnboardingViewModel
-import com.washingtondcsquad.tudee.presentation.screens.add_task.EditTaskViewModel
+import com.washingtondcsquad.tudee.presentation.features.edit_task.EditTaskViewModel
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.TasksViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
