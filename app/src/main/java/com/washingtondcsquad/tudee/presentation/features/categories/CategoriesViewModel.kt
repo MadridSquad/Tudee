@@ -1,11 +1,13 @@
 package com.washingtondcsquad.tudee.presentation.features.categories
 
 import androidx.lifecycle.viewModelScope
+import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.features.categories.mapper.toDomain
 import com.washingtondcsquad.tudee.presentation.features.categories.mapper.toUi
 import kotlinx.coroutines.launch
+import com.washingtondcsquad.tudee.presentation.features.sharedUiState.ImageSource
 
 class CategoriesViewModel(
     private val categoriesService: CategoriesService
@@ -26,7 +28,7 @@ class CategoriesViewModel(
     override fun onCategoryClick(category: CategoriesScreenStatus.Category) {
         tryToExecute(
             request = {
-                categoriesService.getCategoryById(category.id)
+                categoriesService.getCategoryById(CategoryID(category.id))
             },
             onSuccess = {
                //todo navigate to category details
@@ -38,14 +40,15 @@ class CategoriesViewModel(
 
     }
 
-    override fun addCategoryClick(title: String, categoryIconPath: String) {
+    override fun addCategoryClick(title: String, categoryIconPath: String) { //TODO handle this function
         viewModelScope.launch {
-            categoriesService.createCategory(
-                CategoriesScreenStatus.Category(
-                    title = title,
-                    iconPath =categoryIconPath,
-                    tasksCount = 0,
-            ).toDomain())
+//            categoriesService.createCategory(
+//                CategoriesScreenStatus.Category(
+//                    title = title,
+//                    iconPath = categoryIconPath,
+//                    tasksCount = 0,
+//                ).toDomain()
+//            )
         }
     }
 
