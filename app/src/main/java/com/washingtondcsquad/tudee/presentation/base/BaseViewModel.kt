@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 abstract class BaseViewModel<STATE>(initialValue: STATE) : ViewModel() {
@@ -25,6 +26,7 @@ abstract class BaseViewModel<STATE>(initialValue: STATE) : ViewModel() {
     }
 
     protected fun updateState(reducer: STATE.() -> STATE) {
+        _state.update(reducer)
         _state.value = _state.value.reducer()
     }
 }
