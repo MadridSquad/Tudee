@@ -22,10 +22,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.Category
+import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyle
-import com.washingtondcsquad.tudee.presentation.features.sharedUiState.ImageSource
+import com.washingtondcsquad.tudee.presentation.features.sharedUiState.ImageSource.Drawable
+import kotlinx.datetime.LocalDate
 
 @Composable
 fun TaskScreenComponents(
@@ -34,7 +36,7 @@ fun TaskScreenComponents(
     onTitleChange: (String) -> Unit,
     taskDescription: String,
     onDescriptionChange: (String) -> Unit,
-    taskDate: String,
+    taskDate: LocalDate,
     onShowDatePicker: () -> Unit,
     priorityList: List<Priority>,
     selectedPriority: Priority?,
@@ -87,8 +89,8 @@ fun TaskScreenComponents(
         item(span = { GridItemSpan(maxLineSpan) }) {
             AppTextField(
                 prefixIconPainter = painterResource(R.drawable.add_task_calendar),
-                hintText = taskDate,
-                value = taskDate,
+                hintText = "${taskDate.dayOfMonth}-${taskDate.monthNumber}-${taskDate.year}",
+                value = "${taskDate.dayOfMonth}-${taskDate.monthNumber}-${taskDate.year}",
                 onValueChange = { },
                 onPrefixIconClick = onShowDatePicker,
                 readOnly = true,
@@ -127,14 +129,14 @@ fun TaskScreenComponents(
                 text = stringResource(R.string.category),
                 style = defaultTextStyle.title.medium,
                 color = AppTheme.colors.title,
-                modifier = Modifier.padding( bottom = 8.dp)
+                modifier = Modifier.padding(bottom = 8.dp)
             )
         }
 
         items(categoryList) { category ->
             CategoryCard(
-                title = "adfadf",
-                imageSource = ImageSource.Drawable(id = R.drawable.gym),
+                title = category.title,
+                imageSource = category.iconPath,
                 onClick = { onCategorySelected(category) },
                 isSelected = selectedCategory == category,
                 modifier = Modifier.padding(bottom = 16.dp)
@@ -158,7 +160,7 @@ private fun TaskScreenComponentsPreview() {
             onTitleChange = {},
             taskDescription = "taskDescription",
             onDescriptionChange = {},
-            taskDate = "taskDate",
+            taskDate = LocalDate.parse("2023-07-12"),
             onShowDatePicker = {},
             priorityList = listOf(
                 Priority.HIGH,
@@ -169,16 +171,16 @@ private fun TaskScreenComponentsPreview() {
             onPrioritySelected = {},
             categoryList = listOf(
                 Category(
-                    id = 1,
+                    id = CategoryID(1),
                     title = "bla bla",
-                    iconPath = R.drawable.gym.toString(),
+                    iconPath = Drawable(R.drawable.gym),
                     taskCount = 44,
                     isPredefined = true
                 ),
                 Category(
-                    id = 1,
+                    id = CategoryID(1),
                     title = "bla bla",
-                    iconPath = R.drawable.gym.toString(),
+                    iconPath = Drawable(R.drawable.gym),
                     taskCount = 44,
                     isPredefined = true
                 )
@@ -186,9 +188,9 @@ private fun TaskScreenComponentsPreview() {
             onCategorySelected = {},
             selectedCategory = Category
                 (
-                id = 1,
+                id = CategoryID(1),
                 title = "bla bla",
-                iconPath = R.drawable.gym.toString(),
+                iconPath = Drawable(R.drawable.gym),
                 taskCount = 44,
                 isPredefined = true
             )
