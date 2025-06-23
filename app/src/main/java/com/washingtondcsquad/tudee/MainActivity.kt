@@ -31,10 +31,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.washingtondcsquad.tudee.data.localSource.TudeeDataBase
-import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.services.AppPreferencesService
-import com.washingtondcsquad.tudee.presentation.features.categories.CategoriesScreen
 import com.washingtondcsquad.tudee.presentation.components.SnackBarCard
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.TudeeNavigationBar
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.bottomNavBarRoutes
@@ -42,11 +39,10 @@ import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.navBar
 import com.washingtondcsquad.tudee.presentation.components.snack_bar.ObserveAsEvent
 import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarController
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
+import com.washingtondcsquad.tudee.presentation.features.categories.CategoriesScreen
 import com.washingtondcsquad.tudee.presentation.features.home.HomeScreen
 import com.washingtondcsquad.tudee.presentation.features.onBoarding.OnBoardingScreen
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.TasksScreen
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
@@ -128,7 +124,13 @@ class MainActivity : ComponentActivity() {
                                     SplashScreen(
                                         title = "Tudee",
                                         isDarkTheme = isDarkMode,
-                                        onNavigateNext = { navController.navigate("home") }
+                                        onNavigateNext = {
+                                            navController.navigate("onboarding") {
+                                                popUpTo("splash") { inclusive = true }
+
+                                            }
+
+                                        }
                                     )
                                 }
 
