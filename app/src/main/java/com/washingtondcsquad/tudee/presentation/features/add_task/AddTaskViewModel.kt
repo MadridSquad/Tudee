@@ -2,6 +2,7 @@ package com.washingtondcsquad.tudee.presentation.features.add_task
 
 import android.util.Log
 import com.washingtondcsquad.tudee.domain.entity.Category
+import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.entity.TaskID
@@ -70,10 +71,10 @@ class AddTaskViewModel(
         updateState {
             copy(
                 isButtonActionEnable =
-                    _uiState.value.taskTitle.isNotEmpty() &&
-                            _uiState.value.taskTitle.isNotBlank() &&
-                            _uiState.value.selectedCategory != null &&
-                            _uiState.value.selectedPriority != null
+                    _state.value.taskTitle.isNotEmpty() &&
+                            _state.value.taskTitle.isNotBlank() &&
+                            _state.value.selectedCategory != null &&
+                            _state.value.selectedPriority != null
             )
         }
     }
@@ -109,7 +110,7 @@ class AddTaskViewModel(
     }
 
     fun onPrioritySelected(priority: Priority) {
-        val currentPriority = _uiState.value.selectedPriority
+        val currentPriority = _state.value.selectedPriority
         if (currentPriority?.name != priority.name) {
             updateState {
                 copy(
@@ -121,7 +122,7 @@ class AddTaskViewModel(
     }
 
     fun onCategorySelected(category: Category) {
-        val currentCategory = _uiState.value.selectedCategory
+        val currentCategory = _state.value.selectedCategory
         if (currentCategory != category) {
             updateState {
                 copy(
@@ -143,16 +144,16 @@ class AddTaskViewModel(
     fun onClickSaveButton() {
         tryToExecute(
             request = {
-                val parsedDate = LocalDate.parse(state.value.taskDate, DateTimeFormatter.ofPattern("d-M-yyyy"))
+                val parsedDate = LocalDate.parse(_state.value.taskDate, DateTimeFormatter.ofPattern("d-M-yyyy"))
                 tasksService.createTask(
                     Task(
                         id = TaskID(0L),
-                        categoryId = state.value.selectedCategory!!.id.categoryId,
-                        title = state.value.taskTitle,
-                        description = state.value.taskDescription,
+                        categoryId = _state.value.selectedCategory!!.id.categoryId,
+                        title = _state.value.taskTitle,
+                        description = _state.value.taskDescription,
                         date =parsedDate.toKotlinLocalDate(),
                         status = TaskStatus.TODO,
-                        priority = state.value.selectedPriority!!,
+                        priority = _state.value.selectedPriority!!,
                     )
                 )
             },
