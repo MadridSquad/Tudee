@@ -58,7 +58,6 @@ fun TasksScreen(tasksViewModel: TasksViewModel = koinViewModel()) {
         tasksViewModel::setShowDialog,
         tasksViewModel::goToNextMonth,
         tasksViewModel::goToPreviousMonth,
-        tasksViewModel::clearDatePicker,
         tasksViewModel::formatedSelectedDate,
         tasksUiState,
         tasksViewModel = tasksViewModel
@@ -72,7 +71,6 @@ fun TasksScreenContent(
     setShowDialog: (Boolean) -> Unit,
     gotToNextMonth: () -> Unit,
     gotToPreviousMonth: () -> Unit,
-    clearDatePicker: () -> Long,
     formatedSelectedDate: (Long) -> String,
     tasksUiState: TasksUiState,
     tasksViewModel: TasksViewModel
@@ -237,8 +235,8 @@ fun TasksScreenContent(
 
         selectedTaskToDelete.value?.let { taskToDelete ->
             ConfirmDeleteTask(
-                deleteOnClick = {
-                    tasksViewModel.deleteTask(taskToDelete.taskId)
+                deleteOnClick = { //TODO handel this
+                 //   tasksViewModel.deleteTask(taskToDelete.taskId)
                     selectedTaskToDelete.value = null
                     showSnackBar.value = true
                 },

@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.Task
+import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.presentation.components.ProgressCard
 import com.washingtondcsquad.tudee.presentation.components.TaskPriorityCard
@@ -47,7 +48,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun TaskDetailsBottomSheet(
-    taskId: Int,
+    taskId: TaskID,
     viewModel: BottomSheetTaskViewModel = koinViewModel<BottomSheetTaskViewModel>(),
     onClickTaskDetails: () -> Unit,
     onDismiss: () -> Unit,

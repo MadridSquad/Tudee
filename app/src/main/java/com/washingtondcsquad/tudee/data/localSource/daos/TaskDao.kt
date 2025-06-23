@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.washingtondcsquad.tudee.data.localSource.model.TaskEntity
+import com.washingtondcsquad.tudee.domain.entity.TaskID
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -21,7 +22,7 @@ interface TaskDao {
     suspend fun editTask(taskId: TaskEntity)
 
     @Query("SELECT * FROM ${TaskEntity.TASK_TABLE_NAME} WHERE id = :taskId")
-    suspend fun getTaskById(taskId: Int): TaskEntity
+    suspend fun getTaskById(taskId: TaskID): TaskEntity
 
     @Query("SELECT * FROM ${TaskEntity.TASK_TABLE_NAME}")
     fun getAllTasks(): Flow<List<TaskEntity>>
