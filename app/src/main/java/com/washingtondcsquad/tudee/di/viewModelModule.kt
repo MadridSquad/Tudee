@@ -10,6 +10,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import com.washingtondcsquad.tudee.presentation.features.categories.CategoriesViewModel
+import kotlinx.datetime.LocalDate
 
 
 val viewModelModule = module {
@@ -21,7 +22,7 @@ val viewModelModule = module {
         get()
     ) }
     viewModel { BottomSheetTaskViewModel(get()) }
-    viewModel { (taskDate: kotlinx.datetime.LocalDate) ->
+    viewModel { (taskDate: LocalDate) ->
         AddTaskViewModel(
             tasksService = get(),
             categoryService = get(),
@@ -36,9 +37,7 @@ val viewModelModule = module {
             tasksService = get(),
             categoryService = get(),
             taskId = taskId,
-            onCancelAddTaskBottomSheet = onCancel,
-            onActionResult = onActionResult
+            stringProvider = get(),
         )
     }
-
 }
