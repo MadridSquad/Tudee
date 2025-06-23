@@ -88,10 +88,7 @@ fun TasksScreenContent(
 
     if(showTaskDetails.value){
         EditTaskScreen(
-            onCancelAddTaskBottomSheet = {showTaskDetails.value = false},
-            onActionResult = {a,b->
-                editTaskResult.value = a to b
-            },
+            onCancelEditTask = {showTaskDetails.value = false},
             taskId = TODO(),
             viewModel = TODO()
         )
