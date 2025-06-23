@@ -48,34 +48,12 @@ fun OverViewSection(
 
 @Composable
 fun TaskStatusCountCard(taskStatus: TaskStatus, count: Int, modifier: Modifier = Modifier) {
-    var bgColor: Color
-    var icon: Painter
-    var title: String
-    when (taskStatus) {
-        TaskStatus.TODO -> {
-            title = stringResource(R.string.to_do)
-            bgColor = AppTheme.colors.purpleAccent
-            icon = painterResource(R.drawable.todo_status_icon)
-        }
-
-        TaskStatus.IN_PROGRESS -> {
-            title = stringResource(R.string.in_progress_title)
-            bgColor = AppTheme.colors.yellowAccent
-            icon = painterResource(R.drawable.inprogress_status_icon)
-
-        }
-
-        TaskStatus.DONE -> {
-            title = stringResource(R.string.done)
-            bgColor = AppTheme.colors.greenAccent
-            icon = painterResource(R.drawable.done_status_icon)
-
-        }
-    }
+    var bgColor: Color = getCardBackgroundColor(taskStatus = taskStatus)
+    var icon: Painter = getCardIcon(taskStatus = taskStatus)
+    var title: String = getCardTitle(taskStatus = taskStatus)
 
     Box(
         modifier
-            .height(112.dp)
             .background(bgColor, shape = RoundedCornerShape(20.dp))
             .clip(shape = RoundedCornerShape(20.dp))
     ) {
@@ -129,6 +107,35 @@ fun TaskStatusCountCard(taskStatus: TaskStatus, count: Int, modifier: Modifier =
 
 
 }
+
+@Composable
+fun getCardBackgroundColor(taskStatus: TaskStatus): Color {
+    return when (taskStatus) {
+        TaskStatus.TODO -> AppTheme.colors.purpleAccent
+        TaskStatus.IN_PROGRESS -> AppTheme.colors.yellowAccent
+        TaskStatus.DONE -> AppTheme.colors.greenAccent
+    }
+}
+
+@Composable
+fun getCardIcon(taskStatus: TaskStatus): Painter {
+    return when (taskStatus) {
+        TaskStatus.TODO -> painterResource(R.drawable.todo_status_icon)
+        TaskStatus.IN_PROGRESS -> painterResource(R.drawable.inprogress_status_icon)
+        TaskStatus.DONE -> painterResource(R.drawable.done_status_icon)
+
+    }
+}
+
+@Composable
+fun getCardTitle(taskStatus: TaskStatus): String {
+    return when (taskStatus) {
+        TaskStatus.TODO -> stringResource(R.string.to_do)
+        TaskStatus.IN_PROGRESS -> stringResource(R.string.in_progress_title)
+        TaskStatus.DONE -> stringResource(R.string.done)
+    }
+}
+
 
 @Preview
 @Composable
