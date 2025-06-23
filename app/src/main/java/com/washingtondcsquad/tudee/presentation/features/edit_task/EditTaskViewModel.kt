@@ -1,60 +1,70 @@
 package com.washingtondcsquad.tudee.presentation.features.edit_task
 
+import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.entity.Priority
+import com.washingtondcsquad.tudee.domain.entity.Task
+import com.washingtondcsquad.tudee.domain.entity.TaskID
+import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.EditTaskUiState
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
+import com.washingtondcsquad.tudee.presentation.provider.StringProvider
+import kotlinx.datetime.Instant
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 class EditTaskViewModel(
     private val tasksService: TasksService,
     private val categoryService: CategoriesService,
-    taskId: Int = 0,
-    private val onCancelAddTaskBottomSheet: () -> Unit = {},
-    private val onActionResult: (success: Boolean, message: String) -> Unit
+    taskId: Int,
+    private val stringProvider: StringProvider,
 ) : BaseViewModel<EditTaskUiState>(
     EditTaskUiState(
         taskId = taskId,
     )
 ) {
-
     init {
         getAllCategories()
         getTaskById()
     }
 
-    private fun getTaskById() { //TODO handle this function
-//        viewModelScope.launch {
-//            val task = tasksService.getTaskById(_state.value.taskId)
-//            withContext(Dispatchers.Main) {
-//                updateState {
-//                    copy(
-//                        taskId = task.id,
-//                        taskTitle = task.title,
-//                        taskDescription = task.description,
-//                        taskDate = task.date,
-//                        selectedPriority = task.priority,
-//                        selectedCategory = getCategory(task.categoryId),
-//                    )
-//                }
-//            }
-//        }
-
-
+    private fun getTaskById() {
+        tryToExecute(
+            request = {
+                tasksService.getTaskById (
+                    TaskID(state.value.taskId.toLong())
+                )
+            },
+            onSuccess = { task ->
+                updateState {
+                    copy(
+                        taskTitle = task.title,
+                        taskDescription = task.description,
+                        taskDate = task.date,
+                        selectedCategory = getCategory(CategoryID(task.categoryId)),
+                        selectedPriority = task.priority,
+                    )
+                }
+                updateButtonEnable()
+            },
+            onError = { exception ->
+                updateState {
+                    copy(errorMessage = exception.message)
+                }
+            }
+        )
     }
 
     fun getAllCategories() {
         tryToExecute(
             request = {
-                categoryService.getAllCategories().collect{
+                categoryService.getAllCategories().collect {
                     updateState {
-                        copy( categoryList =  it )
+                        copy(categoryList = it)
                     }
                 }
             },
@@ -115,16 +125,14 @@ class EditTaskViewModel(
     }
 
     fun onDateSelected(dateAsMilliseconds: Long) {
-        val dataInLocalDate = Instant.ofEpochMilli(dateAsMilliseconds)
-            .atZone(ZoneId.systemDefault())
-            .toLocalDate()
-        val realDate = dataInLocalDate.format(DateTimeFormatter.ofPattern("d-M-yyyy"))
+        val realDate = Instant.fromEpochMilliseconds(dateAsMilliseconds)
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+            .date
         updateState {
             copy(
                 taskDate = realDate
             )
         }
-
     }
 
     fun onPrioritySelected(priority: Priority) {
@@ -151,38 +159,40 @@ class EditTaskViewModel(
         }
     }
 
-    fun onClickEditButton() {
+    fun onClickEditButton(
+        onSuccess: (message: String) -> Unit,
+        onError: (message: String) -> Unit,
+    ) {
         tryToExecute(
-            request = { //TODO handle this function
-//                tasksService.editTask(
-//                    Task(
-//                        id = _state.value.taskId,
-//                        categoryId = _state.value.selectedCategory!!.id,
-//                        title = _state.value.taskTitle,
-//                        description = _state.value.taskDescription,
-//                        date = _state.value.taskDate,
-//                        status = TaskStatus.TODO,
-//                        priority = _state.value.selectedPriority!!,
-//                    )
-//                )
+            request = {
+                tasksService.editTask(
+                    Task(
+                        title = state.value.taskTitle,
+                        description = state.value.taskDescription,
+                        date = state.value.taskDate,
+                        priority = state.value.selectedPriority!!,
+                        id = TaskID(state.value.taskId.toLong()),
+                        categoryId = state.value.selectedCategory!!.id.categoryId,
+                        status = TaskStatus.TODO
+                    )
+                )
             },
             onSuccess = {
+                onSuccess(stringProvider.getString(R.string.edit_task_successfully))
                 clearDate()
-                onCancelAddTaskBottomSheet()
-                onActionResult(true,"Edited task successfully.")
             },
             onError = { exception ->
-                onActionResult(false,exception.message.toString())
+                onError(stringProvider.getString(R.string.some_error_happened))
             }
         )
     }
+
     private fun clearDate() {
         updateState {
             copy(
-                taskId = 0,
                 taskTitle = "",
                 taskDescription = "",
-                taskDate = LocalDate.now().format(DateTimeFormatter.ofPattern("d-M-yyyy")),
+                taskDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
                 selectedCategory = null,
                 selectedPriority = null,
                 isButtonActionEnable = false
