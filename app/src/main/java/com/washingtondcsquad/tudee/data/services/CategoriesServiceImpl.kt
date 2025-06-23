@@ -10,17 +10,20 @@ import com.washingtondcsquad.tudee.data.localSource.mapper.toEntity
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.entity.Task
+import com.washingtondcsquad.tudee.domain.provider.StringProvider
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.koin.compose.getKoin
+import com.washingtondcsquad.tudee.R
+import com.washingtondcsquad.tudee.data.localSource.model.CategoryEntity
 
 class CategoriesServiceImpl(
-    private val applicationContext: Context // this is Application context via androidContext()
+    private val stringProvider: StringProvider
     private val daoCategory: CategoryDao,
     private val saveImageToInternalStorage: SaveImageToInternalStorage,
     private val deleteImageFromInternalStorage: DeleteImageFromInternalStorage,
-    ) : CategoriesService {
+) : CategoriesService {
     override suspend fun createCategory(category: Category) {
         saveImageToInternalStorage.saveImageToInternalStorage(category.iconPath) {
             category.iconPath = it
@@ -51,6 +54,32 @@ class CategoriesServiceImpl(
     }
 
     override suspend fun createPreDefinedCategories() {
+        val titles = listOf(
+            CategoryEntity(
+                CategoryID(0L),
+                stringProvider.getString(R.string.education),
+                image = R.drawable.education_icon.toString(),
+                isPredefined = true
+            )
+
+                    stringProvider . getString (R.string.shopping),
+            stringProvider.getString(R.string.medical),
+            stringProvider.getString(R.string.gym),
+            stringProvider.getString(R.string.entertainment),
+            stringProvider.getString(R.string.cooking),
+            stringProvider.getString(R.string.family),
+            stringProvider.getString(R.string.traveling),
+            stringProvider.getString(R.string.agriculture),
+            stringProvider.getString(R.string.coding),
+            stringProvider.getString(R.string.adoration),
+            stringProvider.getString(R.string.fix_bug),
+            stringProvider.getString(R.string.cleaning),
+            stringProvider.getString(R.string.work),
+            stringProvider.getString(R.string.budgeting),
+            stringProvider.getString(R.string.self_care),
+            stringProvider.getString(R.string.event)
+        )
+
         TODO("Not yet implemented")
     }
 
