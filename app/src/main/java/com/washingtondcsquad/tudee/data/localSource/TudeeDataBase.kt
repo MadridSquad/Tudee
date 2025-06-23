@@ -4,16 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.washingtondcsquad.tudee.data.localSource.daos.DaoCategory
-import com.washingtondcsquad.tudee.data.localSource.daos.DaoTask
-import com.washingtondcsquad.tudee.data.localSource.entities.CategoryEntity
-import com.washingtondcsquad.tudee.data.localSource.entities.TaskEntity
-import com.washingtondcsquad.tudee.data.utils.DataBaseConstants
+import com.washingtondcsquad.tudee.data.localSource.daos.CategoryDao
+import com.washingtondcsquad.tudee.data.localSource.daos.TaskDao
+import com.washingtondcsquad.tudee.data.localSource.model.CategoryEntity
+import com.washingtondcsquad.tudee.data.localSource.model.TaskEntity
 
 @Database(entities = [CategoryEntity::class, TaskEntity::class], version = 1, exportSchema = false)
 abstract class TudeeDataBase : RoomDatabase() {
-    abstract fun daoCategory(): DaoCategory
-    abstract fun daoTask(): DaoTask
+    abstract fun daoCategory(): CategoryDao
+    abstract fun daoTask(): TaskDao
 
     companion object {
         @Volatile
@@ -24,12 +23,10 @@ abstract class TudeeDataBase : RoomDatabase() {
 
         private fun buildDatabase(context: Context): TudeeDataBase {
             return Room.databaseBuilder(
-                context,
-                TudeeDataBase::class.java,
-                DataBaseConstants.ROOM_DATABASE_NAME
+                context, TudeeDataBase::class.java, DATABASE_NAME
             ).build()
-
         }
-
+        const val DATABASE_NAME = "TudeeDatabase"
     }
 }
+

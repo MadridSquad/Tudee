@@ -32,10 +32,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.washingtondcsquad.tudee.data.localSource.TudeeDataBase
-import com.washingtondcsquad.tudee.data.localSource.mapper.category.toEntity
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.services.AppPreferencesService
-import com.washingtondcsquad.tudee.presentation.categories.CategoriesScreen
+import com.washingtondcsquad.tudee.presentation.features.categories.CategoriesScreen
 import com.washingtondcsquad.tudee.presentation.components.SnackBarCard
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.TudeeNavigationBar
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.bottomNavBarRoutes
@@ -44,8 +43,8 @@ import com.washingtondcsquad.tudee.presentation.components.snack_bar.ObserveAsEv
 import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarController
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.home.HomeScreen
-import com.washingtondcsquad.tudee.presentation.screen.onBoarding.OnBoardingScreen
-import com.washingtondcsquad.tudee.presentation.screens.tasksScreen.TasksScreen
+import com.washingtondcsquad.tudee.presentation.features.onBoarding.OnBoardingScreen
+import com.washingtondcsquad.tudee.presentation.features.tasks_screen.TasksScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -83,7 +82,7 @@ class MainActivity : ComponentActivity() {
                             "home"
                         } else {
                             Log.d("sdasdsad", "onCreate: ")
-                            createPreDefineCategories()
+                         ///   createPreDefineCategories()
                             "onboarding"
                         }
                         val navController = rememberNavController()
@@ -141,36 +140,36 @@ class MainActivity : ComponentActivity() {
             SnackbarHandler()
         }
     }
-
-    private fun createPreDefineCategories() {
-        CoroutineScope(Dispatchers.IO).launch {
-            listOf(
-                "Education",
-                "Shopping",
-                "Medical",
-                "Gym",
-                "Entertainment",
-                "Cooking",
-                "Family & friend",
-                "Traveling",
-                "Agriculture",
-                "Coding",
-                "Adoration",
-                "Fix bug",
-                "Cleaning",
-                "Work",
-                "Budgeting",
-                "Self care",
-                "Event"
-            ).forEach { image ->
-                TudeeDataBase.getInstance(this@MainActivity).daoCategory().createCategory(
-                    Category(
-                        title = image, iconPath = "", taskCount = 0, id = 0
-                    ).toEntity()
-                )
-            }
-        }
-    }
+//
+//    private fun createPreDefineCategories() {
+//        CoroutineScope(Dispatchers.IO).launch {
+//            listOf(
+//                "Education",
+//                "Shopping",
+//                "Medical",
+//                "Gym",
+//                "Entertainment",
+//                "Cooking",
+//                "Family & friend",
+//                "Traveling",
+//                "Agriculture",
+//                "Coding",
+//                "Adoration",
+//                "Fix bug",
+//                "Cleaning",
+//                "Work",
+//                "Budgeting",
+//                "Self care",
+//                "Event"
+//            ).forEach { image ->
+//                TudeeDataBase.getInstance(this@MainActivity).daoCategory().createCategory(
+//                    Category(
+//                        title = image, iconPath = "", taskCount = 0, id = 0
+//                    ).toEntity()
+//                )
+//            }
+//        }
+//    }
 }
 
 

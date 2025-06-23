@@ -27,6 +27,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -46,14 +47,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
+import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.presentation.components.CustomSwitchButton
 import com.washingtondcsquad.tudee.presentation.components.TaskCard
 import com.washingtondcsquad.tudee.presentation.components.TextLogo
 import com.washingtondcsquad.tudee.presentation.components.analytics_components.AnalyticsCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
-import com.washingtondcsquad.tudee.presentation.features.taskdetails.TaskDetailsBottomSheet
-import com.washingtondcsquad.tudee.presentation.screens.add_task.AddNewTaskScreen
+import com.washingtondcsquad.tudee.presentation.features.task_details.TaskDetailsBottomSheet
+import com.washingtondcsquad.tudee.presentation.features.add_task.AddNewTaskScreen
 import com.washingtondcsquad.tudee.presentation.utils.SetStatusBarIconsColor
 import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.noRippleClick
 import org.koin.androidx.compose.koinViewModel
@@ -82,7 +84,9 @@ private fun HomeScreenContent(
         state.inProgressTasks.isEmpty() and state.todoTasks.isEmpty() and state.doneTasks.isEmpty()
     var showAddNewTaskBottomSheet by remember { mutableStateOf(false) }
     var showTaskDetailBottomSheet by remember { mutableStateOf(false) }
-    var currentTaskIdToShowDetail by remember { mutableIntStateOf(0) }
+    var currentTaskIdToShowDetail: TaskID by remember { mutableStateOf(TaskID(0L)) }
+
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -222,7 +226,7 @@ private fun HomeScreenContent(
 }
 
 @Composable
-private fun ShowTaskDetails(taskId: Int, onDismiss: () -> Unit) {
+private fun ShowTaskDetails(taskId: TaskID, onDismiss: () -> Unit) {
     TaskDetailsBottomSheet(
         taskId = taskId, onDismiss = onDismiss, onClickTaskDetails = {})
 }
@@ -252,7 +256,7 @@ private fun FabIcon(modifier: Modifier) {
 private fun TaskStatusLayout(
     title: String,
     tasks: List<TaskUiState>,
-    onTaskClick: (Int) -> Unit,
+    onTaskClick: (TaskID) -> Unit,
     onSeeMoreClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {

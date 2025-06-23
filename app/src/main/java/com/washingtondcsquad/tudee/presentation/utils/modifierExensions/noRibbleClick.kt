@@ -9,10 +9,7 @@ import androidx.compose.ui.Modifier
 fun Modifier.noRippleClick(onClick: () -> Unit): Modifier {
     val interactionSource = MutableInteractionSource()
     return this.clickable(
-        indication = null,
-        interactionSource = interactionSource,
-        onClick = onClick
+        indication = null, interactionSource = interactionSource, onClick = onClick
     )
-
 }
 

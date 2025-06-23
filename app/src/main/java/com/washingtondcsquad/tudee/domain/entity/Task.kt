@@ -1,12 +1,15 @@
 package com.washingtondcsquad.tudee.domain.entity
 
+import kotlinx.datetime.LocalDate
+
+@JvmInline
+value class TaskID(val taskId:Long)
 data class Task(
-    val id: Int,
+    val id: TaskID,
     val categoryId: Long,
-    val categoryImage: String,
     val title: String,
     val description: String,
-    val date: String,
+    val date: LocalDate,
     val status: TaskStatus,
     val priority: Priority,
 )

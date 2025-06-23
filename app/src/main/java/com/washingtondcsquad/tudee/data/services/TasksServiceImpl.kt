@@ -1,16 +1,16 @@
 package com.washingtondcsquad.tudee.data.services
 
-import com.washingtondcsquad.tudee.data.localSource.daos.DaoTask
-import com.washingtondcsquad.tudee.data.localSource.entities.TaskEntity
-import com.washingtondcsquad.tudee.data.localSource.mapper.category.toDomain
-import com.washingtondcsquad.tudee.data.localSource.mapper.category.toEntity
+import com.washingtondcsquad.tudee.data.localSource.daos.TaskDao
+import com.washingtondcsquad.tudee.data.localSource.mapper.toDomain
+import com.washingtondcsquad.tudee.data.localSource.mapper.toEntity
 import com.washingtondcsquad.tudee.domain.entity.Task
+import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class TasksServiceImpl(
-    private val dao: DaoTask
+    private val dao: TaskDao
 ) : TasksService {
     override suspend fun createTask(task: Task) {
         dao.createTask(task.toEntity())
@@ -24,12 +24,11 @@ class TasksServiceImpl(
         return dao.getAllTasks().map { flow -> flow.map { it.toDomain() } }
     }
 
-    override suspend fun getTaskById(id: Int): Task {
+    override suspend fun getTaskById(id: TaskID): Task {
         return dao.getTaskById(id).toDomain()
     }
 
     override suspend fun editTask(task: Task) {
         dao.editTask(task.toEntity())
     }
-
 }
