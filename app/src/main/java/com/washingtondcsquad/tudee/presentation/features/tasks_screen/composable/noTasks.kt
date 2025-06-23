@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.washingtondcsquad.tudee.R
@@ -42,13 +43,12 @@ fun NoTasks() {
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
-                    "No tasks here!",
+                    stringResource(R.string.tasks_screen_no_tasks_title),
                     style = AppTheme.textStyle.title.small,
                     color = AppTheme.colors.body
                 )
                 Text(
-                    "Tap the + button to add your \n" +
-                            "first one.",
+                    stringResource(R.string.tasks_screen_no_tasks_desc),
                     style = AppTheme.textStyle.body.small,
                     color = AppTheme.colors.hint
                 )
