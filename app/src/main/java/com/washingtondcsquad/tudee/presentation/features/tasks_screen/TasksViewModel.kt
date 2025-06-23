@@ -2,8 +2,10 @@ package com.washingtondcsquad.tudee.presentation.features.tasks_screen
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
+import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
+import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
@@ -31,8 +33,6 @@ class TasksViewModel(
         fullSelectedDate = "",
         isFilterEnabled = false,
         tasksList = emptyList()
-
-
     )
 ) {
     init {
@@ -40,27 +40,25 @@ class TasksViewModel(
     }
     var snackBarMessage = mutableStateOf<String?>(null)
 
-
-    fun deleteTask(taskId: Int) = tryToExecute(
+    fun deleteTask(taskId: TaskID) = tryToExecute(
         request = {
-            val taskUi = state.value.tasksList.find { it.taskId == taskId }
+          //  val taskUi = state.value.tasksList.find { TaskID(it.taskId) == taskId }
 
-            val task = taskUi?.taskDate?.let {
-                Task(
-                    id = taskUi.taskId,
-                    title = taskUi.taskTitle,
-                    description = taskUi.taskDescription,
-                    priority = Priority.fromString(taskUi.taskPriority.name),
-                    status = TaskStatus.valueOf(taskUi.taskStatus),
-                    date =taskUi.taskDate,
-                    categoryId =0L ,
-                    categoryImage = taskUi.categoryImage
-                )
-            }
+//            val task = taskUi?.taskDate?.let { //TODO handle this
+//                Task(
+//                    id = taskUi.taskId,
+//                    title = taskUi.taskTitle,
+//                    description = taskUi.taskDescription,
+//                    priority = Priority.fromString(taskUi.taskPriority.name),
+//                    status = TaskStatus.valueOf(taskUi.taskStatus),
+//                    date =taskUi.taskDate,
+//                    categoryId = CategoryID(0L) ,
+//                )
+//            }
 
-            if (task != null) {
-                tasksService.deleteTask(task)
-            }
+//            if (task != null) {
+//                tasksService.deleteTask(task)
+//            }
         },
         onSuccess = {
             snackBarMessage.value = "Deleted task successfully."
@@ -75,22 +73,22 @@ class TasksViewModel(
     private fun observeTasks() {
        viewModelScope.launch {
             tasksService.getAllTasks().collect { tasks ->
-                val tasksForUiState = tasks.map {
-                    TaskUiState(
-                        taskId = it.id,
-                        taskDate = it.date,
-                        taskTitle = it.title,
-                        taskDescription = it.description,
-                        taskPriority = it.priority,
-                        taskStatus = it.status.toString(),
-                        categoryImage = categoriesService.getCategoryById(
-                            it.categoryId.toString().toLong()
-                        ).iconPath
-                    )
+                val tasksForUiState = tasks.map { //TODO handel this
+//                    TaskUiState(
+//                        taskId = it.id,
+//                        taskDate = it.date,
+//                        taskTitle = it.title,
+//                        taskDescription = it.description,
+//                        taskPriority = it.priority,
+//                        taskStatus = it.status.toString(),
+//                        categoryImage = categoriesService.getCategoryById(
+//                            it.categoryId.toString().toLong()
+//                        ).iconPath
+//                    )
                 }
-                updateState {
-                    copy(tasksList = tasksForUiState)
-                }
+//                updateState {
+//                    copy(tasksList = tasksForUiState)
+//                }
             }
         }
     }

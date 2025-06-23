@@ -35,7 +35,8 @@ import com.washingtondcsquad.tudee.presentation.components.DatePickerModal
 import com.washingtondcsquad.tudee.presentation.components.TaskPriorityCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyle
-import com.washingtondcsquad.tudee.domain.entity.ImageCategory
+import com.washingtondcsquad.tudee.presentation.features.edit_task.EditTaskViewModel
+import com.washingtondcsquad.tudee.presentation.features.sharedUiState.ImageSource
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -227,9 +228,9 @@ fun EditTaskScreen(
                                         val index = state.categoryList.indexOf(category)
 
                                         val imageSource = if (index < drawablesOfCategories.size) {
-                                            ImageCategory.PredefinedDrawable(drawablesOfCategories[index])
+                                            ImageSource.Drawable(drawablesOfCategories[index])
                                         } else {
-                                            ImageCategory.AddedByUser(category.iconPath)
+                                            ImageSource.Path(category.iconPath.toString())
                                         }
 
                                         val title = if (index < titlesOfCategories.size) {

@@ -4,14 +4,18 @@ import android.util.Log
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
+import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.AddTaskUiState
+//import kotlinx.datetime.LocalDate
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import kotlinx.datetime.toKotlinLocalDate
+
 import java.time.format.DateTimeFormatter
 
 class AddTaskViewModel(
@@ -139,16 +143,16 @@ class AddTaskViewModel(
     fun onClickSaveButton() {
         tryToExecute(
             request = {
+                val parsedDate = LocalDate.parse(state.value.taskDate, DateTimeFormatter.ofPattern("d-M-yyyy"))
                 tasksService.createTask(
                     Task(
-                        id = 0,
-                        categoryId = _uiState.value.selectedCategory!!.id,
-                        categoryImage = _uiState.value.selectedCategory!!.iconPath,
-                        title = _uiState.value.taskTitle,
-                        description = _uiState.value.taskDescription,
-                        date = _uiState.value.taskDate,
+                        id = TaskID(0L),
+                        categoryId = state.value.selectedCategory!!.id.categoryId,
+                        title = state.value.taskTitle,
+                        description = state.value.taskDescription,
+                        date =parsedDate.toKotlinLocalDate(),
                         status = TaskStatus.TODO,
-                        priority = _uiState.value.selectedPriority!!,
+                        priority = state.value.selectedPriority!!,
                     )
                 )
             },

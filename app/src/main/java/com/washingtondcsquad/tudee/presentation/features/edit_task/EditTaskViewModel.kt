@@ -1,17 +1,12 @@
-package com.washingtondcsquad.tudee.presentation.screens.add_task
+package com.washingtondcsquad.tudee.presentation.features.edit_task
 
-import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.domain.entity.Category
+import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.entity.Priority
-import com.washingtondcsquad.tudee.domain.entity.Task
-import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.EditTaskUiState
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -34,22 +29,22 @@ class EditTaskViewModel(
         getTaskById()
     }
 
-    private fun getTaskById() {
-        viewModelScope.launch {
-            val task = tasksService.getTaskById(_uiState.value.taskId)
-            withContext(Dispatchers.Main) {
-                updateState {
-                    copy(
-                        taskId = task.id,
-                        taskTitle = task.title,
-                        taskDescription = task.description,
-                        taskDate = task.date,
-                        selectedPriority = task.priority,
-                        selectedCategory = getCategory(task.categoryId),
-                    )
-                }
-            }
-        }
+    private fun getTaskById() { //TODO handle this function
+//        viewModelScope.launch {
+//            val task = tasksService.getTaskById(_state.value.taskId)
+//            withContext(Dispatchers.Main) {
+//                updateState {
+//                    copy(
+//                        taskId = task.id,
+//                        taskTitle = task.title,
+//                        taskDescription = task.description,
+//                        taskDate = task.date,
+//                        selectedPriority = task.priority,
+//                        selectedCategory = getCategory(task.categoryId),
+//                    )
+//                }
+//            }
+//        }
 
 
     }
@@ -71,8 +66,8 @@ class EditTaskViewModel(
 
     }
 
-    fun getCategory(categoryId: Long): Category {
-        return _uiState.value.categoryList.find { it.id == categoryId }!!
+    fun getCategory(categoryId: CategoryID): Category {
+        return state.value.categoryList.find { it.id == categoryId }!!
     }
 
 
@@ -94,10 +89,10 @@ class EditTaskViewModel(
         updateState {
             copy(
                 isButtonActionEnable =
-                    _uiState.value.taskTitle.isNotEmpty() &&
-                            _uiState.value.taskTitle.isNotBlank() &&
-                            _uiState.value.selectedCategory != null &&
-                            _uiState.value.selectedPriority != null
+                    state.value.taskTitle.isNotEmpty() &&
+                            state.value.taskTitle.isNotBlank() &&
+                            state.value.selectedCategory != null &&
+                            state.value.selectedPriority != null
             )
         }
     }
@@ -133,7 +128,7 @@ class EditTaskViewModel(
     }
 
     fun onPrioritySelected(priority: Priority) {
-        val currentPriority = _uiState.value.selectedPriority
+        val currentPriority = state.value.selectedPriority
         if (currentPriority?.name != priority.name) {
             updateState {
                 copy(
@@ -145,7 +140,7 @@ class EditTaskViewModel(
     }
 
     fun onCategorySelected(category: Category) {
-        val currentCategory = _uiState.value.selectedCategory
+        val currentCategory = state.value.selectedCategory
         if (currentCategory != category) {
             updateState {
                 copy(
@@ -158,19 +153,18 @@ class EditTaskViewModel(
 
     fun onClickEditButton() {
         tryToExecute(
-            request = {
-                tasksService.editTask(
-                    Task(
-                        id = _uiState.value.taskId,
-                        categoryId = _uiState.value.selectedCategory!!.id,
-                        categoryImage = _uiState.value.selectedCategory!!.iconPath,
-                        title = _uiState.value.taskTitle,
-                        description = _uiState.value.taskDescription,
-                        date = _uiState.value.taskDate,
-                        status = TaskStatus.TODO,
-                        priority = _uiState.value.selectedPriority!!,
-                    )
-                )
+            request = { //TODO handle this function
+//                tasksService.editTask(
+//                    Task(
+//                        id = _state.value.taskId,
+//                        categoryId = _state.value.selectedCategory!!.id,
+//                        title = _state.value.taskTitle,
+//                        description = _state.value.taskDescription,
+//                        date = _state.value.taskDate,
+//                        status = TaskStatus.TODO,
+//                        priority = _state.value.selectedPriority!!,
+//                    )
+//                )
             },
             onSuccess = {
                 clearDate()

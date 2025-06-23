@@ -8,10 +8,9 @@ import com.washingtondcsquad.tudee.data.localSource.imageStorageManager.SaveImag
 import com.washingtondcsquad.tudee.data.localSource.mapper.toDomain
 import com.washingtondcsquad.tudee.data.localSource.mapper.toEntity
 import com.washingtondcsquad.tudee.domain.entity.Category
-import com.washingtondcsquad.tudee.domain.entity.CategoryID
-import com.washingtondcsquad.tudee.domain.entity.Task
-import com.washingtondcsquad.tudee.domain.provider.StringProvider
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
+import com.washingtondcsquad.tudee.domain.services.ImageSaverService
+import com.washingtondcsquad.tudee.presentation.features.sharedUiState.ImageSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.koin.compose.getKoin
@@ -21,23 +20,34 @@ import com.washingtondcsquad.tudee.data.localSource.model.CategoryEntity
 class CategoriesServiceImpl(
     private val stringProvider: StringProvider
     private val daoCategory: CategoryDao,
-    private val saveImageToInternalStorage: SaveImageToInternalStorage,
-    private val deleteImageFromInternalStorage: DeleteImageFromInternalStorage,
-) : CategoriesService {
-    override suspend fun createCategory(category: Category) {
-        saveImageToInternalStorage.saveImageToInternalStorage(category.iconPath) {
-            category.iconPath = it
+    private val imageSaver: ImageSaverService,
+
+    ) : CategoriesService {
+
+    override suspend fun createCategory(
+        title: String, iconPath: ImageSource, isPredefined: Boolean, taskCounts: Int
+    ) {
+        val category = Category(
+            title = title,
+            id = CategoryID(0L),
+            iconPath = iconPath,
+            taskCount = 0,
+            isPredefined = true,
+        )
+        imageSaver.saveImage(category.iconPath) {
+            category.iconPath = ImageSource.Path(it) //TODO check it
         }
         daoCategory.createCategory(category.toEntity())
+
     }
 
-    override suspend fun deleteCategory(category: CategoryID) {
-        deleteImageFromInternalStorage.deleteImageFromInternalStorage(category.iconPath)
+    override suspend fun deleteCategory(category: Category) {
+        imageSaver.deleteImage(category.iconPath)
         daoCategory.deleteCategory(category.toEntity())
     }
 
     override suspend fun editCategory(category: Category) {
-        saveImageToInternalStorage.saveImageToInternalStorage(category.iconPath)
+        imageSaver.deleteImage(category.iconPath)
         daoCategory.editCategory(category.toEntity())
     }
 
@@ -85,5 +95,7 @@ class CategoriesServiceImpl(
 
     override suspend fun getCategoryById(categoryId: CategoryID): Category {
         return daoCategory.getCategoryById(categoryIKd).toDomain()
+    override suspend fun getCategoryById(categoryId: CategoryID): Category {
+        return daoCategory.getCategoryById(categoryId).toDomain()
     }
 }
