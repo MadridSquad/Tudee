@@ -27,10 +27,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -46,6 +44,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.presentation.components.CustomSwitchButton
@@ -56,6 +55,7 @@ import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import com.washingtondcsquad.tudee.presentation.features.task_details.TaskDetailsBottomSheet
 import com.washingtondcsquad.tudee.presentation.features.add_task.AddNewTaskScreen
+import com.washingtondcsquad.tudee.presentation.screens.add_task.EditTaskScreen
 import com.washingtondcsquad.tudee.presentation.utils.SetStatusBarIconsColor
 import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.noRippleClick
 import org.koin.androidx.compose.koinViewModel
@@ -83,10 +83,8 @@ private fun HomeScreenContent(
     val isEmptyState =
         state.inProgressTasks.isEmpty() and state.todoTasks.isEmpty() and state.doneTasks.isEmpty()
     var showAddNewTaskBottomSheet by remember { mutableStateOf(false) }
-    var showTaskDetailBottomSheet by remember { mutableStateOf(false) }
+    var isShowTaskDetailBottomSheet by remember { mutableStateOf(false) }
     var currentTaskIdToShowDetail: TaskID by remember { mutableStateOf(TaskID(0L)) }
-
-
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -180,7 +178,7 @@ private fun HomeScreenContent(
                             title = stringResource(R.string.in_progress_title),
                             modifier = Modifier.padding(top = 16.dp),
                             onTaskClick = {
-                                showTaskDetailBottomSheet = true
+                                isShowTaskDetailBottomSheet = true
                                 currentTaskIdToShowDetail = it
                             },
                             onSeeMoreClick = {})
@@ -189,7 +187,7 @@ private fun HomeScreenContent(
                             title = stringResource(R.string.to_do_title),
                             modifier = Modifier.padding(top = 24.dp),
                             onTaskClick = {
-                                showTaskDetailBottomSheet = true
+                                isShowTaskDetailBottomSheet = true
                                 currentTaskIdToShowDetail = it
                             },
                             onSeeMoreClick = {})
@@ -213,22 +211,42 @@ private fun HomeScreenContent(
 
         FabIcon(
             modifier = Modifier
-                .noRippleClick {
-                    showAddNewTaskBottomSheet = true
-                }
-                .align(Alignment.BottomEnd))
-        if (showTaskDetailBottomSheet) {
-            ShowTaskDetails(currentTaskIdToShowDetail) {
-                showTaskDetailBottomSheet = false
+            .noRippleClick {
+                showAddNewTaskBottomSheet = true
             }
+            .align(Alignment.BottomEnd))
+        if (isShowTaskDetailBottomSheet) {
+            ShowTaskDetails(
+                taskId = currentTaskIdToShowDetail,
+                onDismiss = {
+                    isShowTaskDetailBottomSheet = false
+                },
+                onEdit = {
+                    viewmodel.showEditTaskBottomSheet(true)
+                    isShowTaskDetailBottomSheet = false
+                }
+            )
         }
+
+
+
+
+        if(state.isShowEditTaskBottomSheet){
+            EditTaskScreen(
+                onCancelEditTask = {
+                    viewmodel.showEditTaskBottomSheet(false)
+                },
+                taskId = currentTaskIdToShowDetail.taskId.toInt(),
+            )
+        }
+
     }
 }
 
 @Composable
-private fun ShowTaskDetails(taskId: TaskID, onDismiss: () -> Unit) {
+private fun ShowTaskDetails(taskId: TaskID, onDismiss: () -> Unit, onEdit: ()-> Unit) {
     TaskDetailsBottomSheet(
-        taskId = taskId, onDismiss = onDismiss, onClickTaskDetails = {})
+        taskId = taskId, onDismiss = onDismiss, onEditTask = onEdit)
 }
 
 @Composable
@@ -339,7 +357,7 @@ private fun TaskStatusLayout(
 
 
 @Composable
- fun NoTasksPlaceHolder(modifier: Modifier = Modifier) {
+fun NoTasksPlaceHolder(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxWidth()

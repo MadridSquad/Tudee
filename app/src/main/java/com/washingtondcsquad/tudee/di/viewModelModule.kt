@@ -32,13 +32,9 @@ val viewModelModule = module {
         )
     }
 
-    viewModel { (taskId:Int , onCancel: () -> Unit , onActionResult: (success: Boolean, message: String) -> Unit) ->
-        EditTaskViewModel(
+    viewModel { EditTaskViewModel(
             tasksService = get(),
             categoryService = get(),
-            taskId = taskId,
-            onCancelAddTaskBottomSheet = onCancel,
-            onActionResult = onActionResult
         )
     }
 
