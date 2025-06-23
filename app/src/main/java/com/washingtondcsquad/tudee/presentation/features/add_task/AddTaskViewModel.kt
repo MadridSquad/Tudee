@@ -1,9 +1,7 @@
 package com.washingtondcsquad.tudee.presentation.features.add_task
 
-import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.Category
-import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.entity.TaskID
@@ -13,9 +11,6 @@ import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.AddTaskUiState
 import com.washingtondcsquad.tudee.presentation.provider.StringProvider
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -38,15 +33,15 @@ class AddTaskViewModel(
 
 
     private fun getAllCategories() {
-        viewModelScope.launch {
-            categoryService.getAllCategories().collect {
-                withContext(Dispatchers.Main) {
-                    updateState {
-                        copy(categoryList = it)
-                    }
+        tryToCollect(
+            request = { categoryService.getAllCategories() },
+            onChange = {
+                updateState {
+                    copy(categoryList = it)
                 }
-            }
-        }
+            },
+            onError = { exception ->}
+        )
     }
 
 
@@ -94,7 +89,7 @@ class AddTaskViewModel(
     }
 
     fun onPrioritySelected(priority: Priority) {
-        val currentPriority = _state.value.selectedPriority
+        val currentPriority = state.value.selectedPriority
         if (currentPriority?.name != priority.name) {
             updateState {
                 copy(
@@ -106,7 +101,7 @@ class AddTaskViewModel(
     }
 
     fun onCategorySelected(category: Category) {
-        val currentCategory = _state.value.selectedCategory
+        val currentCategory = state.value.selectedCategory
         if (currentCategory != category) {
             updateState {
                 copy(
@@ -130,10 +125,10 @@ class AddTaskViewModel(
         updateState {
             copy(
                 isButtonActionEnable =
-                    _state.value.taskTitle.isNotEmpty() &&
-                            _state.value.taskTitle.isNotBlank() &&
-                            _state.value.selectedPriority != null &&
-                            _state.value.selectedCategory != null
+                    state.value.taskTitle.isNotEmpty() &&
+                            state.value.taskTitle.isNotBlank() &&
+                            state.value.selectedPriority != null &&
+                            state.value.selectedCategory != null
             )
         }
     }
@@ -147,12 +142,12 @@ class AddTaskViewModel(
             request = {
                 tasksService.createTask(
                     Task(
-                        title = _state.value.taskTitle,
-                        description = _state.value.taskDescription,
-                        date = _state.value.taskDate,
-                        priority = _state.value.selectedPriority!!,
+                        title = state.value.taskTitle,
+                        description = state.value.taskDescription,
+                        date = state.value.taskDate,
+                        priority = state.value.selectedPriority!!,
                         id = TaskID(0),
-                        categoryId = _state.value.selectedCategory!!.id.categoryId ,
+                        categoryId = state.value.selectedCategory!!.id.categoryId ,
                         status = TaskStatus.TODO
                     )
                 )
