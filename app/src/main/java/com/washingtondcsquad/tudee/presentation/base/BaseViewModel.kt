@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 abstract class BaseViewModel<STATE>(initialValue: STATE) : ViewModel() {
 
-    protected val _uiState: MutableStateFlow<STATE> = MutableStateFlow(initialValue)
+    private val _uiState: MutableStateFlow<STATE> = MutableStateFlow(initialValue)
     val state = _uiState.asStateFlow()
 
     fun <T> tryToExecute(

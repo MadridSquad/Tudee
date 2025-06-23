@@ -1,18 +1,12 @@
 package com.washingtondcsquad.tudee.presentation.features.edit_task
 
-import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.entity.Priority
-import com.washingtondcsquad.tudee.domain.entity.Task
-import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.EditTaskUiState
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -73,7 +67,7 @@ class EditTaskViewModel(
     }
 
     fun getCategory(categoryId: CategoryID): Category {
-        return _state.value.categoryList.find { it.id == categoryId }!!
+        return state.value.categoryList.find { it.id == categoryId }!!
     }
 
 
@@ -95,10 +89,10 @@ class EditTaskViewModel(
         updateState {
             copy(
                 isButtonActionEnable =
-                    _state.value.taskTitle.isNotEmpty() &&
-                            _state.value.taskTitle.isNotBlank() &&
-                            _state.value.selectedCategory != null &&
-                            _state.value.selectedPriority != null
+                    state.value.taskTitle.isNotEmpty() &&
+                            state.value.taskTitle.isNotBlank() &&
+                            state.value.selectedCategory != null &&
+                            state.value.selectedPriority != null
             )
         }
     }
@@ -134,7 +128,7 @@ class EditTaskViewModel(
     }
 
     fun onPrioritySelected(priority: Priority) {
-        val currentPriority = _state.value.selectedPriority
+        val currentPriority = state.value.selectedPriority
         if (currentPriority?.name != priority.name) {
             updateState {
                 copy(
@@ -146,7 +140,7 @@ class EditTaskViewModel(
     }
 
     fun onCategorySelected(category: Category) {
-        val currentCategory = _state.value.selectedCategory
+        val currentCategory = state.value.selectedCategory
         if (currentCategory != category) {
             updateState {
                 copy(
