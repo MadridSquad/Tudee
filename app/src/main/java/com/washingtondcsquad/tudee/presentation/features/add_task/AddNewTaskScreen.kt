@@ -153,7 +153,7 @@ fun AddTaskPreview(
 ) {
     AddNewTaskContent(
         state = AddTaskUiState(
-            taskDate = "taskDate",
+            taskDate = kotlinx.datetime.LocalDate.parse("2023-07-12"),
         ),
         bottomSheetState = rememberModalBottomSheetState(
             skipPartiallyExpanded = true

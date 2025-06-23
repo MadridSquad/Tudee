@@ -2,11 +2,10 @@ package com.washingtondcsquad.tudee.presentation.features.sharedUiState
 
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.Priority
-import java.time.LocalDate
-
+import kotlinx.datetime.LocalDate
 data class AddTaskUiState(
     val taskId: String = "",
-    val taskDate: String  ,
+    val taskDate: LocalDate  ,
     val taskTitle: String = "",
     val taskDescription: String = "",
     val errorMessage: String? = null,

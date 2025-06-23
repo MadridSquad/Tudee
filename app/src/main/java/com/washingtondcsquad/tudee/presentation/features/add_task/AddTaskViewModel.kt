@@ -1,10 +1,13 @@
 package com.washingtondcsquad.tudee.presentation.features.add_task
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.Category
+import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.entity.Priority
+import com.washingtondcsquad.tudee.domain.entity.Task
+import com.washingtondcsquad.tudee.domain.entity.TaskID
+import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
@@ -13,10 +16,9 @@ import com.washingtondcsquad.tudee.presentation.provider.StringProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 class AddTaskViewModel(
     private val tasksService: TasksService,
@@ -25,7 +27,7 @@ class AddTaskViewModel(
     taskDate: kotlinx.datetime.LocalDate,
 ) : BaseViewModel<AddTaskUiState>(
     AddTaskUiState(
-        taskDate = "${taskDate.dayOfMonth}-${taskDate.monthNumber}-${taskDate.year}"//taskDate.toString()
+        taskDate = taskDate
     )
 ) {
 
@@ -80,10 +82,9 @@ class AddTaskViewModel(
     }
 
     fun onDateSelected(dateAsMilliseconds: Long) {
-        val dataInLocalDate = Instant.ofEpochMilli(dateAsMilliseconds)
-            .atZone(ZoneId.systemDefault())
-            .toLocalDate()
-        val realDate = dataInLocalDate.format(DateTimeFormatter.ofPattern("d-M-yyyy"))
+        val realDate = Instant.fromEpochMilliseconds(dateAsMilliseconds)
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+            .date
         updateState {
             copy(
                 taskDate = realDate
@@ -144,9 +145,17 @@ class AddTaskViewModel(
     ) {
         tryToExecute(
             request = {
-//                tasksService.createTask(
-//
-//                )
+                tasksService.createTask(
+                    Task(
+                        title = _state.value.taskTitle,
+                        description = _state.value.taskDescription,
+                        date = _state.value.taskDate,
+                        priority = _state.value.selectedPriority!!,
+                        id = TaskID(0),
+                        categoryId = _state.value.selectedCategory!!.id.categoryId ,
+                        status = TaskStatus.TODO
+                    )
+                )
             },
             onSuccess = {
                 onSuccess(stringProvider.getString(R.string.add_task_successfully))
@@ -164,7 +173,6 @@ class AddTaskViewModel(
                 taskId = 0.toString(),
                 taskTitle = "",
                 taskDescription = "",
-                taskDate = LocalDate.now().format(DateTimeFormatter.ofPattern("d-M-yyyy")),
                 selectedCategory = null,
                 selectedPriority = null,
                 isButtonActionEnable = false
