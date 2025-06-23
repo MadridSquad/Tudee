@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.washingtondcsquad.tudee.data.localSource.model.CategoryEntity
+import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -24,5 +25,5 @@ interface CategoryDao {
     fun getAllCategories(): Flow<List<CategoryEntity>>
 
     @Query("SELECT * FROM ${CategoryEntity.CATEGORY_TABLE_NAME} WHERE id = :categoryId")
-    suspend fun getCategoryById(categoryId: Long): CategoryEntity
+    suspend fun getCategoryById(categoryId: CategoryID): CategoryEntity
 }

@@ -2,16 +2,21 @@ package com.washingtondcsquad.tudee.presentation.features.add_task
 
 import android.util.Log
 import com.washingtondcsquad.tudee.domain.entity.Category
+import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
+import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.AddTaskUiState
+//import kotlinx.datetime.LocalDate
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import kotlinx.datetime.toKotlinLocalDate
+
 import java.time.format.DateTimeFormatter
 
 class AddTaskViewModel(
@@ -139,14 +144,14 @@ class AddTaskViewModel(
     fun onClickSaveButton() {
         tryToExecute(
             request = {
+                val parsedDate = LocalDate.parse(_state.value.taskDate, DateTimeFormatter.ofPattern("d-M-yyyy"))
                 tasksService.createTask(
                     Task(
-                        id = 0,
-                        categoryId = _state.value.selectedCategory!!.id,
-                        categoryImage = _state.value.selectedCategory!!.iconPath,
+                        id = TaskID(0L),
+                        categoryId = _state.value.selectedCategory!!.id.categoryId,
                         title = _state.value.taskTitle,
                         description = _state.value.taskDescription,
-                        date = _state.value.taskDate,
+                        date =parsedDate.toKotlinLocalDate(),
                         status = TaskStatus.TODO,
                         priority = _state.value.selectedPriority!!,
                     )

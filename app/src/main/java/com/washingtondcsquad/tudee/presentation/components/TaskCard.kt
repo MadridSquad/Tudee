@@ -24,12 +24,13 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.Priority
+import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 
 @Composable
 fun TaskCard(
-    taskUiState: TaskUiState, onTaskClicked: (taskId: Int) -> Unit, modifier: Modifier = Modifier
+    taskUiState: TaskUiState, onTaskClicked: (taskId: TaskID) -> Unit, modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
@@ -47,7 +48,7 @@ fun TaskCard(
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(taskUiState.categoryImage.ifEmpty { R.drawable.education_icon })
+                   // .data(taskUiState.categoryImage.ifEmpty { R.drawable.education_icon })
                     .crossfade(true).build(),
                 contentDescription = null,
                 modifier = Modifier
