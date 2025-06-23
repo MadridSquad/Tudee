@@ -40,9 +40,9 @@ import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyle
 import com.washingtondcsquad.tudee.presentation.features.delete_task.ConfirmDeleteTask
 import com.washingtondcsquad.tudee.presentation.features.delete_task.DeleteTaskScroll
-import com.washingtondcsquad.tudee.presentation.features.home.NoTasksPlaceHolder
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.ChangeMonthButton
+import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.NoTasks
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.TasksTabRow
 import com.washingtondcsquad.tudee.presentation.screens.add_task.EditTaskScreen
 import org.koin.androidx.compose.koinViewModel
@@ -217,7 +217,7 @@ fun TasksScreenContent(
                                 .padding(end = 4.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            NoTasksPlaceHolder()
+                            NoTasks()
                         }
                     }
                 }
