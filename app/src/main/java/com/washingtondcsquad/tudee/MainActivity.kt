@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -18,10 +19,12 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -34,7 +37,6 @@ import com.washingtondcsquad.tudee.data.localSource.TudeeDataBase
 import com.washingtondcsquad.tudee.data.localSource.mapper.toEntity
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.services.AppPreferencesService
-import com.washingtondcsquad.tudee.presentation.features.categories.CategoriesScreen
 import com.washingtondcsquad.tudee.presentation.components.SnackBarCard
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.TudeeNavigationBar
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.bottomNavBarRoutes
@@ -42,6 +44,7 @@ import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.navBar
 import com.washingtondcsquad.tudee.presentation.components.snack_bar.ObserveAsEvent
 import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarController
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
+import com.washingtondcsquad.tudee.presentation.features.categories.CategoriesScreen
 import com.washingtondcsquad.tudee.presentation.features.home.HomeScreen
 import com.washingtondcsquad.tudee.presentation.features.onBoarding.OnBoardingScreen
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.TasksScreen
@@ -49,6 +52,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+
+val LocalInnerPaddingProvider =
+    staticCompositionLocalOf<PaddingValues> { PaddingValues() }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 class MainActivity : ComponentActivity() {
@@ -100,29 +106,33 @@ class MainActivity : ComponentActivity() {
                                 }
 
                             }) { innerPadding ->
-                            NavHost(
-                                navController = navController,
-                                startDestination = startDestination,
-                                modifier = Modifier.padding(innerPadding)
+                            CompositionLocalProvider(
+                                LocalInnerPaddingProvider provides innerPadding
                             ) {
-                                composable(route = "onboarding") {
-                                    OnBoardingScreen(
-                                        onFinish = {
-                                            navController.navigate("home") {
-                                                popUpTo("onboarding") { inclusive = true }
-                                            }
-                                        },
-                                    )
+                                NavHost(
+                                    navController = navController,
+                                    startDestination = startDestination,
+                                ) {
+                                    composable(route = "onboarding") {
+                                        OnBoardingScreen(
+                                            onFinish = {
+                                                navController.navigate("home") {
+                                                    popUpTo("onboarding") { inclusive = true }
+                                                }
+                                            },
+                                        )
+                                    }
+                                    composable(route = "home") {
+                                        HomeScreen()
+                                    }
+                                    composable(route = "task") {
+                                        TasksScreen()
+                                    }
+                                    composable(route = "category") {
+                                        CategoriesScreen()
+                                    }
                                 }
-                                composable(route = "home") {
-                                    HomeScreen()
-                                }
-                                composable(route = "task") {
-                                    TasksScreen()
-                                }
-                                composable(route = "category") {
-                                    CategoriesScreen()
-                                }
+
                             }
                         }
                     }
