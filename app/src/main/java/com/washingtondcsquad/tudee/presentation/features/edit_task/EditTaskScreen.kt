@@ -43,15 +43,15 @@ import org.koin.core.parameter.parametersOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditTaskScreen(
-    onCancelAddTaskBottomSheet: () -> Unit,
-    onActionResult : (success:Boolean,message:String) ->Unit ,
+    onCancelEditTask: () -> Unit,
+    //onActionResult : (success:Boolean,message:String) ->Unit,
     taskId:Int,
     viewModel: EditTaskViewModel = koinViewModel(
         parameters = {
             parametersOf(
                 taskId,
-                onCancelAddTaskBottomSheet,
-                onActionResult
+                onCancelEditTask,
+               // onActionResult
             )
         }
     ),
@@ -98,12 +98,9 @@ fun EditTaskScreen(
     ) }
     val state by viewModel.state.collectAsState()
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Bottom
-    ) {
+
         ModalBottomSheet(
-            onDismissRequest = { onCancelAddTaskBottomSheet() },
+            onDismissRequest = { onCancelEditTask() },
             containerColor = AppTheme.colors.surface,
             sheetState = rememberModalBottomSheetState(
                 skipPartiallyExpanded = true
@@ -264,13 +261,13 @@ fun EditTaskScreen(
                     actionTextColor = Color.White,
                     actionBackgroundColor = AppTheme.colors.primaryGradient,
                     onAction = viewModel::onClickEditButton ,
-                    onCancel = onCancelAddTaskBottomSheet,
+                    onCancel = onCancelEditTask,
                     isEnabled = state.isButtonActionEnable
                 )
             }
         }
     }
-}
+
 
 //@Preview
 @Composable
