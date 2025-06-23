@@ -4,14 +4,18 @@ import android.util.Log
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
+import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.AddTaskUiState
+//import kotlinx.datetime.LocalDate
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import kotlinx.datetime.toKotlinLocalDate
+
 import java.time.format.DateTimeFormatter
 
 class AddTaskViewModel(
@@ -66,10 +70,10 @@ class AddTaskViewModel(
         updateState {
             copy(
                 isButtonActionEnable =
-                    _state.value.taskTitle.isNotEmpty() &&
-                            _state.value.taskTitle.isNotBlank() &&
-                            _state.value.selectedCategory != null &&
-                            _state.value.selectedPriority != null
+                    state.value.taskTitle.isNotEmpty() &&
+                            state.value.taskTitle.isNotBlank() &&
+                            state.value.selectedCategory != null &&
+                            state.value.selectedPriority != null
             )
         }
     }
@@ -105,7 +109,7 @@ class AddTaskViewModel(
     }
 
     fun onPrioritySelected(priority: Priority) {
-        val currentPriority = _state.value.selectedPriority
+        val currentPriority = state.value.selectedPriority
         if (currentPriority?.name != priority.name) {
             updateState {
                 copy(
@@ -117,7 +121,7 @@ class AddTaskViewModel(
     }
 
     fun onCategorySelected(category: Category) {
-        val currentCategory = _state.value.selectedCategory
+        val currentCategory = state.value.selectedCategory
         if (currentCategory != category) {
             updateState {
                 copy(
@@ -139,16 +143,16 @@ class AddTaskViewModel(
     fun onClickSaveButton() {
         tryToExecute(
             request = {
+                val parsedDate = LocalDate.parse(state.value.taskDate, DateTimeFormatter.ofPattern("d-M-yyyy"))
                 tasksService.createTask(
                     Task(
-                        id = 0,
-                        categoryId = _state.value.selectedCategory!!.id,
-                        categoryImage = _state.value.selectedCategory!!.iconPath,
-                        title = _state.value.taskTitle,
-                        description = _state.value.taskDescription,
-                        date = _state.value.taskDate,
+                        id = TaskID(0L),
+                        categoryId = state.value.selectedCategory!!.id.categoryId,
+                        title = state.value.taskTitle,
+                        description = state.value.taskDescription,
+                        date =parsedDate.toKotlinLocalDate(),
                         status = TaskStatus.TODO,
-                        priority = _state.value.selectedPriority!!,
+                        priority = state.value.selectedPriority!!,
                     )
                 )
             },

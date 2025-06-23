@@ -225,7 +225,7 @@ fun AddNewTaskScreen(
                                         val imageSource = if (index < drawablesOfCategories.size) {
                                             ImageSource.Drawable(drawablesOfCategories[index])
                                         } else {
-                                            ImageSource.Path(category.iconPath)
+                                            ImageSource.Path(category.iconPath.toString())
                                         }
 
                                         val title = if (index < titlesOfCategories.size) {
@@ -258,7 +258,7 @@ fun AddNewTaskScreen(
                 actionTextColor = Color.White,
                 actionBackgroundColor = AppTheme.colors.primaryGradient,
                 onAction = {
-                    viewModel.onClickSaveButton()
+                    viewModel.onClickSaveButton() //TODO handel this
                     onRefreshTaskData()
                     onCancelAddTaskBottomSheet()
                 },
