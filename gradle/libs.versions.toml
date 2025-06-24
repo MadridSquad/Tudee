@@ -1,5 +1,5 @@
 [versions]
-agp = "8.10.0"
+agp = "8.9.2"
 junitJupiterVersion = "5.10.1"
 koinCore = "4.1.0"
 koinAndroidxCompose = "4.1.0"
