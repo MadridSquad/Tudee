@@ -3,10 +3,10 @@ package com.washingtondcsquad.tudee.domain.entity
 import kotlinx.datetime.LocalDate
 
 @JvmInline
-value class TaskID(val taskId:Long)
+value class TaskID(val taskId: Long)
 data class Task(
     val id: TaskID,
-    val categoryId: Long,
+    val categoryId: CategoryID,
     val title: String,
     val description: String,
     val date: LocalDate,

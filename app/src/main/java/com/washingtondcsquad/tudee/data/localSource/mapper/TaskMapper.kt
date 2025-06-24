@@ -11,7 +11,7 @@ import kotlinx.datetime.LocalDate
 fun Task.toEntity(): TaskEntity {
     return TaskEntity(
         id = id,
-        categoryId = CategoryID(categoryId),
+        categoryId = categoryId,
         title = title,
         description = description,
         date = date.toString(),
@@ -24,7 +24,7 @@ fun Task.toEntity(): TaskEntity {
 fun TaskEntity.toDomain(): Task {
     return Task(
         id = id,
-        categoryId = categoryId.categoryId,
+        categoryId = CategoryID(categoryId.categoryId),
         title = title,
         description = description,
         date = LocalDate.parse(date),

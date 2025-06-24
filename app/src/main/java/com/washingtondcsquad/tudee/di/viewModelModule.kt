@@ -11,7 +11,6 @@ import com.washingtondcsquad.tudee.presentation.features.tasks_screen.TasksViewM
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
-import java.time.LocalDate
 
 
 val viewModelModule = module {
@@ -26,15 +25,7 @@ val viewModelModule = module {
     }
     viewModelOf(::MainViewModel)
     viewModel { BottomSheetTaskViewModel(get()) }
-    viewModel { (taskDate: LocalDate, onCancel: () -> Unit, onActionResult: (success: Boolean, message: String) -> Unit) ->
-        AddTaskViewModel(
-            tasksService = get(),
-            categoryService = get(),
-            taskDate = taskDate,
-            onCancelAddTaskBottomSheet = onCancel,
-            onActionResult = onActionResult
-        )
-    }
+    viewModelOf(::AddTaskViewModel)
 
     viewModel { (taskId: Int, onCancel: () -> Unit, onActionResult: (success: Boolean, message: String) -> Unit) ->
         EditTaskViewModel(

@@ -10,7 +10,6 @@ data class CategoryEntity(
     @PrimaryKey(autoGenerate = true) val id: CategoryID,
     @ColumnInfo(name = "Category Title") val title: String,
     @ColumnInfo(name = "Category Image") val image: String,
-    @ColumnInfo(name = "Task Count") val taskCount: Int,
     @ColumnInfo(name = "Is Predefined") val isPredefined: Boolean
 ) {
     companion object {
