@@ -15,8 +15,11 @@ interface CategoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun createCategory(category: CategoryEntity)
 
-    @Delete
-    suspend fun deleteCategory(category: CategoryEntity) //TODO delete by id
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun createPredefinedCategories(category: List<CategoryEntity>)
+
+    @Query("DELETE FROM ${CategoryEntity.CATEGORY_TABLE_NAME} WHERE id = :categoryId")
+    suspend fun deleteCategory(categoryId : CategoryID)
 
     @Update
     suspend fun editCategory(category: CategoryEntity)
@@ -26,4 +29,5 @@ interface CategoryDao {
 
     @Query("SELECT * FROM ${CategoryEntity.CATEGORY_TABLE_NAME} WHERE id = :categoryId")
     suspend fun getCategoryById(categoryId: CategoryID): CategoryEntity
+
 }

@@ -3,10 +3,12 @@ package com.washingtondcsquad.tudee.presentation.features.onBoarding
 import android.util.Log
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.services.AppPreferencesService
+import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 
 class OnboardingViewModel(
-    private val appPreferencesService: AppPreferencesService
+    private val appPreferencesService: AppPreferencesService,
+    private val categoryService: CategoriesService
 ) : BaseViewModel<OnboardingUiState>(
     initialValue = OnboardingUiState(
         currentPage = 0,
@@ -45,9 +47,13 @@ class OnboardingViewModel(
         val next = (state.value.currentPage + 1).coerceAtMost(lastIndex)
         onPageChanged(next)
     }
+
     fun onboardingFinished() {
         tryToExecute(
-            request = { appPreferencesService.setOnboardingShown() },
+            request = {
+                appPreferencesService.setOnboardingShown()
+                categoryService.createPreDefinedCategories()
+            },
             onSuccess = { },
             onError = {
                 Log.e("OnboardingViewModel", "onboardingFinished: ", it)
