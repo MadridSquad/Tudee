@@ -23,10 +23,10 @@ import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.CategoryID
+import com.washingtondcsquad.tudee.domain.entity.ImageSource
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyle
-import com.washingtondcsquad.tudee.presentation.features.sharedUiState.ImageSource.Drawable
 import kotlinx.datetime.LocalDate
 
 @Composable
@@ -171,17 +171,15 @@ private fun TaskScreenComponentsPreview() {
             onPrioritySelected = {},
             categoryList = listOf(
                 Category(
-                    id = CategoryID(1),
+                    id = CategoryID(1), 
                     title = "bla bla",
-                    iconPath = Drawable(R.drawable.gym),
-                    taskCount = 44,
+                    iconPath =    ImageSource.PredefinedDrawable(R.drawable.gym),
                     isPredefined = true
                 ),
                 Category(
                     id = CategoryID(1),
                     title = "bla bla",
-                    iconPath = Drawable(R.drawable.gym),
-                    taskCount = 44,
+                    iconPath = ImageSource.PredefinedDrawable(R.drawable.gym),
                     isPredefined = true
                 )
             ),
@@ -190,8 +188,7 @@ private fun TaskScreenComponentsPreview() {
                 (
                 id = CategoryID(1),
                 title = "bla bla",
-                iconPath = Drawable(R.drawable.gym),
-                taskCount = 44,
+                iconPath = ImageSource.PredefinedDrawable(R.drawable.gym),
                 isPredefined = true
             )
 

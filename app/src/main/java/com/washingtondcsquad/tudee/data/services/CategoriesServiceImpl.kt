@@ -14,6 +14,8 @@ import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.provider.StringProvider
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.ImageSaverService
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
 class CategoriesServiceImpl(
@@ -56,7 +58,9 @@ class CategoriesServiceImpl(
                 imageSaver.deleteImage(icon.value)
             }
 
-            is ImageSource.PredefinedDrawable -> TODO()
+            is ImageSource.PredefinedDrawable -> {
+
+            }
         }
     }
 

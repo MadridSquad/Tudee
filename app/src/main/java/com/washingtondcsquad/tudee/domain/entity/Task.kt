@@ -6,7 +6,7 @@ import kotlinx.datetime.LocalDate
 value class TaskID(val taskId: Long)
 data class Task(
     val id: TaskID,
-    val categoryId: TaskID,
+    val categoryId: CategoryID,
     val title: String,
     val description: String,
     val date: LocalDate,

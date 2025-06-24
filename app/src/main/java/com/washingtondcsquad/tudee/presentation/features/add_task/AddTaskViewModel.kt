@@ -2,16 +2,15 @@ package com.washingtondcsquad.tudee.presentation.features.add_task
 
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.Category
-import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
+import com.washingtondcsquad.tudee.domain.provider.StringProvider
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.AddTaskUiState
-import com.washingtondcsquad.tudee.presentation.provider.StringProvider
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -115,15 +114,6 @@ class AddTaskViewModel(
                     selectedCategory = category
                 )
             }
-            tryToExecute(
-                request = {
-                    categoryService.editCategory(category)
-                },
-                onSuccess = {},
-                onError = { exception ->
-
-                }
-            )
             updateButtonEnable()
         }
     }
@@ -154,7 +144,7 @@ class AddTaskViewModel(
                         date = state.value.taskDate,
                         priority = state.value.selectedPriority!!,
                         id = TaskID(0),
-                        categoryId = state.value.selectedCategory!!.id.categoryId,
+                        categoryId = state.value.selectedCategory!!.id  ,
                         status = TaskStatus.TODO
                     )
                 )
