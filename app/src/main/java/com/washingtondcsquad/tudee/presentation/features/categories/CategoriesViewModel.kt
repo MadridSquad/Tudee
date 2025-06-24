@@ -8,19 +8,22 @@ import com.washingtondcsquad.tudee.presentation.features.categories.mapper.toUi
 import kotlinx.coroutines.launch
 
 class CategoriesViewModel(
-    private val categoriesService: CategoriesService
+    private val categoriesService: CategoriesService,
 ) : BaseViewModel<CategoriesScreenStatus>(CategoriesScreenStatus()), CategoriesEvent {
 
 
-    init { getAllCategories() }
+    init {
+        getAllCategories()
+    }
+
     private fun getAllCategories() {
-         viewModelScope.launch {
-             categoriesService.getAllCategories().collect{
-                 updateState {
-                     copy(categories = it.map { it.toUi() })
-                 }
-             }
-         }
+        viewModelScope.launch {
+            categoriesService.getAllCategories().collect {
+                updateState {
+                    copy(categories = it.map { it.toUi() })
+                }
+            }
+        }
     }
 
     override fun onCategoryClick(category: CategoriesScreenStatus.Category) {
@@ -29,7 +32,7 @@ class CategoriesViewModel(
                 categoriesService.getCategoryById(CategoryID(category.id))
             },
             onSuccess = {
-               //todo navigate to category details
+                //todo navigate to category details
             },
             onError = {
                 //todo show error
@@ -38,15 +41,12 @@ class CategoriesViewModel(
 
     }
 
-    override fun addCategoryClick(title: String, categoryIconPath: String) { //TODO handle this function
+    override fun addCategoryClick(
+        title: String,
+        categoryIconPath: String,
+    ) { //TODO handle this function
         viewModelScope.launch {
-//            categoriesService.createCategory(
-//                CategoriesScreenStatus.Category(
-//                    title = title,
-//                    iconPath = categoryIconPath,
-//                    tasksCount = 0,
-//                ).toDomain()
-//            )
+            categoriesService.createCategory(title,categoryIconPath)
         }
     }
 

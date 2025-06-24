@@ -10,8 +10,8 @@ interface CategoriesService {
     suspend fun createCategory(
         title: String,
         iconPath: String,
-        isPredefined: Boolean,
     )
+
     suspend fun deleteCategory(category: CategoryID)
     suspend fun editCategory(category: Category)
     fun getAllCategories(): Flow<List<Category>>

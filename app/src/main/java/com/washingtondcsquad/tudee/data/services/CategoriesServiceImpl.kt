@@ -26,7 +26,6 @@ class CategoriesServiceImpl(
     override suspend fun createCategory(
         title: String,
         iconPath: String,
-        isPredefined: Boolean,
     ) {
         val category = CategoryEntity(
             title = title,
