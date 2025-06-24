@@ -60,20 +60,16 @@ class EditTaskViewModel(
     }
 
     fun getAllCategories() {
-        tryToExecute(
-            request = {
-                categoryService.getAllCategories().collect {
-                    updateState {
-                        copy(categoryList = it)
-                    }
+        tryToCollect(
+            request = { categoryService.getAllCategories() },
+            onChange = { newCategoryList ->
+                updateState {
+                    copy(categoryList = newCategoryList)
                 }
             },
-            onSuccess = {
-
-            },
-            onError = { exception -> }
+            onError = { exception ->
+            }
         )
-
     }
 
     fun getCategory(categoryId: CategoryID): Category {
