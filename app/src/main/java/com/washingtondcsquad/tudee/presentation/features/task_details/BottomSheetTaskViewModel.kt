@@ -1,5 +1,6 @@
 package com.washingtondcsquad.tudee.presentation.features.task_details
 
+import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
@@ -8,9 +9,9 @@ class BottomSheetTaskViewModel(
     private val tasksService: TasksService
 ) : BaseViewModel<TaskState>(TaskState.Loading) {
 
-    private var currentTaskId: Int = 1
+    private var currentTaskId: TaskID = TaskID(1L)
 
-    fun loadTask(taskId: Int) {
+    fun loadTask(taskId: TaskID) {
         currentTaskId = taskId
         tryToExecute(request = { tasksService.getTaskById(taskId) }, onSuccess = { task ->
             updateState { TaskState.Loaded(task) }

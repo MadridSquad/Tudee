@@ -34,7 +34,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.washingtondcsquad.tudee.data.localSource.TudeeDataBase
-import com.washingtondcsquad.tudee.data.localSource.mapper.toEntity
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.services.AppPreferencesService
 import com.washingtondcsquad.tudee.presentation.components.SnackBarCard
@@ -88,7 +87,7 @@ class MainActivity : ComponentActivity() {
                             "home"
                         } else {
                             Log.d("sdasdsad", "onCreate: ")
-                            createPreDefineCategories()
+                         ///   createPreDefineCategories()
                             "onboarding"
                         }
                         val navController = rememberNavController()
@@ -141,36 +140,36 @@ class MainActivity : ComponentActivity() {
             SnackbarHandler()
         }
     }
-
-    private fun createPreDefineCategories() {
-        CoroutineScope(Dispatchers.IO).launch {
-            listOf(
-                "Education",
-                "Shopping",
-                "Medical",
-                "Gym",
-                "Entertainment",
-                "Cooking",
-                "Family & friend",
-                "Traveling",
-                "Agriculture",
-                "Coding",
-                "Adoration",
-                "Fix bug",
-                "Cleaning",
-                "Work",
-                "Budgeting",
-                "Self care",
-                "Event"
-            ).forEach { image ->
-                TudeeDataBase.getInstance(this@MainActivity).daoCategory().createCategory(
-                    Category(
-                        title = image, iconPath = "", taskCount = 0, id = 0
-                    ).toEntity()
-                )
-            }
-        }
-    }
+//
+//    private fun createPreDefineCategories() {
+//        CoroutineScope(Dispatchers.IO).launch {
+//            listOf(
+//                "Education",
+//                "Shopping",
+//                "Medical",
+//                "Gym",
+//                "Entertainment",
+//                "Cooking",
+//                "Family & friend",
+//                "Traveling",
+//                "Agriculture",
+//                "Coding",
+//                "Adoration",
+//                "Fix bug",
+//                "Cleaning",
+//                "Work",
+//                "Budgeting",
+//                "Self care",
+//                "Event"
+//            ).forEach { image ->
+//                TudeeDataBase.getInstance(this@MainActivity).daoCategory().createCategory(
+//                    Category(
+//                        title = image, iconPath = "", taskCount = 0, id = 0
+//                    ).toEntity()
+//                )
+//            }
+//        }
+//    }
 }
 
 
