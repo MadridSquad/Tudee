@@ -44,7 +44,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.washingtondcsquad.tudee.LocalInnerPaddingProvider
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.presentation.components.CustomSwitchButton
@@ -52,12 +52,14 @@ import com.washingtondcsquad.tudee.presentation.components.TaskCard
 import com.washingtondcsquad.tudee.presentation.components.TextLogo
 import com.washingtondcsquad.tudee.presentation.components.analytics_components.AnalyticsCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
+import com.washingtondcsquad.tudee.presentation.features.add_task.AddNewTaskScreen
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import com.washingtondcsquad.tudee.presentation.features.task_details.TaskDetailsBottomSheet
-import com.washingtondcsquad.tudee.presentation.features.add_task.AddNewTaskScreen
-import com.washingtondcsquad.tudee.presentation.screens.add_task.EditTaskScreen
 import com.washingtondcsquad.tudee.presentation.utils.SetStatusBarIconsColor
 import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.noRippleClick
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -83,14 +85,17 @@ private fun HomeScreenContent(
     val isEmptyState =
         state.inProgressTasks.isEmpty() and state.todoTasks.isEmpty() and state.doneTasks.isEmpty()
     var showAddNewTaskBottomSheet by remember { mutableStateOf(false) }
-    var isShowTaskDetailBottomSheet by remember { mutableStateOf(false) }
+    var showTaskDetailBottomSheet by remember { mutableStateOf(false) }
     var currentTaskIdToShowDetail: TaskID by remember { mutableStateOf(TaskID(0L)) }
+
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(
                 color = AppTheme.colors.primary
-            ), contentAlignment = Alignment.TopCenter
+            )
+            .padding(LocalInnerPaddingProvider.current), contentAlignment = Alignment.TopCenter
     ) {
         Box(
             modifier = Modifier
@@ -178,7 +183,7 @@ private fun HomeScreenContent(
                             title = stringResource(R.string.in_progress_title),
                             modifier = Modifier.padding(top = 16.dp),
                             onTaskClick = {
-                                isShowTaskDetailBottomSheet = true
+                                showTaskDetailBottomSheet = true
                                 currentTaskIdToShowDetail = it
                             },
                             onSeeMoreClick = {})
@@ -187,7 +192,7 @@ private fun HomeScreenContent(
                             title = stringResource(R.string.to_do_title),
                             modifier = Modifier.padding(top = 24.dp),
                             onTaskClick = {
-                                isShowTaskDetailBottomSheet = true
+                                showTaskDetailBottomSheet = true
                                 currentTaskIdToShowDetail = it
                             },
                             onSeeMoreClick = {})
@@ -201,52 +206,40 @@ private fun HomeScreenContent(
 
         if (showAddNewTaskBottomSheet) {
             AddNewTaskScreen(
-                onRefreshTaskData = onRefreshData,
-                onCancelAddTaskBottomSheet = {
+                onClickCancel = {
                     showAddNewTaskBottomSheet = false
                 },
-                onActionResult = { e, b -> },
+                onSuccessAddTask = { successMessage ->
+
+                },
+                onErrorAddTask = { errorMessage ->
+
+                },
+                taskDate = Clock.System.now()
+                    .toLocalDateTime(TimeZone.currentSystemDefault())
+                    .date
+
             )
         }
 
         FabIcon(
             modifier = Modifier
-            .noRippleClick {
-                showAddNewTaskBottomSheet = true
-            }
-            .align(Alignment.BottomEnd))
-        if (isShowTaskDetailBottomSheet) {
-            ShowTaskDetails(
-                taskId = currentTaskIdToShowDetail,
-                onDismiss = {
-                    isShowTaskDetailBottomSheet = false
-                },
-                onEdit = {
-                    viewmodel.showEditTaskBottomSheet(true)
-                    isShowTaskDetailBottomSheet = false
+                .noRippleClick {
+                    showAddNewTaskBottomSheet = true
                 }
-            )
+                .align(Alignment.BottomEnd))
+        if (showTaskDetailBottomSheet) {
+            ShowTaskDetails(currentTaskIdToShowDetail) {
+                showTaskDetailBottomSheet = false
+            }
         }
-
-
-
-
-        if(state.isShowEditTaskBottomSheet){
-            EditTaskScreen(
-                onCancelEditTask = {
-                    viewmodel.showEditTaskBottomSheet(false)
-                },
-                taskId = currentTaskIdToShowDetail.taskId.toInt(),
-            )
-        }
-
     }
 }
 
 @Composable
-private fun ShowTaskDetails(taskId: TaskID, onDismiss: () -> Unit, onEdit: ()-> Unit) {
+private fun ShowTaskDetails(taskId: TaskID, onDismiss: () -> Unit) {
     TaskDetailsBottomSheet(
-        taskId = taskId, onDismiss = onDismiss, onEditTask = onEdit)
+        taskId = taskId, onDismiss = onDismiss, onEditTask = {})
 }
 
 @Composable
