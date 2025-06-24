@@ -1,5 +1,6 @@
 package com.washingtondcsquad.tudee.data.services
 
+import android.util.Log
 import com.washingtondcsquad.tudee.data.localSource.daos.CategoryDao
 import com.washingtondcsquad.tudee.data.localSource.mapper.toDomain
 import com.washingtondcsquad.tudee.data.localSource.mapper.toEntity
@@ -15,6 +16,7 @@ import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.entity.ImageSource
 import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.provider.StringProvider
+import kotlinx.coroutines.flow.flow
 
 class CategoriesServiceImpl(
     private val stringProvider: StringProvider,
@@ -36,6 +38,7 @@ class CategoriesServiceImpl(
             isPredefined = false,
         )
         categoryDao.createCategory(category.toEntity())
+        Log.e("save category","done")
     }
 
     override suspend fun deleteCategory(categoryId: CategoryID) { //TODO delete image in presentation layer
@@ -48,7 +51,20 @@ class CategoriesServiceImpl(
     }
 
     override fun getAllCategories(): Flow<List<Category>> {
-        return categoryDao.getAllCategories().map { flow -> flow.map { it.toDomain() } }
+        return flow {
+            emit(
+                  listOf(
+                      Category(
+                          id = CategoryID(0L),
+                          title = stringProvider.getString(R.string.education),
+                          isPredefined = true,
+                          iconPath = ImageSource.PredefinedDrawable(R.drawable.education_icon)
+                      )
+                  )
+
+            )
+        }
+        //categoryDao.getAllCategories().map { flow -> flow.map { it.toDomain() } }
     }
 
     override suspend fun getTaskCountByCategoryID(categoryId: CategoryID): Int {

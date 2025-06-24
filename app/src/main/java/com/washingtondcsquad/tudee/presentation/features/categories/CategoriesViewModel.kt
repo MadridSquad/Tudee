@@ -4,10 +4,8 @@ import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
-import com.washingtondcsquad.tudee.presentation.features.categories.mapper.toDomain
 import com.washingtondcsquad.tudee.presentation.features.categories.mapper.toUi
 import kotlinx.coroutines.launch
-import com.washingtondcsquad.tudee.presentation.features.sharedUiState.ImageSource
 
 class CategoriesViewModel(
     private val categoriesService: CategoriesService
