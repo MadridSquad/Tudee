@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -90,12 +91,13 @@ fun NoTasks() {
                 contentDescription = "",
                 modifier = Modifier.size(107.dp)
             )
-            Image(
+            Icon(
                 modifier = Modifier
                     .zIndex(1f)
                     .offset(y = (-32).dp, x = (-97).dp),
                 painter = painterResource(R.drawable.no_tasks_progress_indicator),
-                contentDescription = ""
+                contentDescription = "",
+                tint = AppTheme.colors.surfaceHigh
             )
         }
     }
