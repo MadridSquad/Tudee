@@ -44,6 +44,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.washingtondcsquad.tudee.LocalInnerPaddingProvider
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.presentation.components.CustomSwitchButton
@@ -51,9 +52,9 @@ import com.washingtondcsquad.tudee.presentation.components.TaskCard
 import com.washingtondcsquad.tudee.presentation.components.TextLogo
 import com.washingtondcsquad.tudee.presentation.components.analytics_components.AnalyticsCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
+import com.washingtondcsquad.tudee.presentation.features.add_task.AddNewTaskScreen
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import com.washingtondcsquad.tudee.presentation.features.task_details.TaskDetailsBottomSheet
-import com.washingtondcsquad.tudee.presentation.features.add_task.AddNewTaskScreen
 import com.washingtondcsquad.tudee.presentation.utils.SetStatusBarIconsColor
 import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.noRippleClick
 import org.koin.androidx.compose.koinViewModel
@@ -90,7 +91,8 @@ private fun HomeScreenContent(
             .fillMaxSize()
             .background(
                 color = AppTheme.colors.primary
-            ), contentAlignment = Alignment.TopCenter
+            )
+            .padding(LocalInnerPaddingProvider.current), contentAlignment = Alignment.TopCenter
     ) {
         Box(
             modifier = Modifier
