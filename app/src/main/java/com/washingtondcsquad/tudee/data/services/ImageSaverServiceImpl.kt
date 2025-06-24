@@ -8,7 +8,6 @@ import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.washingtondcsquad.tudee.data.localSource.utils.toMD5
 import com.washingtondcsquad.tudee.domain.services.ImageSaverService
-import com.washingtondcsquad.tudee.presentation.features.sharedUiState.ImageSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -16,7 +15,7 @@ import java.io.FileOutputStream
 
 class ImageSaverServiceImpl(private val context: Context) : ImageSaverService {
     override suspend fun saveImage(
-        imageUrl: ImageSource, getFilePath: suspend (String) -> Unit
+        imageUrl: String, getFilePath: suspend (String) -> Unit
     ) {
         val request = ImageRequest.Builder(context).data(imageUrl).build()
 
@@ -39,7 +38,7 @@ class ImageSaverServiceImpl(private val context: Context) : ImageSaverService {
         }
     }
 
-    override suspend fun deleteImage(imageUrl: ImageSource): Boolean {
+    override suspend fun deleteImage(imageUrl: String): Boolean {
         val fileName = imageUrl.toString().toMD5() + ".png"
         val file = File(context.filesDir, fileName)
         return if (file.exists()) {

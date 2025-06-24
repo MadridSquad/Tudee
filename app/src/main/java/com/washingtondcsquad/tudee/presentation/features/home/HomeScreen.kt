@@ -27,10 +27,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -46,6 +44,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.washingtondcsquad.tudee.LocalInnerPaddingProvider
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.presentation.components.CustomSwitchButton
@@ -53,11 +52,14 @@ import com.washingtondcsquad.tudee.presentation.components.TaskCard
 import com.washingtondcsquad.tudee.presentation.components.TextLogo
 import com.washingtondcsquad.tudee.presentation.components.analytics_components.AnalyticsCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
+import com.washingtondcsquad.tudee.presentation.features.add_task.AddNewTaskScreen
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import com.washingtondcsquad.tudee.presentation.features.task_details.TaskDetailsBottomSheet
-import com.washingtondcsquad.tudee.presentation.features.add_task.AddNewTaskScreen
 import com.washingtondcsquad.tudee.presentation.utils.SetStatusBarIconsColor
 import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.noRippleClick
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -92,7 +94,8 @@ private fun HomeScreenContent(
             .fillMaxSize()
             .background(
                 color = AppTheme.colors.primary
-            ), contentAlignment = Alignment.TopCenter
+            )
+            .padding(LocalInnerPaddingProvider.current), contentAlignment = Alignment.TopCenter
     ) {
         Box(
             modifier = Modifier
@@ -203,11 +206,19 @@ private fun HomeScreenContent(
 
         if (showAddNewTaskBottomSheet) {
             AddNewTaskScreen(
-                onRefreshTaskData = onRefreshData,
-                onCancelAddTaskBottomSheet = {
+                onClickCancel = {
                     showAddNewTaskBottomSheet = false
                 },
-                onActionResult = { e, b -> },
+                onSuccessAddTask = { successMessage ->
+
+                },
+                onErrorAddTask = { errorMessage ->
+
+                },
+                taskDate = Clock.System.now()
+                    .toLocalDateTime(TimeZone.currentSystemDefault())
+                    .date
+
             )
         }
 
@@ -339,7 +350,7 @@ private fun TaskStatusLayout(
 
 
 @Composable
- fun NoTasksPlaceHolder(modifier: Modifier = Modifier) {
+fun NoTasksPlaceHolder(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxWidth()
