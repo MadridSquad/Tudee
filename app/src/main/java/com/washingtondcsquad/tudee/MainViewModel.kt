@@ -10,7 +10,7 @@ import java.util.Locale
 
 class MainViewModel(
     private val appPreferencesService: AppPreferencesService
-) : BaseViewModel<MainState>(MainState()) {
+) : BaseViewModel<MainActivityUiState>(MainActivityUiState()) {
 
     init {
         getIsDarkTheme()

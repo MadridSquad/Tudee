@@ -8,16 +8,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.BottomAppBarDefaults.windowInsets
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.core.os.LocaleListCompat
 import androidx.navigation.compose.NavHost
@@ -50,62 +46,50 @@ class MainActivity : ComponentActivity() {
             AppTheme(
                 useDarkTheme = mainState.isDarkTheme
             ) {
-                when (val isOnboardingShown = mainState.hasOnBoardingShown) {
-                    null -> {
-                        Box(
-                            modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
-                        }
-                    }
+                val isOnboardingShown = mainState.hasOnBoardingShown
+                val startDestination = if (isOnboardingShown) {
+                    "home"
+                } else {
+                    Log.d("sdasdsad", "onCreate: ")
+                    "onboarding"
+                }
+                val navController = rememberNavController()
+                val navBackStackEntry = navController.currentBackStackEntryAsState()
+                val currentDestination = navBackStackEntry.value?.destination?.route
 
-                    else -> {
-                        val startDestination = if (isOnboardingShown) {
-                            "home"
-                        } else {
-                            Log.d("sdasdsad", "onCreate: ")
-                            ///   createPreDefineCategories()
-                            "onboarding"
-                        }
-                        val navController = rememberNavController()
-                        val navBackStackEntry = navController.currentBackStackEntryAsState()
-                        val currentDestination = navBackStackEntry.value?.destination?.route
-
-                        Scaffold(
-                            bottomBar = {
-                                AnimatedVisibility(currentDestination in bottomNavBarRoutes) {
-                                    TudeeNavigationBar(
-                                        navBarItemDataList = navBarItemsList,
-                                        navController = navController,
-                                        modifier = Modifier.windowInsetsPadding(windowInsets)
-                                    )
-                                }
-
-                            }) { innerPadding ->
-                            NavHost(
+                Scaffold(
+                    bottomBar = {
+                        AnimatedVisibility(currentDestination in bottomNavBarRoutes) {
+                            TudeeNavigationBar(
+                                navBarItemDataList = navBarItemsList,
                                 navController = navController,
-                                startDestination = startDestination,
-                                modifier = Modifier.padding(innerPadding)
-                            ) {
-                                composable(route = "onboarding") {
-                                    OnBoardingScreen(
-                                        onFinish = {
-                                            navController.navigate("home") {
-                                                popUpTo("onboarding") { inclusive = true }
-                                            }
-                                        },
-                                    )
-                                }
-                                composable(route = "home") {
-                                    HomeScreen()
-                                }
-                                composable(route = "task") {
-                                    TasksScreen()
-                                }
-                                composable(route = "category") {
-                                    CategoriesScreen()
-                                }
-                            }
+                                modifier = Modifier.windowInsetsPadding(windowInsets)
+                            )
+                        }
+
+                    }) { innerPadding ->
+                    NavHost(
+                        navController = navController,
+                        startDestination = startDestination,
+                        modifier = Modifier.padding(innerPadding)
+                    ) {
+                        composable(route = "onboarding") {
+                            OnBoardingScreen(
+                                onFinish = {
+                                    navController.navigate("home") {
+                                        popUpTo("onboarding") { inclusive = true }
+                                    }
+                                },
+                            )
+                        }
+                        composable(route = "home") {
+                            HomeScreen()
+                        }
+                        composable(route = "task") {
+                            TasksScreen()
+                        }
+                        composable(route = "category") {
+                            CategoriesScreen()
                         }
                     }
                 }
@@ -144,7 +128,7 @@ class MainActivity : ComponentActivity() {
 //        }
 //    }
 
-    private fun updateAppLocale(state: MainState) {
+    private fun updateAppLocale(state: MainActivityUiState) {
         AppCompatDelegate.setApplicationLocales(
             LocaleListCompat.forLanguageTags(state.currentAppLocale.toLanguageTag())
         )
