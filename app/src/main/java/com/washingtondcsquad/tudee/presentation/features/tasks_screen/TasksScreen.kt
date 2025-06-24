@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
@@ -27,6 +28,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -79,14 +81,26 @@ fun TasksScreenContent(
 ) {
     val pagerState = rememberPagerState(pageCount = { 3 })
     val selectedTabIndex by remember { derivedStateOf { pagerState.currentPage } }
-
     val selectedTaskToDelete = remember { mutableStateOf<TaskUiState?>(null) }
-
     val showSnackBar = remember { mutableStateOf(false) }
-
     val showTaskDetails = remember { mutableStateOf(false) }
-
     val editTaskResult = remember { mutableStateOf(false to "") }
+    val lazyRowState = rememberLazyListState()
+    val density = LocalDensity.current
+
+    LaunchedEffect(tasksUiState.monthDaysList) {
+        val selectedIndex = tasksUiState.monthDaysList.indexOfFirst { it.isSelected }
+        if (selectedIndex != -1) {
+            val itemWidthPx = with(density) { 65.dp.toPx() }
+            val centerOffset =
+                (lazyRowState.layoutInfo.viewportEndOffset / 2) - (itemWidthPx / 2).toInt()
+            lazyRowState.animateScrollToItem(
+                index = selectedIndex,
+                scrollOffset = -centerOffset
+            )
+        }
+    }
+
 
     if (showTaskDetails.value) {
         EditTaskScreen(
@@ -104,9 +118,7 @@ fun TasksScreenContent(
             SnackbarController.sendEvent(SnackbarEvent(message = editTaskResult.value.second))
             editTaskResult.value = false to ""
         }
-
     }
-
 
     Column(
         modifier = Modifier
@@ -147,12 +159,14 @@ fun TasksScreenContent(
         }
 
         LazyRow(
+            state = lazyRowState,
             modifier = Modifier
                 .padding(vertical = 8.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp)
-        ) {
+            contentPadding = PaddingValues(horizontal = 16.dp),
+
+            ) {
             itemsIndexed(tasksUiState.monthDaysList) { index, item ->
                 DayCard(
                     day = item.dayName,
@@ -160,7 +174,9 @@ fun TasksScreenContent(
                     isSelected = item.isSelected,
                     modifier = Modifier
                         .width(65.dp)
-                        .clickable { onDaySelectedFromLazyRow(item.dayNumber) }
+                        .clickable {
+                            onDaySelectedFromLazyRow(item.dayNumber)
+                        }
                 )
             }
         }
@@ -178,19 +194,10 @@ fun TasksScreenContent(
             val currentTasks: List<TaskUiState> = tasksUiState.tasksList
                 .filter {
                     it.taskStatus == when (selectedTabIndex) {
-                        0 -> {
-                            TaskStatus.IN_PROGRESS
-                        }
-
-                        1 -> {
-                            TaskStatus.TODO
-                        }
-
-                        else -> {
-                            TaskStatus.DONE
-                        }
+                        0 -> TaskStatus.IN_PROGRESS
+                        1 -> TaskStatus.TODO
+                        else -> TaskStatus.DONE
                     }.name
-
                 }
 
             LazyColumn(
@@ -257,14 +264,12 @@ fun TasksScreenContent(
     }
 
     val snackbarMessage = stringResource(R.string.deleted_task_successfully)
-
     LaunchedEffect(showSnackBar.value) {
         if (showSnackBar.value) {
             SnackbarController.sendEvent(SnackbarEvent(message = snackbarMessage))
             showSnackBar.value = false
         }
     }
-
 
 }
 
