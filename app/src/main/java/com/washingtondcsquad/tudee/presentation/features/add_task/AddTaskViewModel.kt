@@ -2,6 +2,7 @@ package com.washingtondcsquad.tudee.presentation.features.add_task
 
 import android.util.Log
 import com.washingtondcsquad.tudee.domain.entity.Category
+import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.entity.TaskID
@@ -130,7 +131,7 @@ class AddTaskViewModel(
             }
             tryToExecute(
                 request = {
-                    categoryService.editCategory(category.copy(taskCount = 1))
+                    categoryService.editCategory(category)
                 },
                 onSuccess = {},
                 onError = { exception ->

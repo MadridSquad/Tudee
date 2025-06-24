@@ -27,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
+import com.washingtondcsquad.tudee.domain.entity.ImageSource
 import com.washingtondcsquad.tudee.presentation.components.AppTextField
 import com.washingtondcsquad.tudee.presentation.components.CancelableActionLayout
 import com.washingtondcsquad.tudee.presentation.components.CategoryCard
@@ -34,7 +35,6 @@ import com.washingtondcsquad.tudee.presentation.components.DatePickerModal
 import com.washingtondcsquad.tudee.presentation.components.TaskPriorityCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyle
-import com.washingtondcsquad.tudee.presentation.features.sharedUiState.ImageSource
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import java.time.LocalDate
@@ -223,9 +223,9 @@ fun AddNewTaskScreen(
                                         val index = state.categoryList.indexOf(category)
 
                                         val imageSource = if (index < drawablesOfCategories.size) {
-                                            ImageSource.Drawable(drawablesOfCategories[index])
+                                            ImageSource.PredefinedDrawable(drawablesOfCategories[index])
                                         } else {
-                                            ImageSource.Path(category.iconPath.toString())
+                                            ImageSource.AddedByUser(category.iconPath.toString())
                                         }
 
                                         val title = if (index < titlesOfCategories.size) {

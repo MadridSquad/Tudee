@@ -1,5 +1,7 @@
 package com.washingtondcsquad.tudee.domain.entity
 
+import kotlin.String
+
 enum class Priority{
     LOW,
     MEDIUM,
