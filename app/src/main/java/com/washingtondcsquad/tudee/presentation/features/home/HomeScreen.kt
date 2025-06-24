@@ -57,6 +57,9 @@ import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiSta
 import com.washingtondcsquad.tudee.presentation.features.task_details.TaskDetailsBottomSheet
 import com.washingtondcsquad.tudee.presentation.utils.SetStatusBarIconsColor
 import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.noRippleClick
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -203,11 +206,19 @@ private fun HomeScreenContent(
 
         if (showAddNewTaskBottomSheet) {
             AddNewTaskScreen(
-                onRefreshTaskData = onRefreshData,
-                onCancelAddTaskBottomSheet = {
+                onClickCancel = {
                     showAddNewTaskBottomSheet = false
                 },
-                onActionResult = { e, b -> },
+                onSuccessAddTask = { successMessage ->
+
+                },
+                onErrorAddTask = { errorMessage ->
+
+                },
+                taskDate = Clock.System.now()
+                    .toLocalDateTime(TimeZone.currentSystemDefault())
+                    .date
+
             )
         }
 
@@ -339,7 +350,7 @@ private fun TaskStatusLayout(
 
 
 @Composable
- fun NoTasksPlaceHolder(modifier: Modifier = Modifier) {
+fun NoTasksPlaceHolder(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxWidth()
