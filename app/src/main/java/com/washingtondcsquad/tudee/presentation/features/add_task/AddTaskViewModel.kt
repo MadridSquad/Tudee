@@ -19,11 +19,8 @@ class AddTaskViewModel(
     private val tasksService: TasksService,
     private val categoryService: CategoriesService,
     private val stringProvider: StringProvider,
-    taskDate: kotlinx.datetime.LocalDate,
 ) : BaseViewModel<AddTaskUiState>(
-    AddTaskUiState(
-        taskDate = taskDate
-    )
+    AddTaskUiState()
 ) {
 
 
@@ -40,10 +37,19 @@ class AddTaskViewModel(
                     copy(categoryList = it)
                 }
             },
-            onError = { exception ->}
+            onError = { exception -> }
         )
     }
 
+    fun updateDate(
+        taskDate: kotlinx.datetime.LocalDate,
+    ) {
+        updateState {
+            copy(
+                taskDate = taskDate
+            )
+        }
+    }
 
     fun onTitleChange(newTitle: String) {
         updateState {
@@ -147,7 +153,7 @@ class AddTaskViewModel(
                         date = state.value.taskDate,
                         priority = state.value.selectedPriority!!,
                         id = TaskID(0),
-                        categoryId = state.value.selectedCategory!!.id.categoryId ,
+                        categoryId = state.value.selectedCategory!!.id.categoryId,
                         status = TaskStatus.TODO
                     )
                 )
@@ -165,7 +171,6 @@ class AddTaskViewModel(
     private fun clearDate() {
         updateState {
             copy(
-                taskId = 0.toString(),
                 taskTitle = "",
                 taskDescription = "",
                 selectedCategory = null,

@@ -7,6 +7,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -21,6 +22,7 @@ import com.washingtondcsquad.tudee.presentation.components.DatePickerModal
 import com.washingtondcsquad.tudee.presentation.components.TaskScreenComponents
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.AddTaskUiState
+import kotlinx.datetime.LocalDate
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -30,7 +32,7 @@ fun AddNewTaskScreen(
     onClickCancel: () -> Unit,
     onSuccessAddTask: (message: String) -> Unit,
     onErrorAddTask: (message: String) -> Unit,
-    taskDate: kotlinx.datetime.LocalDate,
+    taskDate: LocalDate,
     modifier: Modifier = Modifier,
     viewModel: AddTaskViewModel = koinViewModel(
         parameters = {
@@ -48,6 +50,8 @@ fun AddNewTaskScreen(
     AddNewTaskContent(
         state = state,
         bottomSheetState = bottomSheetState,
+        taskData = taskDate,
+        updateData = viewModel::updateDate,
         onTitleChange = viewModel::onTitleChange,
         onDescriptionChange = viewModel::onDescriptionChange,
         onDateSelected = viewModel::onDateSelected,
@@ -59,7 +63,7 @@ fun AddNewTaskScreen(
         onErrorAddTask = onErrorAddTask,
         onClickAdd = viewModel::onClickAdd,
         onClickCancel = onClickCancel,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -68,6 +72,8 @@ fun AddNewTaskScreen(
 private fun AddNewTaskContent(
     state: AddTaskUiState,
     bottomSheetState: SheetState,
+    taskData: LocalDate,
+    updateData:(data: LocalDate)->Unit,
     onTitleChange: (newTitle: String) -> Unit,
     onDescriptionChange: (newDescription: String) -> Unit,
     onDateSelected: (dateAsMilliseconds: Long) -> Unit,
@@ -84,6 +90,10 @@ private fun AddNewTaskContent(
     onClickCancel: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    LaunchedEffect(Unit) {
+        updateData(taskData)
+    }
+
     ModalBottomSheet(
         modifier = modifier,
         onDismissRequest = { onClickCancel() },
@@ -153,11 +163,13 @@ fun AddTaskPreview(
 ) {
     AddNewTaskContent(
         state = AddTaskUiState(
-            taskDate = kotlinx.datetime.LocalDate.parse("2023-07-12"),
+            taskDate = LocalDate.parse("2023-07-12"),
         ),
         bottomSheetState = rememberModalBottomSheetState(
             skipPartiallyExpanded = true
         ),
+        taskData = LocalDate.parse("2023-07-12"),
+        updateData = {},
         onTitleChange = {},
         onDescriptionChange = {},
         onDateSelected = {},

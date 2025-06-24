@@ -21,17 +21,9 @@ val viewModelModule = module {
         get()
     ) }
     viewModel { BottomSheetTaskViewModel(get()) }
-    viewModel { (taskDate: kotlinx.datetime.LocalDate) ->
-        AddTaskViewModel(
-            tasksService = get(),
-            categoryService = get(),
-            stringProvider = get(),
-            taskDate = taskDate,
-        )
-    }
+    viewModelOf(::AddTaskViewModel)
 
-
-    viewModel { (taskId:Int , onCancel: () -> Unit , onActionResult: (success: Boolean, message: String) -> Unit) ->
+    viewModel { (taskId: Int, onCancel: () -> Unit, onActionResult: (success: Boolean, message: String) -> Unit) ->
         EditTaskViewModel(
             tasksService = get(),
             categoryService = get(),
