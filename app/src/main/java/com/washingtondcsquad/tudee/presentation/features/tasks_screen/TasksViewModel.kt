@@ -2,15 +2,10 @@ package com.washingtondcsquad.tudee.presentation.features.tasks_screen
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
-import com.washingtondcsquad.tudee.domain.entity.CategoryID
-import com.washingtondcsquad.tudee.domain.entity.Priority
-import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.entity.TaskID
-import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
-import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.utils.buildMonthDaysList
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.utils.getYearAndMonthTitleFromYearMonth
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.utils.todayInMillis
@@ -106,7 +101,7 @@ class TasksViewModel(
 
     fun onDateSelectedFromPicker(millis: Long) {
         val selectedDate = Instant.ofEpochMilli(millis)
-            .atZone(ZoneId.systemDefault())
+            .atZone(ZoneId.of("UTC"))
             .toLocalDate()
         val currentMonth = YearMonth.of(selectedDate.year, selectedDate.month)
         val isSameDay = state.value.selectedDateInMillis == millis
@@ -126,7 +121,7 @@ class TasksViewModel(
     fun onDaySelectedFromLazyRow(dayNumber: Int) {
         val currentMonth = state.value.currentMonth
         val selectedDate = currentMonth.atDay(dayNumber)
-        val millis = selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        val millis = selectedDate.atStartOfDay(ZoneId.of("UTC")).toInstant().toEpochMilli()
         val isSameDay = state.value.selectedDateInMillis == millis
         val isFilterEnabled = if (isSameDay) !state.value.isFilterEnabled else true
 
@@ -146,7 +141,7 @@ class TasksViewModel(
 
     fun formatedSelectedDate(millis: Long): String {
         val dataInLocalDate = Instant.ofEpochMilli(millis)
-            .atZone(ZoneId.systemDefault())
+            .atZone(ZoneId.of("UTC"))
             .toLocalDate()
         val realDate = dataInLocalDate.format(DateTimeFormatter.ofPattern("d-M-yyyy"))
         return realDate

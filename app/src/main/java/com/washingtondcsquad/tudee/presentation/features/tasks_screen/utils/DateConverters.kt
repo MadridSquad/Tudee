@@ -25,9 +25,9 @@ fun buildMonthDaysList(currentMonth: YearMonth, selectedDateMillis: Long): List<
 }
 
 fun todayInMillis(): Long {
-    val todayLocalDate = LocalDate.now(ZoneId.systemDefault())
+    val todayLocalDate = LocalDate.now(ZoneId.of("UTC"))
     return todayLocalDate
-        .atStartOfDay(ZoneId.systemDefault())
+        .atStartOfDay(ZoneId.of("UTC"))
         .toInstant()
         .toEpochMilli()
 }

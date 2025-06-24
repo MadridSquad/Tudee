@@ -19,14 +19,13 @@ import com.washingtondcsquad.tudee.presentation.design.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DatePickerModa(
+fun DatePickerComponent(
     initialDateMillis: Long,
     onDateSelected: (Long?) -> Unit,
     onDismiss: () -> Unit,
     onClear: () -> Long
 ) {
-
-    var datePickerState = rememberDatePickerState(
+    val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = initialDateMillis
     )
 
@@ -58,7 +57,6 @@ fun DatePickerModa(
         colors = DatePickerDefaults.colors(
             containerColor = AppTheme.colors.surface,
         )
-
     ) {
         DatePicker(
             state = datePickerState,

@@ -32,7 +32,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
-import com.washingtondcsquad.tudee.presentation.components.DatePickerModal
 import com.washingtondcsquad.tudee.presentation.components.DayCard
 import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarController
 import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarEvent
@@ -42,6 +41,7 @@ import com.washingtondcsquad.tudee.presentation.features.delete_task.ConfirmDele
 import com.washingtondcsquad.tudee.presentation.features.delete_task.DeleteTaskScroll
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.ChangeMonthButton
+import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.DatePickerComponent
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.NoTasks
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.TasksTabRow
 import com.washingtondcsquad.tudee.presentation.screens.add_task.EditTaskScreen
@@ -59,6 +59,7 @@ fun TasksScreen(tasksViewModel: TasksViewModel = koinViewModel()) {
         tasksViewModel::goToNextMonth,
         tasksViewModel::goToPreviousMonth,
         tasksViewModel::formatedSelectedDate,
+        tasksViewModel::clearDatePicker,
         tasksUiState,
         tasksViewModel = tasksViewModel
     )
@@ -72,6 +73,7 @@ fun TasksScreenContent(
     gotToNextMonth: () -> Unit,
     gotToPreviousMonth: () -> Unit,
     formatedSelectedDate: (Long) -> String,
+    onClearDatePicker: () -> Long,
     tasksUiState: TasksUiState,
     tasksViewModel: TasksViewModel
 ) {
@@ -86,10 +88,10 @@ fun TasksScreenContent(
 
     val editTaskResult = remember { mutableStateOf(false to "") }
 
-    if(showTaskDetails.value){
+    if (showTaskDetails.value) {
         EditTaskScreen(
-            onCancelAddTaskBottomSheet = {showTaskDetails.value = false},
-            onActionResult = {a,b->
+            onCancelAddTaskBottomSheet = { showTaskDetails.value = false },
+            onActionResult = { a, b ->
                 editTaskResult.value = a to b
             },
             taskId = TODO(),
@@ -97,10 +99,10 @@ fun TasksScreenContent(
         )
     }
 
-        LaunchedEffect(editTaskResult.value) {
-         if(editTaskResult.value.second.isNotEmpty()){
-                SnackbarController.sendEvent(SnackbarEvent(message = editTaskResult.value.second))
-                editTaskResult.value = false to ""
+    LaunchedEffect(editTaskResult.value) {
+        if (editTaskResult.value.second.isNotEmpty()) {
+            SnackbarController.sendEvent(SnackbarEvent(message = editTaskResult.value.second))
+            editTaskResult.value = false to ""
         }
 
     }
@@ -173,7 +175,7 @@ fun TasksScreenContent(
                 .background(AppTheme.colors.surface)
         ) {
 
-            val currentTasks : List<TaskUiState> = tasksUiState.tasksList
+            val currentTasks: List<TaskUiState> = tasksUiState.tasksList
                 .filter {
                     it.taskStatus == when (selectedTabIndex) {
                         0 -> {
@@ -224,19 +226,22 @@ fun TasksScreenContent(
             }
         }
         if (tasksUiState.showDateDialog) {
-            DatePickerModal(
-                onDateSelected ={ millis ->
+            DatePickerComponent(
+                tasksUiState.selectedDateInMillis,
+                onDateSelected = { millis ->
                     millis?.let { onDateSelectedFromDatePicker(it) }
                     setShowDialog(false)
                 },
                 onDismiss = { setShowDialog(false) },
+                onClear = { onClearDatePicker() }
+
             )
         }
 
         selectedTaskToDelete.value?.let { taskToDelete ->
             ConfirmDeleteTask(
                 deleteOnClick = { //TODO handel this
-                 //   tasksViewModel.deleteTask(taskToDelete.taskId)
+                    //   tasksViewModel.deleteTask(taskToDelete.taskId)
                     selectedTaskToDelete.value = null
                     showSnackBar.value = true
                 },
@@ -259,9 +264,6 @@ fun TasksScreenContent(
             showSnackBar.value = false
         }
     }
-
-
-
 
 
 }
