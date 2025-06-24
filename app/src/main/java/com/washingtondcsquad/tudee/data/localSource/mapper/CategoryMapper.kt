@@ -2,23 +2,24 @@ package com.washingtondcsquad.tudee.data.localSource.mapper
 
 import com.washingtondcsquad.tudee.data.localSource.model.CategoryEntity
 import com.washingtondcsquad.tudee.domain.entity.Category
-
+import com.washingtondcsquad.tudee.domain.entity.CategoryID
+import com.washingtondcsquad.tudee.domain.entity.ImageSource
 
 fun Category.toEntity(): CategoryEntity {
     return CategoryEntity(
-        id = 0L,
-        title = title,
-        image = iconPath,
-        taskCount = taskCount
-
+        id = CategoryID(0L), title = title, image = when (this.iconPath) {
+            is ImageSource.AddedByUser -> (this.iconPath as ImageSource.AddedByUser).value
+            is ImageSource.PredefinedDrawable -> (this.iconPath as ImageSource.PredefinedDrawable).id.toString()
+        }, isPredefined = this.isPredefined
     )
 }
 
 fun CategoryEntity.toDomain(): Category {
     return Category(
-        id = id,
-        title = title,
-        iconPath = image,
-        taskCount = taskCount
+        id = id, title = title, iconPath = if (isPredefined) {
+            ImageSource.PredefinedDrawable(image.toInt())
+        } else {
+            ImageSource.AddedByUser(image)
+        }, isPredefined = isPredefined
     )
 }

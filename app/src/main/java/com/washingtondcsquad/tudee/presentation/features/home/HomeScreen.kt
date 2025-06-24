@@ -29,7 +29,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -47,6 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.LocalInnerPaddingProvider
 import com.washingtondcsquad.tudee.R
+import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.presentation.components.CustomSwitchButton
 import com.washingtondcsquad.tudee.presentation.components.TaskCard
 import com.washingtondcsquad.tudee.presentation.components.TextLogo
@@ -83,7 +83,9 @@ private fun HomeScreenContent(
         state.inProgressTasks.isEmpty() and state.todoTasks.isEmpty() and state.doneTasks.isEmpty()
     var showAddNewTaskBottomSheet by remember { mutableStateOf(false) }
     var showTaskDetailBottomSheet by remember { mutableStateOf(false) }
-    var currentTaskIdToShowDetail by remember { mutableIntStateOf(0) }
+    var currentTaskIdToShowDetail: TaskID by remember { mutableStateOf(TaskID(0L)) }
+
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -224,7 +226,7 @@ private fun HomeScreenContent(
 }
 
 @Composable
-private fun ShowTaskDetails(taskId: Int, onDismiss: () -> Unit) {
+private fun ShowTaskDetails(taskId: TaskID, onDismiss: () -> Unit) {
     TaskDetailsBottomSheet(
         taskId = taskId, onDismiss = onDismiss, onClickTaskDetails = {})
 }
@@ -254,7 +256,7 @@ private fun FabIcon(modifier: Modifier) {
 private fun TaskStatusLayout(
     title: String,
     tasks: List<TaskUiState>,
-    onTaskClick: (Int) -> Unit,
+    onTaskClick: (TaskID) -> Unit,
     onSeeMoreClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
