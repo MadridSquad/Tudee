@@ -27,9 +27,6 @@ val viewModelModule = module {
         EditTaskViewModel(
             tasksService = get(),
             categoryService = get(),
-            taskId = taskId,
-            onCancelAddTaskBottomSheet = onCancel,
-            onActionResult = onActionResult
         )
     }
 
