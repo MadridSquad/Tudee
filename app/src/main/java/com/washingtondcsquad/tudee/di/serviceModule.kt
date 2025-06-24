@@ -18,6 +18,7 @@ val serviceModule = module {
     singleOf(::TasksServiceImpl) bind TasksService::class
     singleOf(::CategoriesServiceImpl) bind CategoriesService::class
     singleOf(::AppPreferencesServiceImpl) bind AppPreferencesService::class
-    singleOf(::ImageSaverServiceImpl) bind ImageSaverService::class
     singleOf(::StringProviderImp) bind StringProvider::class
+
+    singleOf(::ImageSaverServiceImpl) bind ImageSaverService::class
 }

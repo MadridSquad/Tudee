@@ -7,6 +7,8 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.washingtondcsquad.tudee.data.localSource.model.TaskEntity
+import com.washingtondcsquad.tudee.domain.entity.CategoryID
+import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.entity.TaskID
 import kotlinx.coroutines.flow.Flow
 
@@ -26,4 +28,11 @@ interface TaskDao {
 
     @Query("SELECT * FROM ${TaskEntity.TASK_TABLE_NAME}")
     fun getAllTasks(): Flow<List<TaskEntity>>
+
+    @Query("SELECT * FROM ${TaskEntity.TASK_TABLE_NAME} WHERE categoryId = :categoryId")
+    suspend fun getTasksByCategoryId(categoryId: CategoryID): List<Task>
+
+    @Query("SELECT COUNT(*) FROM ${TaskEntity.TASK_TABLE_NAME}  WHERE categoryId = :categoryId")
+    suspend fun getTaskCountByCategoryId(categoryId: CategoryID): Int
+
 }

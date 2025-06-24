@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.components.CategoryCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
-import com.washingtondcsquad.tudee.presentation.features.sharedUiState.ImageSource
+import com.washingtondcsquad.tudee.domain.entity.ImageSource
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -127,9 +127,9 @@ fun CategoriesContent(
                     val category = categoriesScreenStatus.categories[index]
 
                     val imageSource = if (index < drawablesOfCategories.size) {
-                        ImageSource.Drawable(drawablesOfCategories[index])
+                        ImageSource.PredefinedDrawable(drawablesOfCategories[index])
                     } else {
-                        ImageSource.Path(category.iconPath)
+                        ImageSource.AddedByUser(category.iconPath)
                     }
                     val title = if (index <titlesOfCategories.size) {
                         titlesOfCategories[index]
@@ -228,7 +228,7 @@ fun CategoriesPreview(modifier: Modifier = Modifier) {
                 override fun onCategoryClick(category: CategoriesScreenStatus.Category) {
                 }
 
-                override fun addCategoryClick(title: String, categoryIconPath: String) {
+                override fun addCategoryClick(title: kotlin.String, categoryIconPath: kotlin.String) {
 
                 }
 
