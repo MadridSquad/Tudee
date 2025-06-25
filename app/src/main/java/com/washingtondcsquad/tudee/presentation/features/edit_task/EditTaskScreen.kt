@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.washingtondcsquad.tudee.R
+import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.presentation.components.CancelableActionLayout
 import com.washingtondcsquad.tudee.presentation.components.DatePickerModal
 import com.washingtondcsquad.tudee.presentation.components.TaskScreenComponents
@@ -23,7 +24,7 @@ import org.koin.core.parameter.parametersOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditTaskScreen(
-    taskId: Int,
+    taskId: TaskID,
     onClickCancel: () -> Unit,
     onSuccessEdit: (message: String) -> Unit,
     onErrorEdit: (message: String) -> Unit,
