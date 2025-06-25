@@ -191,7 +191,7 @@ fun CategoriesContent(
 @Preview(showBackground = true)
 @Composable
 fun CategoriesPreview(modifier: Modifier = Modifier) {
-    AppTheme(true) {
+    AppTheme {
         CategoriesContent(
             modifier = modifier,
             categoriesScreenStatus = CategoriesScreenStatus(

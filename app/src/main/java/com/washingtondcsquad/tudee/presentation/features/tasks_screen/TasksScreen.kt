@@ -95,8 +95,7 @@ fun TasksScreenContent(
             val centerOffset =
                 (lazyRowState.layoutInfo.viewportEndOffset / 2) - (itemWidthPx / 2).toInt()
             lazyRowState.animateScrollToItem(
-                index = selectedIndex,
-                scrollOffset = -centerOffset
+                index = selectedIndex, scrollOffset = -centerOffset
             )
         }
     }
@@ -142,8 +141,7 @@ fun TasksScreenContent(
             ChangeMonthButton(R.drawable.left_arrow) { gotToPreviousMonth() }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.clickable { setShowDialog(true) }
-            ) {
+                modifier = Modifier.clickable { setShowDialog(true) }) {
                 Text(
                     tasksUiState.yearAndMonthTitle,
                     style = AppTheme.textStyle.label.medium,
@@ -152,7 +150,8 @@ fun TasksScreenContent(
                 )
                 Icon(
                     painter = painterResource(R.drawable.down_arrow),
-                    contentDescription = "", tint = AppTheme.colors.body
+                    contentDescription = "",
+                    tint = AppTheme.colors.body
                 )
             }
             ChangeMonthButton(R.drawable.right_arrow) { gotToNextMonth() }
@@ -176,8 +175,7 @@ fun TasksScreenContent(
                         .width(65.dp)
                         .clickable {
                             onDaySelectedFromLazyRow(item.dayNumber)
-                        }
-                )
+                        })
             }
         }
 
@@ -191,8 +189,7 @@ fun TasksScreenContent(
                 .background(AppTheme.colors.surface)
         ) {
 
-            val currentTasks: List<TaskUiState> = tasksUiState.tasksList
-                .filter {
+            val currentTasks: List<TaskUiState> = tasksUiState.tasksList.filter {
                     it.taskStatus == when (selectedTabIndex) {
                         0 -> TaskStatus.IN_PROGRESS
                         1 -> TaskStatus.TODO
@@ -237,32 +234,24 @@ fun TasksScreenContent(
             }
         }
         if (tasksUiState.showDateDialog) {
-            DatePickerComponent(
-                tasksUiState.selectedDateInMillis,
-                onDateSelected = { millis ->
-                    millis?.let { onDateSelectedFromDatePicker(it) }
-                    setShowDialog(false)
-                },
-                onDismiss = { setShowDialog(false) },
-                onClear = { onClearDatePicker() }
+            DatePickerComponent(tasksUiState.selectedDateInMillis, onDateSelected = { millis ->
+                millis?.let { onDateSelectedFromDatePicker(it) }
+                setShowDialog(false)
+            }, onDismiss = { setShowDialog(false) }, onClear = { onClearDatePicker() }
 
             )
         }
 
         selectedTaskToDelete.value?.let { taskToDelete ->
-            ConfirmDeleteTask(
-                deleteOnClick = {
-                    tasksViewModel.deleteTask(taskToDelete.taskId)
-                    selectedTaskToDelete.value = null
-                    showSnackBar.value = true
-                },
-                cancelOnClick = {
-                    selectedTaskToDelete.value = null
-                },
-                onDismiss = {
-                    selectedTaskToDelete.value = null
-                }
-            )
+            ConfirmDeleteTask(deleteOnClick = {
+                tasksViewModel.deleteTask(taskToDelete.taskId)
+                selectedTaskToDelete.value = null
+                showSnackBar.value = true
+            }, cancelOnClick = {
+                selectedTaskToDelete.value = null
+            }, onDismiss = {
+                selectedTaskToDelete.value = null
+            })
         }
 
     }
@@ -276,5 +265,6 @@ fun TasksScreenContent(
     }
 
 }
+
 
 

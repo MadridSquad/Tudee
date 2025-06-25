@@ -20,23 +20,23 @@ class HomeViewModel(
         loadData()
     }
 
-    fun loadThemeState(){
+    fun loadThemeState() {
         updateState {
             copy(isLoading = true)
         }
         tryToExecute(
             request = {
-                appPreferences.isDarkModeEnabled()
+            appPreferences.isDarkModeEnabled()
 
-            }, onSuccess = {
-                viewModelScope.launch {
-                    it.collectLatest {
-                        updateState {
-                            copy(isDarkTheme = it, isLoading = false)
-                        }
+        }, onSuccess = {
+            viewModelScope.launch {
+                it.collectLatest {
+                    updateState {
+                        copy(isDarkTheme = it, isLoading = false)
                     }
                 }
-            }, onError = ::onError
+            }
+        }, onError = ::onError
         )
 
     }
