@@ -32,8 +32,7 @@ fun TaskStatusTabs(
                 height = 4.dp,
                 width = 103.dp
             )
-        }
-    ) {
+        }) {
 
         TasksTab(
             selectedTabIndex = selectedTabIndex,
