@@ -129,7 +129,9 @@ class CategoryDetailsScreenViewModel(val categoryService: CategoriesService) :
 
 fun deleteCategory(categoryID: CategoryID, onDeleteSuccessNav: () -> Unit) {
     tryToExecute(
-        request = {},
+        request = {
+            categoryService.deleteCategory(categoryID)
+        },
         onSuccess = {
             updateState {
                 copy(
