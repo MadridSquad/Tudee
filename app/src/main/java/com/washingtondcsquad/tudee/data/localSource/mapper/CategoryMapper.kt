@@ -21,9 +21,7 @@ fun CategoryEntity.toDomain(
 ): Category {
     return Category(
         id = id,
-        title = if (isPredefined) {
-            stringProvider.getString(this.title.toInt())
-        } else this.title,
+        title = title,
         iconPath = if (isPredefined) {
             ImageSource.PredefinedDrawable(image.toInt())
         } else {
