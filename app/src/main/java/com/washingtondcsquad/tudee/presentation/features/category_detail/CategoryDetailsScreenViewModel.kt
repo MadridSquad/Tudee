@@ -67,7 +67,11 @@ class CategoryDetailsScreenViewModel(val categoryService: CategoriesService) :
                     )
                 }
             },
-            onError = {}
+            onError = {
+                viewModelScope.launch {
+                    SnackbarController.sendEvent(SnackbarEvent(it.message.toString()))
+                }
+            }
         )
     }
 
