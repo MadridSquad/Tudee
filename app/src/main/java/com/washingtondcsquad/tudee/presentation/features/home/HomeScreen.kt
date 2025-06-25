@@ -240,7 +240,7 @@ private fun HomeScreenContent(
 @Composable
 private fun ShowTaskDetails(taskId: TaskID, onDismiss: () -> Unit) {
     TaskDetailsBottomSheet(
-        taskId = taskId, onDismiss = onDismiss, onClickTaskDetails = {})
+        taskId = taskId, onDismiss = onDismiss, onEditTask = {})
 }
 
 @Composable

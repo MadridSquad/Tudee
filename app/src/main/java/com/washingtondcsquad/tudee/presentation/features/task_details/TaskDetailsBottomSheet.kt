@@ -50,7 +50,7 @@ import org.koin.androidx.compose.koinViewModel
 fun TaskDetailsBottomSheet(
     taskId: TaskID,
     viewModel: BottomSheetTaskViewModel = koinViewModel<BottomSheetTaskViewModel>(),
-    onClickTaskDetails: () -> Unit,
+    onEditTask: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -102,7 +102,7 @@ fun TaskDetailsBottomSheet(
                 val task = (taskState as TaskState.Loaded).task
                 TaskDetailsContent(
                     task = task,
-                    onClickTaskDetails = onClickTaskDetails,
+                    onEditTask = onEditTask,
                     onMoveToNextStatus = { viewModel.moveToNextStatus() })
             }
         }
@@ -112,7 +112,7 @@ fun TaskDetailsBottomSheet(
 
 @Composable
 private fun TaskDetailsContent(
-    task: Task, onClickTaskDetails: () -> Unit, onMoveToNextStatus: () -> Unit
+    task: Task, onEditTask: () -> Unit, onMoveToNextStatus: () -> Unit
 ) {
     val isFinalStatus = task.status == TaskStatus.DONE
 
@@ -189,7 +189,7 @@ private fun TaskDetailsContent(
                             .border(
                                 1.dp, AppTheme.colors.stroke, RoundedCornerShape(100.dp)
                             )
-                            .clickable { onClickTaskDetails() }) {
+                            .clickable { onEditTask() }) {
                         Image(
                             painter = painterResource(id = R.drawable.pencil_edit),
                             contentDescription = "edit screen",
