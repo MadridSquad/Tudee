@@ -64,5 +64,8 @@
     <string name="tasks_screen_date_picker_ok">موافق</string>
     <string name="tasks_screen_no_tasks_title">مافيش مهام هنا!</string>
     <string name="tasks_screen_no_tasks_desc">اضغط على زر + علشان تضيف أول مهمة.</string>
+    <string name="tasks_screen_tap_row_in_progress">قيد التنفيذ</string>
+    <string name="tasks_screen_tap_row_to_do">المطلوبة</string>
+    <string name="tasks_screen_tap_row_done">المنتهية</string>
 
 </resources>

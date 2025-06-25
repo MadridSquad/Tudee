@@ -11,7 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 
@@ -22,6 +24,7 @@ fun DayCard(
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
 ) {
+    val layoutDirection = LocalLayoutDirection.current
     val backgroundColor: List<Color> =
         if (isSelected) AppTheme.colors.primaryGradient else List(2) { AppTheme.colors.surface }
 
@@ -31,7 +34,10 @@ fun DayCard(
                 brush = Brush.verticalGradient(backgroundColor),
                 shape = RoundedCornerShape(16.dp),
             )
-            .padding(vertical = 12.dp, horizontal = 16.dp),
+            .padding(
+                vertical = 12.dp,
+                horizontal = if (layoutDirection == LayoutDirection.Ltr) 16.dp else 10.dp
+            ),
         verticalArrangement = Arrangement.spacedBy(2.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
