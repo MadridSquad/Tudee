@@ -55,5 +55,14 @@
     <string name="edit_task_successfully">Edit task successfully.</string>
     <string name="some_error_happened">Some error happened</string>
 
+    <string name="tasks_screen_title">Tasks</string>
+    <string name="tasks_screen_date_picker_clear">Clear</string>
+    <string name="tasks_screen_date_picker_cancel">Cancel</string>
+    <string name="tasks_screen_date_picker_ok">OK</string>
+    <string name="tasks_screen_no_tasks_title">No tasks here!</string>
+    <string name="tasks_screen_no_tasks_desc">Tap the + button to add your first one.</string>
+    <string name="tasks_screen_tap_row_in_progress">In progress</string>
+    <string name="tasks_screen_tap_row_to_do">To Do</string>
+    <string name="tasks_screen_tap_row_done">Done</string>
 
 </resources>

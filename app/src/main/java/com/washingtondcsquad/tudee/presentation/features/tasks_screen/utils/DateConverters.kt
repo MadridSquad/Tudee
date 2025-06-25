@@ -1,10 +1,12 @@
 package com.washingtondcsquad.tudee.presentation.features.tasks_screen.utils
 
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.DayUiModel
+import kotlinx.datetime.toKotlinLocalDate
 import java.time.Instant
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
 
@@ -15,7 +17,7 @@ fun buildMonthDaysList(currentMonth: YearMonth, selectedDateMillis: Long): List<
 
     return (1..currentMonth.lengthOfMonth()).map { day ->
         val date = currentMonth.atDay(day)
-        val dayName = date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.ENGLISH)
+        val dayName = date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault())
         DayUiModel(
             dayNumber = day,
             dayName = dayName,
@@ -25,15 +27,20 @@ fun buildMonthDaysList(currentMonth: YearMonth, selectedDateMillis: Long): List<
 }
 
 fun todayInMillis(): Long {
-    val todayLocalDate = LocalDate.now(ZoneId.systemDefault())
+    val todayLocalDate = LocalDate.now(ZoneId.of("UTC"))
     return todayLocalDate
-        .atStartOfDay(ZoneId.systemDefault())
+        .atStartOfDay(ZoneId.of("UTC"))
         .toInstant()
         .toEpochMilli()
 }
 
 fun getYearAndMonthTitleFromYearMonth(yearMonth: YearMonth): String {
-    val monthName = yearMonth.month.getDisplayName(TextStyle.FULL, Locale.ENGLISH)
+    val monthName = yearMonth.month.getDisplayName(TextStyle.FULL, Locale.getDefault())
     return "$monthName, ${yearMonth.year}"
+}
+fun LocalDateParser(date: String): kotlinx.datetime.LocalDate {
+    val formatter = DateTimeFormatter.ofPattern("d-M-yyyy")
+    val javaLocalDate = LocalDate.parse(date, formatter)
+    return javaLocalDate.toKotlinLocalDate()
 }
 

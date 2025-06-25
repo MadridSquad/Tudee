@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">تودي</string>
+    <string name="education">تعليم</string>
+    <string name="shopping">تسوق</string>
+    <string name="medical">طبي</string>
+    <string name="gym">نادي رياضي</string>
+    <string name="entertainment">ترفيه</string>
+    <string name="cooking">طبخ</string>
+    <string name="family">عائلة</string>
+    <string name="traveling">سفر</string>
+    <string name="agriculture">زراعة</string>
+    <string name="coding">برمجة</string>
+    <string name="adoration">عبادة</string>
+    <string name="fix_bug">إصلاح خلل</string>
+    <string name="cleaning">تنظيف</string>
+    <string name="work">عمل</string>
+    <string name="budgeting">ميزانية</string>
+    <string name="self_care">العناية بالنفس</string>
+    <string name="event">حدث</string>
+    <string name="deleted_task_successfully">تم حذف المهمة بنجاح.</string>
+
+    <string name="onboarding_title_1">أوه لا! بتأجل تاني؟</string>
+    <string name="onboarding_description_1">يلا ننظم الفوضى. تودي هيساعدك ترتب وتخطط وتريح بالك.</string>
+
+    <string name="onboarding_title_2">أوه لا! بتأجل تاني؟</string>
+    <string name="onboarding_description_2">تودي مش زعلان... بس شوية محبط. خلينا نرجع نركز سوا.</string>
+
+    <string name="onboarding_title_3">يلا نخلص المهمة ونحتفل سوا!</string>
+    <string name="onboarding_description_3">أي إنجاز مهم، كبير أو صغير. وتودي هيشجعك على كل خطوة.</string>
+
+    <string name="cancel">إلغاء</string>
+    <string name="home_app_bar_subtitle">مساعدك اللطيف لكل مهمة</string>
+    <string name="no_tasks_for_today">مافيش مهام النهاردة!</string>
+    <string name="tap_plus_to_add_task">اضغط على زر + علشان تضيف أول مهمة.</string>
+
+    <string name="to_do">مهام</string>
+    <string name="in_progress_title">قيد التنفيذ</string>
+    <string name="done">تمت</string>
+    <string name="to_do_title">مهام</string>
+
+    <string name="background_graphics">رسومات الخلفية</string>
+    <string name="category">الفئة</string>
+    <string name="priority">الأولوية</string>
+    <string name="add">إضافة</string>
+    <string name="save">حفظ</string>
+    <string name="date_format">d-M-yyyy</string>
+    <string name="add_new_task">إضافة مهمة جديدة</string>
+    <string name="edit_task">تعديل المهمة</string>
+    <string name="description_hint">الوصف</string>
+    <string name="task_title_hint">عنوان المهمة</string>
+
+    <string name="ok">موافق</string>
+    <string name="clear">مسح</string>
+    <string name="delete_task">حذف المهمة</string>
+    <string name="are_you_sure_to_continue">هل أنت متأكد أنك عايز تكمل؟</string>
+    <string name="delete">حذف</string>
+    <string name="add_task_successfully">تمت إضافة المهمة بنجاح.</string>
+    <string name="some_error_happened">حدث خطأ ما</string>
+
+    <string name="tasks_screen_title">المهام</string>
+    <string name="tasks_screen_date_picker_clear">مسح</string>
+    <string name="tasks_screen_date_picker_cancel">إلغاء</string>
+    <string name="tasks_screen_date_picker_ok">موافق</string>
+    <string name="tasks_screen_no_tasks_title">مافيش مهام هنا!</string>
+    <string name="tasks_screen_no_tasks_desc">اضغط على زر + علشان تضيف أول مهمة.</string>
+    <string name="tasks_screen_tap_row_in_progress">قيد التنفيذ</string>
+    <string name="tasks_screen_tap_row_to_do">المطلوبة</string>
+    <string name="tasks_screen_tap_row_done">المنتهية</string>
+
+</resources>

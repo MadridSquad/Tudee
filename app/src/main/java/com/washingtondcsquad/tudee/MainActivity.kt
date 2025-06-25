@@ -1,5 +1,6 @@
 package com.washingtondcsquad.tudee
 
+import SplashScreen
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
@@ -7,13 +8,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.BottomAppBarDefaults.windowInsets
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -25,16 +23,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.washingtondcsquad.tudee.data.localSource.TudeeDataBase
-import com.washingtondcsquad.tudee.domain.entity.Category
+import androidx.navigation.navArgument
+import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.services.AppPreferencesService
 import com.washingtondcsquad.tudee.presentation.components.SnackBarCard
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.TudeeNavigationBar
@@ -44,11 +42,10 @@ import com.washingtondcsquad.tudee.presentation.components.snack_bar.ObserveAsEv
 import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarController
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.categories.CategoriesScreen
+import com.washingtondcsquad.tudee.presentation.features.category_detail.CategoryDetailScreen
 import com.washingtondcsquad.tudee.presentation.features.home.HomeScreen
 import com.washingtondcsquad.tudee.presentation.features.onBoarding.OnBoardingScreen
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.TasksScreen
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
@@ -75,19 +72,17 @@ class MainActivity : ComponentActivity() {
             ) {
                 when (val isOnboardingShown = isOnboardingShownState) {
                     null -> {
-                        Box(
-                            modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
-                        }
+
+                        SplashScreen(
+                            title = "Tudee",
+                            isDarkTheme =isDarkMode ,
+                        )
                     }
 
                     else -> {
                         val startDestination = if (isOnboardingShown) {
                             "home"
                         } else {
-                            Log.d("sdasdsad", "onCreate: ")
-                         ///   createPreDefineCategories()
                             "onboarding"
                         }
                         val navController = rememberNavController()
@@ -128,7 +123,34 @@ class MainActivity : ComponentActivity() {
                                         TasksScreen()
                                     }
                                     composable(route = "category") {
-                                        CategoriesScreen()
+                                        CategoriesScreen(onCategoryClick = { categoryId ->
+                                            navController.navigate("category/${categoryId.categoryId}")
+                                        })
+                                    }
+                                    composable(
+                                        route = "category/{categoryId}",
+                                        arguments = listOf(
+                                            navArgument("categoryId") {
+                                                type = NavType.LongType
+                                            }
+                                        )
+                                    ) { backStackEntry ->
+                                        val categoryId =
+                                            backStackEntry.arguments?.getLong("categoryId")
+
+                                        CategoryDetailScreen(
+                                            categoryId = CategoryID(
+                                                categoryId ?: throw Exception("null category id")
+                                            ),
+                                            onBack = {
+                                                navController.popBackStack()
+                                            },
+                                            onDeleteSuccessNav = {
+                                                navController.navigate("category") {
+                                                    popUpTo("category")
+                                                }
+                                            },
+                                        )
                                     }
                                 }
 
@@ -140,36 +162,6 @@ class MainActivity : ComponentActivity() {
             SnackbarHandler()
         }
     }
-//
-//    private fun createPreDefineCategories() {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            listOf(
-//                "Education",
-//                "Shopping",
-//                "Medical",
-//                "Gym",
-//                "Entertainment",
-//                "Cooking",
-//                "Family & friend",
-//                "Traveling",
-//                "Agriculture",
-//                "Coding",
-//                "Adoration",
-//                "Fix bug",
-//                "Cleaning",
-//                "Work",
-//                "Budgeting",
-//                "Self care",
-//                "Event"
-//            ).forEach { image ->
-//                TudeeDataBase.getInstance(this@MainActivity).daoCategory().createCategory(
-//                    Category(
-//                        title = image, iconPath = "", taskCount = 0, id = 0
-//                    ).toEntity()
-//                )
-//            }
-//        }
-//    }
 }
 
 
