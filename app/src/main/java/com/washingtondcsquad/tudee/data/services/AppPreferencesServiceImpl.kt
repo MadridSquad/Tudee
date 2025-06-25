@@ -1,16 +1,36 @@
 package com.washingtondcsquad.tudee.data.services
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import com.washingtondcsquad.tudee.domain.services.AppPreferencesService
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import java.util.Locale
 
 class AppPreferencesServiceImpl(
     private val dataStore: DataStore<Preferences>
 ) : AppPreferencesService {
+
+    private val _currentLocale = MutableStateFlow(getCurrentAppLocale())
+    val currentLocale: Flow<Locale> = _currentLocale.asStateFlow()
+
+    override suspend fun getCurrentLocale(): Flow<Locale> = currentLocale.distinctUntilChanged()
+
+
+    private fun getCurrentAppLocale(): Locale {
+        val androidLocale = AppCompatDelegate.getApplicationLocales()[0]
+            ?: Locale.getDefault()
+        return Locale.Builder()
+            .setLocale(androidLocale)
+            .setLanguage(androidLocale.language)
+            .build()
+    }
 
     companion object PreferencesKeys {
         val HAS_ONBOARDING_BEEN_SHOWN = booleanPreferencesKey("has_onboarding_been_shown")
