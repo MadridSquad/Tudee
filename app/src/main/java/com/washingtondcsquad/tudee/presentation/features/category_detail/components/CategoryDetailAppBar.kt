@@ -52,7 +52,7 @@ fun CategoryDetailTopAppBar(
                     shape = CircleShape
                 )
                 .clickable {
-                    onBack
+                    onBack()
                 },
             contentAlignment = Alignment.Center
         ) {
