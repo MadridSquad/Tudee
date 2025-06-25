@@ -67,6 +67,7 @@ fun CategoryDetailScreen(
                 state.categoryID,
                 AddedByUser(state.categoryImagePath)
             )
+            onDeleteSuccessNav()
 
         }, onBack = {
             onBack()
