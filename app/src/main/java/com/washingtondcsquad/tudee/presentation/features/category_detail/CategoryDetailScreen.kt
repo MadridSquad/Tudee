@@ -97,7 +97,14 @@ fun CategoryDetailContents(
         else -> state.doneTasks
     }
 
-    Column {
+    Column(
+        modifier = Modifier
+            .background(
+                AppTheme.colors.surfaceHigh
+            )
+            .windowInsetsPadding(androidx.compose.foundation.layout.WindowInsets.statusBars)
+
+    ) {
         // top app bar
         CategoryDetailTopAppBar(
             title = state.categoryTitle,
