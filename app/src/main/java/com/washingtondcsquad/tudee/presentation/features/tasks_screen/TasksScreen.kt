@@ -129,7 +129,7 @@ fun TasksScreenContent(
         Text(
             stringResource(R.string.tasks_screen_title),
             style = defaultTextStyle.title.large,
-            modifier = Modifier.padding(bottom = 20.dp, start = 16.dp, end = 16.dp),
+            modifier = Modifier.padding(bottom = 20.dp, top = 8.dp, start = 16.dp, end = 16.dp),
             color = AppTheme.colors.title
         )
         Row(
@@ -206,10 +206,14 @@ fun TasksScreenContent(
                     .padding(top = 12.dp, start = 16.dp, end = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                val tasksToShow = currentTasks.filter {
-                    it.taskDate == formatedSelectedDate(
-                        tasksUiState.selectedDateInMillis
-                    ).trim()
+                val tasksToShow = if (tasksUiState.isFilterEnabled) {
+                    currentTasks.filter {
+                        it.taskDate == formatedSelectedDate(
+                            tasksUiState.selectedDateInMillis
+                        ).trim()
+                    }
+                } else {
+                    currentTasks
                 }
 
                 if (tasksToShow.isNotEmpty()) {
@@ -247,8 +251,8 @@ fun TasksScreenContent(
 
         selectedTaskToDelete.value?.let { taskToDelete ->
             ConfirmDeleteTask(
-                deleteOnClick = { //TODO handel this
-                    //   tasksViewModel.deleteTask(taskToDelete.taskId)
+                deleteOnClick = {
+                    tasksViewModel.deleteTask(taskToDelete.taskId)
                     selectedTaskToDelete.value = null
                     showSnackBar.value = true
                 },

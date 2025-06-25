@@ -1,10 +1,12 @@
 package com.washingtondcsquad.tudee.presentation.features.tasks_screen.utils
 
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.DayUiModel
+import kotlinx.datetime.toKotlinLocalDate
 import java.time.Instant
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
 
@@ -35,5 +37,10 @@ fun todayInMillis(): Long {
 fun getYearAndMonthTitleFromYearMonth(yearMonth: YearMonth): String {
     val monthName = yearMonth.month.getDisplayName(TextStyle.FULL, Locale.ENGLISH)
     return "$monthName, ${yearMonth.year}"
+}
+fun LocalDateParser(date: String): kotlinx.datetime.LocalDate {
+    val formatter = DateTimeFormatter.ofPattern("d-M-yyyy")
+    val javaLocalDate = LocalDate.parse(date, formatter)
+    return javaLocalDate.toKotlinLocalDate()
 }
 
