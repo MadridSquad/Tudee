@@ -3,6 +3,7 @@ package com.washingtondcsquad.tudee.presentation.features.category_detail
 import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.CategoryID
+import com.washingtondcsquad.tudee.domain.entity.ImageSource.AddedByUser
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.entity.TaskID
@@ -12,7 +13,6 @@ import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarController
 import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarEvent
 import com.washingtondcsquad.tudee.presentation.features.home.toTaskUiState
-import com.washingtondcsquad.tudee.presentation.features.sharedUiState.ImageSource
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
@@ -42,7 +42,6 @@ class CategoryDetailsScreenViewModel(val categoryService: CategoriesService) :
                 viewModelScope.launch {
                     SnackbarController.sendEvent(SnackbarEvent(it.message.toString()))
                 }
-                println("error ==> ${it.message}")
             }
         )
     }
@@ -52,13 +51,13 @@ class CategoryDetailsScreenViewModel(val categoryService: CategoriesService) :
         tryToExecute<List<Task>>(
             request = {
 
-                dummyTasks
+                categoryService.getTasksByCategoryID(categoryId = categoryID)
 
             },
             onSuccess = {
-                val inProgresTasks = dummyTasks.filter { it.status == TaskStatus.IN_PROGRESS }
-                val doneTasks = dummyTasks.filter { it.status == TaskStatus.DONE }
-                val toDoTasks = dummyTasks.filter { it.status == TaskStatus.TODO }
+                val inProgresTasks = it.filter { it.status == TaskStatus.IN_PROGRESS }
+                val doneTasks = it.filter { it.status == TaskStatus.DONE }
+                val toDoTasks = it.filter { it.status == TaskStatus.TODO }
                 updateState {
                     copy(
                         inProgressTasks = inProgresTasks.map { it.toTaskUiState() },
@@ -156,141 +155,3 @@ fun setCategoryId(categoryId: CategoryID) {
 }
 
 
-val dummyTasks = listOf(
-    Task(
-        id = TaskID(1L),
-        categoryId = 1L,
-        title = "Buy groceries",
-        description = "Milk, Bread, Eggs, and Fruits",
-        date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
-        status = TaskStatus.TODO,
-        priority = Priority.MEDIUM
-    ),
-    Task(
-        id = TaskID(2L),
-        categoryId = 1L,
-        title = "Workout",
-        description = "45-minute gym session",
-        date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
-        status = TaskStatus.IN_PROGRESS,
-        priority = Priority.HIGH
-    ),
-    Task(
-        id = TaskID(3L),
-        categoryId = 1L,
-        title = "Read a book",
-        description = "Finish reading chapter 4 of 'Atomic Habits'",
-        date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
-        status = TaskStatus.DONE,
-        priority = Priority.LOW
-    ),
-    Task(
-        id = TaskID(1L),
-        categoryId = 1L,
-        title = "Buy groceries",
-        description = "Milk, Bread, Eggs, and Fruits",
-        date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
-        status = TaskStatus.TODO,
-        priority = Priority.MEDIUM
-    ),
-    Task(
-        id = TaskID(2L),
-        categoryId = 2L,
-        title = "Workout",
-        description = "45-minute gym session",
-        date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
-        status = TaskStatus.IN_PROGRESS,
-        priority = Priority.HIGH
-    ),
-    Task(
-        id = TaskID(3L),
-        categoryId = 3L,
-        title = "Read a book",
-        description = "Finish reading chapter 4 of 'Atomic Habits'",
-        date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
-        status = TaskStatus.DONE,
-        priority = Priority.LOW
-    ),
-    Task(
-        id = TaskID(1L),
-        categoryId = 1L,
-        title = "Buy groceries",
-        description = "Milk, Bread, Eggs, and Fruits",
-        date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
-        status = TaskStatus.TODO,
-        priority = Priority.MEDIUM
-    ),
-    Task(
-        id = TaskID(2L),
-        categoryId = 1L,
-        title = "Workout",
-        description = "45-minute gym session",
-        date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
-        status = TaskStatus.IN_PROGRESS,
-        priority = Priority.HIGH
-    ),
-    Task(
-        id = TaskID(3L),
-        categoryId = 1L,
-        title = "Read a book",
-        description = "Finish reading chapter 4 of 'Atomic Habits'",
-        date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
-        status = TaskStatus.DONE,
-        priority = Priority.LOW
-    ),
-    Task(
-        id = TaskID(1L),
-        categoryId = 1L,
-        title = "Buy groceries",
-        description = "Milk, Bread, Eggs, and Fruits",
-        date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
-        status = TaskStatus.TODO,
-        priority = Priority.MEDIUM
-    ),
-    Task(
-        id = TaskID(2L),
-        categoryId = 1L,
-        title = "Workout",
-        description = "45-minute gym session",
-        date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
-        status = TaskStatus.IN_PROGRESS,
-        priority = Priority.HIGH
-    ),
-    Task(
-        id = TaskID(3L),
-        categoryId = 3L,
-        title = "Read a book",
-        description = "Finish reading chapter 4 of 'Atomic Habits'",
-        date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
-        status = TaskStatus.DONE,
-        priority = Priority.LOW
-    ),
-    Task(
-        id = TaskID(1L),
-        categoryId = 2L,
-        title = "Buy groceries",
-        description = "Milk, Bread, Eggs, and Fruits",
-        date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
-        status = TaskStatus.TODO,
-        priority = Priority.MEDIUM
-    ),
-    Task(
-        id = TaskID(2L),
-        categoryId = 3L,
-        title = "Workout",
-        description = "45-minute gym session",
-        date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
-        status = TaskStatus.IN_PROGRESS,
-        priority = Priority.HIGH
-    ),
-    Task(
-        id = TaskID(3L),
-        categoryId = 2L,
-        title = "Read a book",
-        description = "Finish reading chapter 4 of 'Atomic Habits'",
-        date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
-        status = TaskStatus.DONE,
-        priority = Priority.LOW
-    )
-
-)
