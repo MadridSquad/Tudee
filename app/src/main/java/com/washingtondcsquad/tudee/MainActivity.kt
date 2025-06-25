@@ -35,6 +35,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.washingtondcsquad.tudee.data.localSource.TudeeDataBase
 import com.washingtondcsquad.tudee.domain.entity.Category
+import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.services.AppPreferencesService
 import com.washingtondcsquad.tudee.presentation.components.SnackBarCard
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.TudeeNavigationBar
@@ -44,6 +45,7 @@ import com.washingtondcsquad.tudee.presentation.components.snack_bar.ObserveAsEv
 import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarController
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.categories.CategoriesScreen
+import com.washingtondcsquad.tudee.presentation.features.category_detail.CategoryDetailScreen
 import com.washingtondcsquad.tudee.presentation.features.home.HomeScreen
 import com.washingtondcsquad.tudee.presentation.features.onBoarding.OnBoardingScreen
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.TasksScreen
@@ -87,7 +89,7 @@ class MainActivity : ComponentActivity() {
                             "home"
                         } else {
                             Log.d("sdasdsad", "onCreate: ")
-                         ///   createPreDefineCategories()
+                            ///   createPreDefineCategories()
                             "onboarding"
                         }
                         val navController = rememberNavController()
@@ -128,7 +130,27 @@ class MainActivity : ComponentActivity() {
                                         TasksScreen()
                                     }
                                     composable(route = "category") {
-                                        CategoriesScreen()
+                                        CategoriesScreen(onCategoryClick = { categoryId ->
+                                            navController.navigate("category/${categoryId.categoryId}")
+                                        })
+                                    }
+                                    composable(route = "category/{categoryId}") { backStackEntry ->
+                                        val categoryId = backStackEntry.arguments?.getLong("categoryId")
+
+                                        CategoryDetailScreen(
+                                            modifier = TODO(),
+                                            categoryId = CategoryID(categoryId  ?: throw Exception("null category id")),
+                                            onBack = {
+                                                navController.popBackStack()
+                                            },
+                                            onDeleteSuccessNav = {
+                                                navController.navigate("category"){
+                                                    popUpTo("category")
+                                                }
+                                            },
+                                            imageSaver = TODO(),
+                                            viewModel = TODO()
+                                        )
                                     }
                                 }
 
@@ -140,6 +162,8 @@ class MainActivity : ComponentActivity() {
             SnackbarHandler()
         }
     }
+}
+
 //
 //    private fun createPreDefineCategories() {
 //        CoroutineScope(Dispatchers.IO).launch {
