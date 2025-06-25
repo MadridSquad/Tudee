@@ -1,8 +1,9 @@
 package com.washingtondcsquad.tudee.presentation.features.edit_task
 
+import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.Category
-import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.entity.TaskID
@@ -12,6 +13,9 @@ import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.EditTaskUiState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
@@ -21,45 +25,50 @@ class EditTaskViewModel(
     private val tasksService: TasksService,
     private val categoryService: CategoriesService,
     private val stringProvider: StringProvider,
-    taskId: Int,
+    private val taskId: TaskID,
 ) : BaseViewModel<EditTaskUiState>(
     EditTaskUiState(taskId = taskId)
 ) {
 
     init {
-        getAllCategories()
-        getTaskById()
+        initApp()
     }
 
-    private fun getTaskById() {
-        tryToExecute(
-            request = {
-                tasksService.getTaskById(TaskID(state.value.taskId.toLong()))
-            },
-            onSuccess = { task ->
+    private fun initApp() {
+        viewModelScope.launch {
+
+            val task = tasksService.getTaskById(state.value.taskId)
+
+            withContext(Dispatchers.Main) {
                 updateState {
                     copy(
                         taskTitle = task.title,
                         taskDescription = task.description,
                         taskDate = task.date,
                         selectedPriority = task.priority,
-                        selectedCategory = state.value.categoryList.find { it.id == task.categoryId }
                     )
                 }
-                updateButtonEnable()
-            },
-            onError = { exception ->
-                updateState {
-                    copy(errorMessage = exception.message)
+            }
+
+            categoryService.getAllCategories().collect { categoryList ->
+                withContext(Dispatchers.Main) {
+                    updateState {
+                        copy(
+                            categoryList = categoryList,
+                            selectedCategory = categoryList.find { it.id == task.categoryId }
+                        )
+                    }
                 }
             }
-        )
+
+        }
     }
 
     private fun getAllCategories() {
         tryToCollect(
             request = { categoryService.getAllCategories() },
             onChange = { newCategoryList ->
+                Log.e("MY_TAG", state.value.selectedCategory.toString())
                 updateState {
                     copy(categoryList = newCategoryList)
                 }
@@ -129,7 +138,7 @@ class EditTaskViewModel(
             request = {
                 tasksService.editTask(
                     Task(
-                        id = TaskID(state.value.taskId.toLong()),
+                        id = state.value.taskId,
                         categoryId = category.id,
                         title = state.value.taskTitle,
                         description = state.value.taskDescription,
