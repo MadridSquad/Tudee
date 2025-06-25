@@ -18,6 +18,7 @@ import com.washingtondcsquad.tudee.presentation.components.CancelableActionLayou
 import com.washingtondcsquad.tudee.presentation.components.DatePickerModal
 import com.washingtondcsquad.tudee.presentation.components.TaskScreenComponents
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
+import com.washingtondcsquad.tudee.presentation.features.sharedUiState.EditTaskUiState
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -59,7 +60,7 @@ fun EditTaskScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun EditTaskContent(
-    state: com.washingtondcsquad.tudee.presentation.features.sharedUiState.EditTaskUiState,
+    state: EditTaskUiState,
     bottomSheetState: SheetState,
     onTitleChange: (newTitle: String) -> Unit,
     onDescriptionChange: (newDescription: String) -> Unit,
