@@ -3,10 +3,9 @@ package com.washingtondcsquad.tudee.presentation.features.category_detail
 import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.CategoryID
+import com.washingtondcsquad.tudee.domain.entity.ImageSource
 import com.washingtondcsquad.tudee.domain.entity.ImageSource.AddedByUser
-import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
-import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
@@ -14,9 +13,6 @@ import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarCon
 import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarEvent
 import com.washingtondcsquad.tudee.presentation.features.home.toTaskUiState
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 class CategoryDetailsScreenViewModel(val categoryService: CategoriesService) :
     BaseViewModel<CategoryDetailsScreenUiState>(
@@ -126,10 +122,11 @@ class CategoryDetailsScreenViewModel(val categoryService: CategoriesService) :
 
 
 
-fun deleteCategory(categoryID: CategoryID) {
+fun deleteCategory(categoryID: CategoryID, categoryImage: ImageSource) {
     tryToExecute(
         request = {
             categoryService.deleteCategory(categoryID)
+            categoryService.deleteCategoryImage(categoryImage)
         },
         onSuccess = {
             updateState {
