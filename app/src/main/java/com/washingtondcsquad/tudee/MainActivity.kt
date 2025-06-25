@@ -134,8 +134,16 @@ class MainActivity : ComponentActivity() {
                                             navController.navigate("category/${categoryId.categoryId}")
                                         })
                                     }
-                                    composable(route = "category/{categoryId}") { backStackEntry ->
-                                        val categoryId = backStackEntry.arguments?.getLong("categoryId")
+                                    composable(
+                                        route = "category/{categoryId}",
+                                        arguments = listOf(
+                                            navArgument("categoryId") {
+                                                type = NavType.LongType
+                                            }
+                                        )
+                                    ) { backStackEntry ->
+                                        val categoryId =
+                                            backStackEntry.arguments?.getLong("categoryId")
 
                                         CategoryDetailScreen(
                                             modifier = TODO(),
