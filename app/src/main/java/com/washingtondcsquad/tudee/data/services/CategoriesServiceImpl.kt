@@ -95,103 +95,103 @@ class CategoriesServiceImpl(
         val categories = listOf(
             CategoryEntity(
                 id = CategoryID(0L),
-                title = stringProvider.getString(R.string.education),
+                title = R.string.education.toString(),
                 image = R.drawable.education_icon.toString(),
                 isPredefined = true
             ),
             CategoryEntity(
                 id = CategoryID(0L),
-                title = stringProvider.getString(R.string.shopping),
+                title = R.string.shopping.toString(),
                 image = R.drawable.shopping.toString(),
                 isPredefined = true
             ),
             CategoryEntity(
                 id = CategoryID(0L),
-                title = stringProvider.getString(R.string.medical),
+                title = R.string.medical.toString(),
                 image = R.drawable.medical.toString(),
                 isPredefined = true
             ),
             CategoryEntity(
                 id = CategoryID(0L),
-                title = stringProvider.getString(R.string.gym),
+                title = R.string.gym.toString(),
                 image = R.drawable.gym.toString(),
                 isPredefined = true
             ),
             CategoryEntity(
                 id = CategoryID(0L),
-                title = stringProvider.getString(R.string.entertainment),
+                title = R.string.entertainment.toString(),
                 image = R.drawable.entertainment.toString(),
                 isPredefined = true
             ),
             CategoryEntity(
                 id = CategoryID(0L),
-                title = stringProvider.getString(R.string.cooking),
+                title = R.string.cooking.toString(),
                 image = R.drawable.cooking.toString(),
                 isPredefined = true
             ),
             CategoryEntity(
                 id = CategoryID(0L),
-                title = stringProvider.getString(R.string.family),
+                title = R.string.family.toString(),
                 image = R.drawable.family.toString(),
                 isPredefined = true
             ),
             CategoryEntity(
                 id = CategoryID(0L),
-                title = stringProvider.getString(R.string.traveling),
+                title = R.string.traveling.toString(),
                 image = R.drawable.traveling.toString(),
                 isPredefined = true
             ),
             CategoryEntity(
                 id = CategoryID(0L),
-                title = stringProvider.getString(R.string.agriculture),
+                title = R.string.agriculture.toString(),
                 image = R.drawable.agriculture.toString(),
                 isPredefined = true
             ),
             CategoryEntity(
                 id = CategoryID(0L),
-                title = stringProvider.getString(R.string.coding),
+                title = R.string.coding.toString(),
                 image = R.drawable.coding.toString(),
                 isPredefined = true
             ),
             CategoryEntity(
                 id = CategoryID(0L),
-                title = stringProvider.getString(R.string.adoration),
+                title = R.string.adoration.toString(),
                 image = R.drawable.adoration.toString(),
                 isPredefined = true
             ),
             CategoryEntity(
                 id = CategoryID(0L),
-                title = stringProvider.getString(R.string.fix_bug),
+                title = R.string.fix_bug.toString(),
                 image = R.drawable.fix_bug.toString(),
                 isPredefined = true
             ),
             CategoryEntity(
                 id = CategoryID(0L),
-                title = stringProvider.getString(R.string.cleaning),
+                title = R.string.cleaning.toString(),
                 image = R.drawable.cleaning.toString(),
                 isPredefined = true
             ),
             CategoryEntity(
                 id = CategoryID(0L),
-                title = stringProvider.getString(R.string.work),
+                title = R.string.work.toString(),
                 image = R.drawable.work.toString(),
                 isPredefined = true
             ),
             CategoryEntity(
                 id = CategoryID(0L),
-                title = stringProvider.getString(R.string.budgeting),
+                title = R.string.budgeting.toString(),
                 image = R.drawable.budgeting.toString(),
                 isPredefined = true
             ),
             CategoryEntity(
                 id = CategoryID(0L),
-                title = stringProvider.getString(R.string.self_care),
+                title = R.string.self_care.toString(),
                 image = R.drawable.self_care.toString(),
                 isPredefined = true
             ),
             CategoryEntity(
                 id = CategoryID(0L),
-                title = stringProvider.getString(R.string.event),
+                title = R.string.event.toString(),
                 image = R.drawable.event.toString(),
                 isPredefined = true
             )
