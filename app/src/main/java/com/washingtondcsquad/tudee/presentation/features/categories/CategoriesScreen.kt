@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -28,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
@@ -62,48 +64,7 @@ fun CategoriesContent(
     categoriesEvent: CategoriesEvent,
     onCategoryClick: (categoryId: CategoryID) -> Unit
 ) {
-    val drawablesOfCategories = remember {
-        listOf(
-            R.drawable.education_icon,
-            R.drawable.shopping,
-            R.drawable.medical,
-            R.drawable.gym,
-            R.drawable.entertainment,
-            R.drawable.cooking,
-            R.drawable.family,
-            R.drawable.traveling,
-            R.drawable.agriculture,
-            R.drawable.coding,
-            R.drawable.adoration,
-            R.drawable.fix_bug,
-            R.drawable.cleaning,
-            R.drawable.work,
-            R.drawable.budgeting,
-            R.drawable.self_care,
-            R.drawable.event
-        )
-    }
-    val titlesOfCategories = remember {
-        listOf(
-            "Education",
-            "Shopping",
-            "Medical",
-            "Gym",
-            "Entertainment",
-            "Cooking",
-            "Family & friend",
-            "Traveling",
-            "Agriculture",
-            "Coding",
-            "Adoration",
-            "Fix bug",
-            "Cleaning",
-            "Work",
-            "Budgeting",
-            "Self care",
-            "Event"
-        )
-    }
+
     var showBottomSheet by remember { mutableStateOf(false) }
 
     Box(
@@ -135,27 +96,17 @@ fun CategoriesContent(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
-                items(categoriesScreenStatus.categories.size) { index ->
-                    val category = categoriesScreenStatus.categories[index]
+                items(categoriesScreenStatus.categories) { category ->
 
-                    val imageSource = if (index < drawablesOfCategories.size) {
-                        ImageSource.PredefinedDrawable(drawablesOfCategories[index])
-                    } else {
-                        ImageSource.AddedByUser(category.iconPath)
-                    }
-                    val title = if (index < titlesOfCategories.size) {
-                        titlesOfCategories[index]
-                    } else {
-                        category.title
-                    }
                     CategoryCard(
-                        title = title,
-                        imageSource = imageSource,
+                        title = if(category.isPredefined) stringResource(category.title.toInt())else category.title ,
+                        //title = category.title,
+                        imageSource = category.iconPath,
                         onClick = {
-                            onCategoryClick(CategoryID(category.id))
+                            onCategoryClick(category.id)
                         },
                         isSelected = false,
-                        tasksCount = category.tasksCount
+                        tasksCount = 0
                     )
                 }
             }
@@ -202,38 +153,38 @@ fun CategoriesContent(
 @Preview(showBackground = true)
 @Composable
 fun CategoriesPreview(modifier: Modifier = Modifier) {
-    AppTheme(true) {
-        CategoriesContent(
-            modifier = modifier, categoriesScreenStatus = CategoriesScreenStatus(
-                listOf(
-                    CategoriesScreenStatus.Category(
-                        id = 1L, title = "Education", iconPath = "", tasksCount = 0
-                    ),
-                    CategoriesScreenStatus.Category(
-                        id = 2L, title = "Shopping", iconPath = "", tasksCount = 0
-                    ),
-                    CategoriesScreenStatus.Category(
-                        id = 3L, title = "Medical", iconPath = "", tasksCount = 0
-                    ),
-                    CategoriesScreenStatus.Category(
-                        id = 4L, title = "Gym", iconPath = "", tasksCount = 0
-                    ),
-
-
-                    )
-            ), categoriesEvent = object : CategoriesEvent {
-                override fun onCategoryClick(category: CategoriesScreenStatus.Category) {
-                }
-
-                override fun addCategoryClick(
-                    title: kotlin.String, categoryIconPath: kotlin.String
-                ) {
-
-                }
-
-
-            },
-            onCategoryClick = {}
-        )
-    }
+//    AppTheme(true) {
+//        CategoriesContent(
+//            modifier = modifier, categoriesScreenStatus = CategoriesScreenStatus(
+//                listOf(
+//                    CategoriesScreenStatus.Category(
+//                        id = 1L, title = "Education", iconPath = "", tasksCount = 0
+//                    ),
+//                    CategoriesScreenStatus.Category(
+//                        id = 2L, title = "Shopping", iconPath = "", tasksCount = 0
+//                    ),
+//                    CategoriesScreenStatus.Category(
+//                        id = 3L, title = "Medical", iconPath = "", tasksCount = 0
+//                    ),
+//                    CategoriesScreenStatus.Category(
+//                        id = 4L, title = "Gym", iconPath = "", tasksCount = 0
+//                    ),
+//
+//
+//                    )
+//            ), categoriesEvent = object : CategoriesEvent {
+//                override fun onCategoryClick(category: CategoriesScreenStatus.Category) {
+//                }
+//
+//                override fun addCategoryClick(
+//                    title: kotlin.String, categoryIconPath: kotlin.String
+//                ) {
+//
+//                }
+//
+//
+//            },
+//            onCategoryClick = {}
+//        )
+//    }
 }

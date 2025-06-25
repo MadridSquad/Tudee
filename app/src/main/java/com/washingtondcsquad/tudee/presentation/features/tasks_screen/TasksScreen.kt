@@ -33,6 +33,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
+import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.presentation.components.DayCard
 import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarController
@@ -104,12 +105,8 @@ fun TasksScreenContent(
 
     if (showTaskDetails.value) {
         EditTaskScreen(
-            onCancelAddTaskBottomSheet = { showTaskDetails.value = false },
-            onActionResult = { a, b ->
-                editTaskResult.value = a to b
-            },
-            taskId = TODO(),
-            viewModel = TODO()
+            onCancelEditTask = { showTaskDetails.value = false },
+            taskId = 1
         )
     }
 

@@ -23,6 +23,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.SnackbarHandler
@@ -55,23 +56,23 @@ fun CategoryDetailScreen(
 
     CategoryDetailContents(
         state = state, onDismissBottomSheet = {
-        viewModel.showEditCategoryBottomSheet(false)
-        viewModel.showDeleteCategoryBottomSheet(false)
-    }, onSaveEditCategory = { title, imagePath ->
-        viewModel.editCategory(
-            title = title, imagePath = imagePath
-        )
-    }, onShowEdit = { viewModel.showEditCategoryBottomSheet(isShow = true) }, onShowDelete = {
-        viewModel.showDeleteCategoryBottomSheet(isShow = true)
-    }, onDelete = {
-        viewModel.deleteCategory(
-            state.categoryID, AddedByUser(state.categoryImagePath)
-        )
-        onDeleteSuccessNav()
+            viewModel.showEditCategoryBottomSheet(false)
+            viewModel.showDeleteCategoryBottomSheet(false)
+        }, onSaveEditCategory = { title, imagePath ->
+            viewModel.editCategory(
+                title = title, imagePath = imagePath
+            )
+        }, onShowEdit = { viewModel.showEditCategoryBottomSheet(isShow = true) }, onShowDelete = {
+            viewModel.showDeleteCategoryBottomSheet(isShow = true)
+        }, onDelete = {
+            viewModel.deleteCategory(
+                state.categoryID, AddedByUser(state.categoryImagePath)
+            )
+            onDeleteSuccessNav()
 
-    }, onBack = {
-        onBack()
-    }, modifier = modifier.background(AppTheme.colors.surface)
+        }, onBack = {
+            onBack()
+        }, modifier = modifier.background(AppTheme.colors.surface)
     )
 }
 
@@ -111,7 +112,7 @@ fun CategoryDetailContents(
     ) {
         // top app bar
         CategoryDetailTopAppBar(
-            title = state.categoryTitle,
+            title = if (state.isCategoryPredefined) stringResource(state.categoryTitle.toInt()) else state.categoryTitle,
             onBack = {
                 onBack()
             },
@@ -145,7 +146,8 @@ fun CategoryDetailContents(
             ) {
                 if (currentTasks.isEmpty()) {
                     item {
-                        NoTaskInCategoryPlaceHolder(categoryName = state.categoryTitle)
+                        NoTaskInCategoryPlaceHolder(categoryName = if (state.isCategoryPredefined) stringResource(state.categoryTitle.toInt()) else state.categoryTitle,
+                        )
                     }
                 } else {
                     items(currentTasks) {
