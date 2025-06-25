@@ -1,5 +1,6 @@
 package com.washingtondcsquad.tudee
 
+import SplashScreen
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
@@ -7,13 +8,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.BottomAppBarDefaults.windowInsets
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -25,7 +23,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -75,19 +72,17 @@ class MainActivity : ComponentActivity() {
             ) {
                 when (val isOnboardingShown = isOnboardingShownState) {
                     null -> {
-                        Box(
-                            modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
-                        }
+
+                        SplashScreen(
+                            title = "Tudee",
+                            isDarkTheme =isDarkMode ,
+                        )
                     }
 
                     else -> {
                         val startDestination = if (isOnboardingShown) {
                             "home"
                         } else {
-                            Log.d("sdasdsad", "onCreate: ")
-                            ///   createPreDefineCategories()
                             "onboarding"
                         }
                         val navController = rememberNavController()
@@ -168,37 +163,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-//
-//    private fun createPreDefineCategories() {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            listOf(
-//                "Education",
-//                "Shopping",
-//                "Medical",
-//                "Gym",
-//                "Entertainment",
-//                "Cooking",
-//                "Family & friend",
-//                "Traveling",
-//                "Agriculture",
-//                "Coding",
-//                "Adoration",
-//                "Fix bug",
-//                "Cleaning",
-//                "Work",
-//                "Budgeting",
-//                "Self care",
-//                "Event"
-//            ).forEach { image ->
-//                TudeeDataBase.getInstance(this@MainActivity).daoCategory().createCategory(
-//                    Category(
-//                        title = image, iconPath = "", taskCount = 0, id = 0
-//                    ).toEntity()
-//                )
-//            }
-//        }
-//    }
 
 
 @Composable
