@@ -53,7 +53,6 @@ fun TaskCard(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-           // Log.e("task icon ", ImageSource.PredefinedDrawable(taskUiState.categoryImage).id.toString())
 
             LoadImage(
                 modifier = Modifier
@@ -63,36 +62,8 @@ fun TaskCard(
                     )
                     .padding(24.dp)
                     .size(32.dp),
-               // imageSource = ImageSource.PredefinedDrawable(R.drawable.entertainment)
-                imageSource =
-                    if(taskUiState.categoryImage is ImageSource.AddedByUser)
-                        ImageSource.AddedByUser(taskUiState.categoryImage.value)
-                   // else if(taskUiState.categoryImage is ImageSource.PredefinedDrawable)
-                    //    ImageSource.PredefinedDrawable(taskUiState.categoryImage.id)
-                    else  ImageSource.PredefinedDrawable(R.drawable.entertainment)
-//                    when(taskUiState.categoryImage){
-//                    is ImageSource.AddedByUser -> ImageSource.AddedByUser(taskUiState.categoryImage.value)
-//                    is ImageSource.PredefinedDrawable -> ImageSource.PredefinedDrawable(R.drawable.entertainment)
-//                }
-
+                imageSource = taskUiState.categoryImage
             )
-//            Image(
-//
-//                painter = painterResource(R.drawable.entertainment), contentDescription = "icon"
-////                model = ImageRequest.Builder(LocalContext.current)
-////                    .data(
-////                        R.drawable.entertainment
-//////                        when(taskUiState.categoryImage){
-//////                            is ImageSource.AddedByUser -> ImageSource.AddedByUser(taskUiState.categoryImage.value)
-//////                            is ImageSource.PredefinedDrawable -> ImageSource.PredefinedDrawable(taskUiState.categoryImage.id)
-//////                        }
-////                    )
-////                    .crossfade(true).build(),
-////                contentDescription = null,
-////                modifier = Modifier
-////                    .padding(12.dp)
-////                    .size(32.dp)
-//            )
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,

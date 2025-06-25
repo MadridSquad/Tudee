@@ -77,7 +77,7 @@ class TasksViewModel(
        viewModelScope.launch {
             tasksService.getAllTasks().collect { tasks ->
                 val tasksForUiState = tasks.map {
-                   // val category = categoriesService.getCategoryById(it.categoryId)
+                    val category = categoriesService.getCategoryById(it.categoryId)
                     TaskUiState(
                         taskId = it.id,
                         taskDate = it.date.toJavaLocalDate()
@@ -86,7 +86,7 @@ class TasksViewModel(
                         taskDescription = it.description,
                         taskPriority = it.priority,
                         taskStatus = it.status.toString(),
-                        categoryImage = ImageSource.PredefinedDrawable(R.drawable.entertainment),
+                        categoryImage = category.iconPath,
                     )
                 }
                 updateState {
