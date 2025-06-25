@@ -2,6 +2,7 @@ package com.washingtondcsquad.tudee.presentation.features.home
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.washingtondcsquad.tudee.data.localSource.daos.TaskDao
 import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.AppPreferencesService
@@ -10,6 +11,7 @@ import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TudeeStatus
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 
 class HomeViewModel(
     private val tasksService: TasksService, private val appPreferences: AppPreferencesService
@@ -20,23 +22,27 @@ class HomeViewModel(
         loadData()
     }
 
-    fun loadThemeState() {
+
+    fun showEditTaskBottomSheet(isShow: Boolean){
+        updateState {  copy(isShowEditTaskBottomSheet = isShow ) }
+    }
+    fun loadThemeState(){
         updateState {
             copy(isLoading = true)
         }
         tryToExecute(
             request = {
-            appPreferences.isDarkModeEnabled()
+                appPreferences.isDarkModeEnabled()
 
-        }, onSuccess = {
-            viewModelScope.launch {
-                it.collectLatest {
-                    updateState {
-                        copy(isDarkTheme = it, isLoading = false)
+            }, onSuccess = {
+                viewModelScope.launch {
+                    it.collectLatest {
+                        updateState {
+                            copy(isDarkTheme = it, isLoading = false)
+                        }
                     }
                 }
-            }
-        }, onError = ::onError
+            }, onError = ::onError
         )
 
     }
@@ -59,6 +65,7 @@ class HomeViewModel(
 
         tryToExecute(
             request = {
+
                 tasksService.getAllTasks().collect {
                     onSuccess(it)
                     Log.i("refresh", "all data ${it}")
@@ -139,5 +146,8 @@ class HomeViewModel(
                 copy(error = it.message)
             }
         })
+    }
+    fun showEditTaskBottomSheet(){
+
     }
 }

@@ -15,13 +15,8 @@ import java.time.format.DateTimeFormatter
 class EditTaskViewModel(
     private val tasksService: TasksService,
     private val categoryService: CategoriesService,
-    taskId: Int = 0,
-    private val onCancelAddTaskBottomSheet: () -> Unit = {},
-    private val onActionResult: (success: Boolean, message: String) -> Unit
 ) : BaseViewModel<EditTaskUiState>(
-    EditTaskUiState(
-        taskId = taskId,
-    )
+    EditTaskUiState()
 ) {
 
     init {
@@ -50,19 +45,15 @@ class EditTaskViewModel(
     }
 
     fun getAllCategories() {
-        tryToExecute(
-            request = {
-                categoryService.getAllCategories().collect{
-                    updateState {
-                        copy( categoryList =  it )
-                    }
+        tryToExecute(request = {
+            categoryService.getAllCategories().collect {
+                updateState {
+                    copy(categoryList = it)
                 }
-            },
-            onSuccess = {
+            }
+        }, onSuccess = {
 
-            },
-            onError = { exception -> }
-        )
+        }, onError = { exception -> })
 
     }
 
@@ -88,11 +79,7 @@ class EditTaskViewModel(
     fun updateButtonEnable() {
         updateState {
             copy(
-                isButtonActionEnable =
-                    state.value.taskTitle.isNotEmpty() &&
-                            state.value.taskTitle.isNotBlank() &&
-                            state.value.selectedCategory != null &&
-                            state.value.selectedPriority != null
+                isButtonActionEnable = state.value.taskTitle.isNotEmpty() && state.value.taskTitle.isNotBlank() && state.value.selectedCategory != null && state.value.selectedPriority != null
             )
         }
     }
@@ -115,9 +102,8 @@ class EditTaskViewModel(
     }
 
     fun onDateSelected(dateAsMilliseconds: Long) {
-        val dataInLocalDate = Instant.ofEpochMilli(dateAsMilliseconds)
-            .atZone(ZoneId.systemDefault())
-            .toLocalDate()
+        val dataInLocalDate =
+            Instant.ofEpochMilli(dateAsMilliseconds).atZone(ZoneId.systemDefault()).toLocalDate()
         val realDate = dataInLocalDate.format(DateTimeFormatter.ofPattern("d-M-yyyy"))
         updateState {
             copy(
@@ -152,8 +138,7 @@ class EditTaskViewModel(
     }
 
     fun onClickEditButton() {
-        tryToExecute(
-            request = { //TODO handle this function
+        tryToExecute(request = { //TODO handle this function
 //                tasksService.editTask(
 //                    Task(
 //                        id = _state.value.taskId,
@@ -165,17 +150,15 @@ class EditTaskViewModel(
 //                        priority = _state.value.selectedPriority!!,
 //                    )
 //                )
-            },
-            onSuccess = {
-                clearDate()
-                onCancelAddTaskBottomSheet()
-                onActionResult(true,"Edited task successfully.")
-            },
-            onError = { exception ->
-                onActionResult(false,exception.message.toString())
-            }
-        )
+        }, onSuccess = {
+            clearDate()
+//            onCancelAddTaskBottomSheet()
+//            onActionResult(true, "Edited task successfully.")
+        }, onError = { exception ->
+            //onActionResult(false, exception.message.toString())
+        })
     }
+
     private fun clearDate() {
         updateState {
             copy(
