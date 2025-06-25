@@ -42,7 +42,7 @@ import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyle
 import com.washingtondcsquad.tudee.presentation.features.home.NoTasksPlaceHolder
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
-import com.washingtondcsquad.tudee.presentation.screens.add_task.EditTaskScreen
+import com.washingtondcsquad.tudee.presentation.features.edit_task.EditTaskScreen
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.ChangeMonthButton
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.TasksTabRow
 import org.koin.androidx.compose.koinViewModel
@@ -86,14 +86,20 @@ fun TasksScreenContent(
 
     val editTaskResult = remember { mutableStateOf(false to "") }
 
-    if(showTaskDetails.value){
+    if (showTaskDetails.value) {
         EditTaskScreen(
-            onCancelAddTaskBottomSheet = {showTaskDetails.value = false},
-            onActionResult = {a,b->
-                editTaskResult.value = a to b
-            },
             taskId = TODO(),
-            viewModel = TODO()
+            onClickCancel = {showTaskDetails.value = false},
+            onSuccessEdit = {
+                showTaskDetails.value = false
+                editTaskResult.value = true to "Task edited successfully"
+            },
+            onErrorEdit = {
+                showTaskDetails.value = false
+                editTaskResult.value = true to "Error editing task"
+            },
+            modifier = TODO(),
+            viewModel = TODO(),
         )
     }
 
@@ -236,7 +242,7 @@ fun TasksScreenContent(
         selectedTaskToDelete.value?.let { taskToDelete ->
             ConfirmDeleteTask(
                 deleteOnClick = { //TODO handel this
-                 //   tasksViewModel.deleteTask(taskToDelete.taskId)
+                    //   tasksViewModel.deleteTask(taskToDelete.taskId)
                     selectedTaskToDelete.value = null
                     showSnackBar.value = true
                 },
@@ -259,11 +265,6 @@ fun TasksScreenContent(
             showSnackBar.value = false
         }
     }
-
-
-
-
-
 }
 
 

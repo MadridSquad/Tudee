@@ -23,13 +23,12 @@ val viewModelModule = module {
     viewModel { BottomSheetTaskViewModel(get()) }
     viewModelOf(::AddTaskViewModel)
 
-    viewModel { (taskId: Int, onCancel: () -> Unit, onActionResult: (success: Boolean, message: String) -> Unit) ->
+    viewModel { (taskId: Int) ->
         EditTaskViewModel(
             tasksService = get(),
             categoryService = get(),
-            taskId = taskId,
-            onCancelAddTaskBottomSheet = onCancel,
-            onActionResult = onActionResult
+            stringProvider = get(),
+            taskId = taskId
         )
     }
 

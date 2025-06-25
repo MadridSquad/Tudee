@@ -16,6 +16,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.Category
+import com.washingtondcsquad.tudee.domain.entity.CategoryID
+import com.washingtondcsquad.tudee.domain.entity.ImageSource
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.presentation.components.CancelableActionLayout
 import com.washingtondcsquad.tudee.presentation.components.DatePickerModal
@@ -73,7 +75,7 @@ private fun AddNewTaskContent(
     state: AddTaskUiState,
     bottomSheetState: SheetState,
     taskData: LocalDate,
-    updateData:(data: LocalDate)->Unit,
+    updateData: (data: LocalDate) -> Unit,
     onTitleChange: (newTitle: String) -> Unit,
     onDescriptionChange: (newDescription: String) -> Unit,
     onDateSelected: (dateAsMilliseconds: Long) -> Unit,
@@ -126,7 +128,28 @@ private fun AddNewTaskContent(
                 priorityList = state.priorityList,
                 selectedPriority = state.selectedPriority,
                 onPrioritySelected = onPrioritySelected,
-                categoryList = state.categoryList,
+                // categoryList = state.categoryList,
+                // dummy for test, we can delete them later
+                categoryList = listOf(
+                    Category(
+                        id = CategoryID(1),
+                        title = "Work",
+                        iconPath = ImageSource.PredefinedDrawable(R.drawable.education_icon),
+                        isPredefined = true
+                    ),
+                    Category(
+                        id = CategoryID(2),
+                        title = "Personal",
+                        iconPath = ImageSource.PredefinedDrawable(R.drawable.education_icon),
+                        isPredefined = true
+                    ),
+                    Category(
+                        id = CategoryID(3),
+                        title = "Shopping",
+                        iconPath = ImageSource.PredefinedDrawable(R.drawable.education_icon),
+                        isPredefined = false
+                    )
+                ),
                 onCategorySelected = onCategorySelected,
                 selectedCategory = state.selectedCategory,
                 modifier = Modifier.weight(1f)
