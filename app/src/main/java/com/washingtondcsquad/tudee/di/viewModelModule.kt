@@ -25,12 +25,13 @@ val viewModelModule = module {
     viewModel { BottomSheetTaskViewModel(get()) }
     viewModelOf(::AddTaskViewModel)
 
-    viewModel { (taskId: Long) ->
+
+
+    viewModel {
         EditTaskViewModel(
             tasksService = get(),
             categoryService = get(),
             stringProvider = get(),
-            taskId = TaskID(taskId)
         )
     }
     viewModel { CategoryDetailsScreenViewModel(

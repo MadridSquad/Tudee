@@ -9,7 +9,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
 data class EditTaskUiState(
-    val taskId: TaskID,
+    val taskId: TaskID = TaskID(0L),
     val taskTitle: String = "",
     val taskDescription: String = "",
     val taskDate: LocalDate = Clock.System.now()

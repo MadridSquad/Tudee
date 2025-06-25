@@ -54,6 +54,7 @@ import com.washingtondcsquad.tudee.presentation.components.TextLogo
 import com.washingtondcsquad.tudee.presentation.components.analytics_components.AnalyticsCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.add_task.AddNewTaskScreen
+import com.washingtondcsquad.tudee.presentation.features.edit_task.EditTaskScreen
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import com.washingtondcsquad.tudee.presentation.features.task_details.TaskDetailsBottomSheet
 import com.washingtondcsquad.tudee.presentation.utils.SetStatusBarIconsColor
@@ -85,6 +86,7 @@ private fun HomeScreenContent(
 ) {
     val isEmptyState =
         state.inProgressTasks.isEmpty() and state.todoTasks.isEmpty() and state.doneTasks.isEmpty()
+    var showEditTaskBottomSheet by remember { mutableStateOf(false) }
     var showAddNewTaskBottomSheet by rememberSaveable { mutableStateOf(false) }
     var showTaskDetailBottomSheet by rememberSaveable { mutableStateOf(false) }
     var currentTaskIdToShowDetail: TaskID by remember { mutableStateOf(TaskID(0L)) }
@@ -223,12 +225,28 @@ private fun HomeScreenContent(
             )
         }
 
+        if (showEditTaskBottomSheet) {
+            EditTaskScreen(
+                taskId = TaskID(taskId = 1L),
+                onClickCancel = {
+                    showEditTaskBottomSheet = false
+                },
+                onSuccessEdit = {
+
+                },
+                onErrorEdit = {
+
+                },
+            )
+        }
+
         FabIcon(
             modifier = Modifier
                 .noRippleClick {
                     showAddNewTaskBottomSheet = true
                 }
-                .align(Alignment.BottomEnd))
+                .align(Alignment.BottomEnd)
+        )
         if (showTaskDetailBottomSheet) {
             ShowTaskDetails(currentTaskIdToShowDetail) {
                 showTaskDetailBottomSheet = false

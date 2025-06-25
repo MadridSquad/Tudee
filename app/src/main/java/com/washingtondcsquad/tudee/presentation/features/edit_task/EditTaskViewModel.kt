@@ -25,19 +25,26 @@ class EditTaskViewModel(
     private val tasksService: TasksService,
     private val categoryService: CategoriesService,
     private val stringProvider: StringProvider,
-    private val taskId: TaskID,
 ) : BaseViewModel<EditTaskUiState>(
-    EditTaskUiState(taskId = taskId)
+    EditTaskUiState()
 ) {
 
     init {
-        initApp()
+
     }
 
-    private fun initApp() {
-        viewModelScope.launch {
+    fun upDataTaskId(taskId: TaskID){
+        updateState {
+            copy(
+               taskId = taskId
+            )
+        }
+    }
 
-            val task = tasksService.getTaskById(state.value.taskId)
+    fun initApp(taskId: TaskID) {
+        viewModelScope.launch {
+            Log.e("MY_TAG",state.value.taskId.toString())
+            val task = tasksService.getTaskById(taskId)
 
             withContext(Dispatchers.Main) {
                 updateState {
