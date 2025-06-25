@@ -28,13 +28,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
+import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.presentation.components.CategoryCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.domain.entity.ImageSource
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun CategoriesScreen(modifier: Modifier = Modifier) {
+fun CategoriesScreen(modifier: Modifier = Modifier, onCategoryClick: (categoryId: CategoryID)-> Unit ){
     val viewModel: CategoriesViewModel = koinViewModel()
     val categoriesScreenStatus by viewModel.state.collectAsState()
 
@@ -42,7 +43,9 @@ fun CategoriesScreen(modifier: Modifier = Modifier) {
     CategoriesContent(
         modifier = modifier,
         categoriesEvent = viewModel,
-        categoriesScreenStatus = categoriesScreenStatus
+        categoriesScreenStatus = categoriesScreenStatus,
+        onCategoryClick = onCategoryClick,
+
     )
 }
 
@@ -50,7 +53,8 @@ fun CategoriesScreen(modifier: Modifier = Modifier) {
 fun CategoriesContent(
     modifier: Modifier = Modifier,
     categoriesScreenStatus: CategoriesScreenStatus,
-    categoriesEvent: CategoriesEvent
+    categoriesEvent: CategoriesEvent,
+    onCategoryClick: (categoryId: CategoryID) -> Unit
 ) {
     val drawablesOfCategories = remember {
         listOf(
@@ -73,25 +77,27 @@ fun CategoriesContent(
             R.drawable.event
         )
     }
-    val titlesOfCategories = remember {  listOf(
-        "Education",
-        "Shopping",
-        "Medical",
-        "Gym",
-        "Entertainment",
-        "Cooking",
-        "Family & friend",
-        "Traveling",
-        "Agriculture",
-        "Coding",
-        "Adoration",
-        "Fix bug",
-        "Cleaning",
-        "Work",
-        "Budgeting",
-        "Self care",
-        "Event"
-    ) }
+    val titlesOfCategories = remember {
+        listOf(
+            "Education",
+            "Shopping",
+            "Medical",
+            "Gym",
+            "Entertainment",
+            "Cooking",
+            "Family & friend",
+            "Traveling",
+            "Agriculture",
+            "Coding",
+            "Adoration",
+            "Fix bug",
+            "Cleaning",
+            "Work",
+            "Budgeting",
+            "Self care",
+            "Event"
+        )
+    }
     var showBottomSheet by remember { mutableStateOf(false) }
 
     Box(
@@ -100,8 +106,7 @@ fun CategoriesContent(
             .background(AppTheme.colors.surfaceHigh)
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
 
         ) {
             Text(
@@ -131,7 +136,7 @@ fun CategoriesContent(
                     } else {
                         ImageSource.AddedByUser(category.iconPath)
                     }
-                    val title = if (index <titlesOfCategories.size) {
+                    val title = if (index < titlesOfCategories.size) {
                         titlesOfCategories[index]
                     } else {
                         category.title
@@ -149,8 +154,7 @@ fun CategoriesContent(
         }
         Button(
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Transparent,
-                contentColor = Color.Transparent
+                containerColor = Color.Transparent, contentColor = Color.Transparent
             ),
             contentPadding = PaddingValues(18.dp),
             onClick = { showBottomSheet = true },
@@ -177,11 +181,9 @@ fun CategoriesContent(
             onDismiss = { showBottomSheet = false },
             onSaveCategory = { title, categoryIconPath ->
                 categoriesEvent.addCategoryClick(
-                    title,
-                    categoryIconPath
+                    title, categoryIconPath
                 )
-            }
-        )
+            })
 
     }
 
@@ -193,47 +195,36 @@ fun CategoriesContent(
 fun CategoriesPreview(modifier: Modifier = Modifier) {
     AppTheme(true) {
         CategoriesContent(
-            modifier = modifier,
-            categoriesScreenStatus = CategoriesScreenStatus(
+            modifier = modifier, categoriesScreenStatus = CategoriesScreenStatus(
                 listOf(
                     CategoriesScreenStatus.Category(
-                        id = 1L,
-                        title = "Education",
-                        iconPath = "",
-                        tasksCount = 0
+                        id = 1L, title = "Education", iconPath = "", tasksCount = 0
                     ),
                     CategoriesScreenStatus.Category(
-                        id = 2L,
-                        title = "Shopping",
-                        iconPath = "",
-                        tasksCount = 0
+                        id = 2L, title = "Shopping", iconPath = "", tasksCount = 0
                     ),
                     CategoriesScreenStatus.Category(
-                        id = 3L,
-                        title = "Medical",
-                        iconPath = "",
-                        tasksCount = 0
+                        id = 3L, title = "Medical", iconPath = "", tasksCount = 0
                     ),
                     CategoriesScreenStatus.Category(
-                        id = 4L,
-                        title = "Gym",
-                        iconPath = "",
-                        tasksCount = 0
+                        id = 4L, title = "Gym", iconPath = "", tasksCount = 0
                     ),
 
 
                     )
-            ),
-            categoriesEvent = object : CategoriesEvent {
+            ), categoriesEvent = object : CategoriesEvent {
                 override fun onCategoryClick(category: CategoriesScreenStatus.Category) {
                 }
 
-                override fun addCategoryClick(title: kotlin.String, categoryIconPath: kotlin.String) {
+                override fun addCategoryClick(
+                    title: kotlin.String, categoryIconPath: kotlin.String
+                ) {
 
                 }
 
 
-            }
-        )
+            },
+            onCategoryClick = {}
+            )
     }
 }
