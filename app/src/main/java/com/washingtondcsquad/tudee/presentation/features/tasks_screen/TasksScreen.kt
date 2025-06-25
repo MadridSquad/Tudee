@@ -20,6 +20,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
@@ -29,8 +30,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
@@ -86,7 +89,6 @@ fun TasksScreenContent(
     val showTaskDetails = remember { mutableStateOf(false) }
     val editTaskResult = remember { mutableStateOf(false to "") }
     val selectedTaskIdToEdit = remember { mutableStateOf<Int?>(null) }
-
     val lazyRowState = rememberLazyListState()
     val density = LocalDensity.current
 
@@ -112,35 +114,36 @@ fun TasksScreenContent(
         Text(
             stringResource(R.string.tasks_screen_title),
             style = defaultTextStyle.title.large,
-            modifier = Modifier.padding(bottom = 20.dp, top = 8.dp, start = 16.dp, end = 16.dp),
+            modifier = Modifier.padding(bottom = 20.dp, top = 10.dp, start = 16.dp, end = 16.dp),
             color = AppTheme.colors.title
         )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            ChangeMonthButton(R.drawable.left_arrow) { gotToPreviousMonth() }
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
             Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.clickable { setShowDialog(true) }
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    tasksUiState.yearAndMonthTitle,
-                    style = AppTheme.textStyle.label.medium,
-                    color = AppTheme.colors.body,
-                    modifier = Modifier.padding(end = 4.dp)
-                )
-                Icon(
-                    painter = painterResource(R.drawable.down_arrow),
-                    contentDescription = "", tint = AppTheme.colors.body
-                )
+                ChangeMonthButton(R.drawable.left_arrow) { gotToPreviousMonth() }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.clickable { setShowDialog(true) }
+                ) {
+                    Text(
+                        tasksUiState.yearAndMonthTitle,
+                        style = AppTheme.textStyle.label.medium,
+                        color = AppTheme.colors.body,
+                        modifier = Modifier.padding(end = 4.dp)
+                    )
+                    Icon(
+                        painter = painterResource(R.drawable.down_arrow),
+                        contentDescription = "", tint = AppTheme.colors.body
+                    )
+                }
+                ChangeMonthButton(R.drawable.right_arrow) { gotToNextMonth() }
             }
-            ChangeMonthButton(R.drawable.right_arrow) { gotToNextMonth() }
         }
-
         LazyRow(
             state = lazyRowState,
             modifier = Modifier
