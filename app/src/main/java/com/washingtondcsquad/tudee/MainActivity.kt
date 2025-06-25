@@ -26,10 +26,13 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.services.AppPreferencesService
 import com.washingtondcsquad.tudee.presentation.components.SnackBarCard
 import com.washingtondcsquad.tudee.presentation.components.bottom_nav_bar.TudeeNavigationBar
@@ -39,6 +42,7 @@ import com.washingtondcsquad.tudee.presentation.components.snack_bar.ObserveAsEv
 import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarController
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.categories.CategoriesScreen
+import com.washingtondcsquad.tudee.presentation.features.category_detail.CategoryDetailScreen
 import com.washingtondcsquad.tudee.presentation.features.home.HomeScreen
 import com.washingtondcsquad.tudee.presentation.features.onBoarding.OnBoardingScreen
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.TasksScreen
@@ -79,7 +83,6 @@ class MainActivity : ComponentActivity() {
                         val startDestination = if (isOnboardingShown) {
                             "home"
                         } else {
-                            Log.d("sdasdsad", "onCreate: ")
                             "onboarding"
                         }
                         val navController = rememberNavController()
@@ -120,7 +123,34 @@ class MainActivity : ComponentActivity() {
                                         TasksScreen()
                                     }
                                     composable(route = "category") {
-                                        CategoriesScreen()
+                                        CategoriesScreen(onCategoryClick = { categoryId ->
+                                            navController.navigate("category/${categoryId.categoryId}")
+                                        })
+                                    }
+                                    composable(
+                                        route = "category/{categoryId}",
+                                        arguments = listOf(
+                                            navArgument("categoryId") {
+                                                type = NavType.LongType
+                                            }
+                                        )
+                                    ) { backStackEntry ->
+                                        val categoryId =
+                                            backStackEntry.arguments?.getLong("categoryId")
+
+                                        CategoryDetailScreen(
+                                            categoryId = CategoryID(
+                                                categoryId ?: throw Exception("null category id")
+                                            ),
+                                            onBack = {
+                                                navController.popBackStack()
+                                            },
+                                            onDeleteSuccessNav = {
+                                                navController.navigate("category") {
+                                                    popUpTo("category")
+                                                }
+                                            },
+                                        )
                                     }
                                 }
 

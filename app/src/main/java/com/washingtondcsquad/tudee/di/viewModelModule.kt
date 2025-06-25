@@ -10,6 +10,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import com.washingtondcsquad.tudee.presentation.features.categories.CategoriesViewModel
+import com.washingtondcsquad.tudee.presentation.features.category_detail.CategoryDetailsScreenViewModel
 
 
 val viewModelModule = module {
@@ -29,5 +30,8 @@ val viewModelModule = module {
             categoryService = get(),
         )
     }
+    viewModel { CategoryDetailsScreenViewModel(
+        categoryService = get()
+    ) }
 
 }
