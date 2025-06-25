@@ -106,7 +106,6 @@ fun CategoryDetailContents(
             },
             onEdit = {
                 onShowEdit()
-                println("onEdit/ state: ${state.isShowingEditCategoryBottomSheet}")
             },
             modifier = modifier
                 .padding(horizontal = 16.dp)
