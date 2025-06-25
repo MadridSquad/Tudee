@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
@@ -27,24 +28,25 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
-import com.washingtondcsquad.tudee.presentation.components.DatePickerModal
 import com.washingtondcsquad.tudee.presentation.components.DayCard
 import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarController
 import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarEvent
-import com.washingtondcsquad.tudee.presentation.features.delete_task.ConfirmDeleteTask
-import com.washingtondcsquad.tudee.presentation.features.delete_task.DeleteTaskScroll
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyle
-import com.washingtondcsquad.tudee.presentation.features.home.NoTasksPlaceHolder
+import com.washingtondcsquad.tudee.presentation.features.delete_task.ConfirmDeleteTask
+import com.washingtondcsquad.tudee.presentation.features.delete_task.DeleteTaskScroll
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
-import com.washingtondcsquad.tudee.presentation.screens.add_task.EditTaskScreen
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.ChangeMonthButton
+import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.DatePickerComponent
+import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.NoTasks
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.TasksTabRow
+import com.washingtondcsquad.tudee.presentation.screens.add_task.EditTaskScreen
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -59,6 +61,7 @@ fun TasksScreen(tasksViewModel: TasksViewModel = koinViewModel()) {
         tasksViewModel::goToNextMonth,
         tasksViewModel::goToPreviousMonth,
         tasksViewModel::formatedSelectedDate,
+        tasksViewModel::clearDatePicker,
         tasksUiState,
         tasksViewModel = tasksViewModel
     )
@@ -72,36 +75,50 @@ fun TasksScreenContent(
     gotToNextMonth: () -> Unit,
     gotToPreviousMonth: () -> Unit,
     formatedSelectedDate: (Long) -> String,
+    onClearDatePicker: () -> Long,
     tasksUiState: TasksUiState,
     tasksViewModel: TasksViewModel
 ) {
     val pagerState = rememberPagerState(pageCount = { 3 })
     val selectedTabIndex by remember { derivedStateOf { pagerState.currentPage } }
-
     val selectedTaskToDelete = remember { mutableStateOf<TaskUiState?>(null) }
-
     val showSnackBar = remember { mutableStateOf(false) }
-
     val showTaskDetails = remember { mutableStateOf(false) }
-
     val editTaskResult = remember { mutableStateOf(false to "") }
+    val lazyRowState = rememberLazyListState()
+    val density = LocalDensity.current
 
-    if(showTaskDetails.value){
+    LaunchedEffect(tasksUiState.monthDaysList) {
+        val selectedIndex = tasksUiState.monthDaysList.indexOfFirst { it.isSelected }
+        if (selectedIndex != -1) {
+            val itemWidthPx = with(density) { 65.dp.toPx() }
+            val centerOffset =
+                (lazyRowState.layoutInfo.viewportEndOffset / 2) - (itemWidthPx / 2).toInt()
+            lazyRowState.animateScrollToItem(
+                index = selectedIndex,
+                scrollOffset = -centerOffset
+            )
+        }
+    }
+
+
+    if (showTaskDetails.value) {
         EditTaskScreen(
-            onCancelEditTask = {showTaskDetails.value = false},
+            onCancelAddTaskBottomSheet = { showTaskDetails.value = false },
+            onActionResult = { a, b ->
+                editTaskResult.value = a to b
+            },
             taskId = TODO(),
             viewModel = TODO()
         )
     }
 
-        LaunchedEffect(editTaskResult.value) {
-         if(editTaskResult.value.second.isNotEmpty()){
-                SnackbarController.sendEvent(SnackbarEvent(message = editTaskResult.value.second))
-                editTaskResult.value = false to ""
+    LaunchedEffect(editTaskResult.value) {
+        if (editTaskResult.value.second.isNotEmpty()) {
+            SnackbarController.sendEvent(SnackbarEvent(message = editTaskResult.value.second))
+            editTaskResult.value = false to ""
         }
-
     }
-
 
     Column(
         modifier = Modifier
@@ -110,9 +127,9 @@ fun TasksScreenContent(
             .fillMaxSize()
     ) {
         Text(
-            "Tasks",
+            stringResource(R.string.tasks_screen_title),
             style = defaultTextStyle.title.large,
-            modifier = Modifier.padding(bottom = 20.dp, start = 16.dp, end = 16.dp),
+            modifier = Modifier.padding(bottom = 20.dp, top = 8.dp, start = 16.dp, end = 16.dp),
             color = AppTheme.colors.title
         )
         Row(
@@ -142,12 +159,14 @@ fun TasksScreenContent(
         }
 
         LazyRow(
+            state = lazyRowState,
             modifier = Modifier
                 .padding(vertical = 8.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp)
-        ) {
+            contentPadding = PaddingValues(horizontal = 16.dp),
+
+            ) {
             itemsIndexed(tasksUiState.monthDaysList) { index, item ->
                 DayCard(
                     day = item.dayName,
@@ -155,7 +174,9 @@ fun TasksScreenContent(
                     isSelected = item.isSelected,
                     modifier = Modifier
                         .width(65.dp)
-                        .clickable { onDaySelectedFromLazyRow(item.dayNumber) }
+                        .clickable {
+                            onDaySelectedFromLazyRow(item.dayNumber)
+                        }
                 )
             }
         }
@@ -170,22 +191,13 @@ fun TasksScreenContent(
                 .background(AppTheme.colors.surface)
         ) {
 
-            val currentTasks : List<TaskUiState> = tasksUiState.tasksList
+            val currentTasks: List<TaskUiState> = tasksUiState.tasksList
                 .filter {
                     it.taskStatus == when (selectedTabIndex) {
-                        0 -> {
-                            TaskStatus.IN_PROGRESS
-                        }
-
-                        1 -> {
-                            TaskStatus.TODO
-                        }
-
-                        else -> {
-                            TaskStatus.DONE
-                        }
+                        0 -> TaskStatus.IN_PROGRESS
+                        1 -> TaskStatus.TODO
+                        else -> TaskStatus.DONE
                     }.name
-
                 }
 
             LazyColumn(
@@ -194,10 +206,14 @@ fun TasksScreenContent(
                     .padding(top = 12.dp, start = 16.dp, end = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                val tasksToShow = currentTasks.filter {
-                    it.taskDate == formatedSelectedDate(
-                        tasksUiState.selectedDateInMillis
-                    ).trim()
+                val tasksToShow = if (tasksUiState.isFilterEnabled) {
+                    currentTasks.filter {
+                        it.taskDate == formatedSelectedDate(
+                            tasksUiState.selectedDateInMillis
+                        ).trim()
+                    }
+                } else {
+                    currentTasks
                 }
 
                 if (tasksToShow.isNotEmpty()) {
@@ -214,26 +230,29 @@ fun TasksScreenContent(
                                 .padding(end = 4.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            NoTasksPlaceHolder()
+                            NoTasks()
                         }
                     }
                 }
             }
         }
         if (tasksUiState.showDateDialog) {
-            DatePickerModal(
-                onDateSelected ={ millis ->
+            DatePickerComponent(
+                tasksUiState.selectedDateInMillis,
+                onDateSelected = { millis ->
                     millis?.let { onDateSelectedFromDatePicker(it) }
                     setShowDialog(false)
                 },
                 onDismiss = { setShowDialog(false) },
+                onClear = { onClearDatePicker() }
+
             )
         }
 
         selectedTaskToDelete.value?.let { taskToDelete ->
             ConfirmDeleteTask(
-                deleteOnClick = { //TODO handel this
-                 //   tasksViewModel.deleteTask(taskToDelete.taskId)
+                deleteOnClick = {
+                    tasksViewModel.deleteTask(taskToDelete.taskId)
                     selectedTaskToDelete.value = null
                     showSnackBar.value = true
                 },
@@ -249,17 +268,12 @@ fun TasksScreenContent(
     }
 
     val snackbarMessage = stringResource(R.string.deleted_task_successfully)
-
     LaunchedEffect(showSnackBar.value) {
         if (showSnackBar.value) {
             SnackbarController.sendEvent(SnackbarEvent(message = snackbarMessage))
             showSnackBar.value = false
         }
     }
-
-
-
-
 
 }
 
