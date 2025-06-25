@@ -19,7 +19,6 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun TasksTabRow(
     selectedTabIndex: Int, pagerState: PagerState, tasksUiState: TasksUiState
-    ,
 ) {
     PrimaryTabRow(
         selectedTabIndex = selectedTabIndex,
@@ -29,38 +28,43 @@ fun TasksTabRow(
         containerColor = AppTheme.colors.surfaceHigh,
         indicator = {
             PrimaryIndicator(
-                Modifier.tabIndicatorOffset(selectedTabIndex, matchContentSize = true),
+                Modifier.tabIndicatorOffset(
+                    selectedTabIndex = selectedTabIndex,
+                    matchContentSize = true
+                ),
                 color = AppTheme.colors.secondary,
-                height = 4.dp
+                height = 4.dp,
+                width = 70.dp //TODO this not correct to be fixed but i can't reach to another solution
             )
-        }
-    ) {
-        val dataInLocalDate = Instant.ofEpochMilli(tasksUiState.selectedDateInMillis)
-            .atZone(ZoneId.systemDefault())
-            .toLocalDate()
+        }) {
+        val dataInLocalDate =
+            Instant.ofEpochMilli(tasksUiState.selectedDateInMillis).atZone(ZoneId.systemDefault())
+                .toLocalDate()
         val realDate = dataInLocalDate.format(DateTimeFormatter.ofPattern("d-M-yyyy"))
         TasksTab(
             selectedTabIndex = selectedTabIndex,
             index = 0,
             tabName = stringResource(R.string.tasks_screen_tap_row_in_progress),
             pagerState = pagerState,
-            tasksNumber = tasksUiState.tasksList.filter { it.taskStatus == "IN_PROGRESS" &&
-                    it.taskDate == realDate}.size
+            tasksNumber = tasksUiState.tasksList.filter {
+                it.taskStatus == "IN_PROGRESS" && it.taskDate == realDate
+            }.size
         )
         TasksTab(
             selectedTabIndex = selectedTabIndex,
             index = 1,
             tabName = stringResource(R.string.tasks_screen_tap_row_to_do),
             pagerState = pagerState,
-            tasksNumber = tasksUiState.tasksList.filter { it.taskStatus == "TODO" &&
-                    it.taskDate == realDate}.size
+            tasksNumber = tasksUiState.tasksList.filter {
+                it.taskStatus == "TODO" && it.taskDate == realDate
+            }.size
         )
         TasksTab(
             selectedTabIndex = selectedTabIndex,
             index = 2,
             tabName = stringResource(R.string.tasks_screen_tap_row_done),
             pagerState = pagerState,
-            tasksNumber = tasksUiState.tasksList.filter { it.taskStatus == "DONE" &&  it.taskDate == realDate}.size
+            tasksNumber = tasksUiState.tasksList.filter { it.taskStatus == "DONE" && it.taskDate == realDate }.size
         )
     }
 }

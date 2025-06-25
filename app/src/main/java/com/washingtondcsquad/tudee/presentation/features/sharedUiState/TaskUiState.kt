@@ -1,5 +1,6 @@
 package com.washingtondcsquad.tudee.presentation.features.sharedUiState
 
+import com.washingtondcsquad.tudee.domain.entity.ImageSource
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.TaskID
 
@@ -10,4 +11,5 @@ data class TaskUiState(
     val taskDescription: String = "",
     val taskPriority: Priority = Priority.LOW,
     val taskStatus: String = "",
+    val categoryImage : ImageSource
 )
