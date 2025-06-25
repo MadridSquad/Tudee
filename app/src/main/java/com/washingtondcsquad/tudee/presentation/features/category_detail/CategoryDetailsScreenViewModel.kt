@@ -126,7 +126,7 @@ class CategoryDetailsScreenViewModel(val categoryService: CategoriesService) :
 
 
 
-fun deleteCategory(categoryID: CategoryID, onDeleteSuccessNav: () -> Unit) {
+fun deleteCategory(categoryID: CategoryID) {
     tryToExecute(
         request = {
             categoryService.deleteCategory(categoryID)
@@ -137,7 +137,6 @@ fun deleteCategory(categoryID: CategoryID, onDeleteSuccessNav: () -> Unit) {
                     isShowingEditCategoryBottomSheet = false
                 )
             }
-            onDeleteSuccessNav()
 
         },
         onError = {}
