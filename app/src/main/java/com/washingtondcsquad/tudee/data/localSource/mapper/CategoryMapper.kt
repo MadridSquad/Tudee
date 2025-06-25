@@ -4,6 +4,8 @@ import com.washingtondcsquad.tudee.data.localSource.model.CategoryEntity
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.entity.ImageSource
+import com.washingtondcsquad.tudee.domain.provider.StringProvider
+import org.koin.java.KoinJavaComponent.getKoin
 
 fun Category.toEntity(): CategoryEntity {
     return CategoryEntity(
@@ -14,12 +16,19 @@ fun Category.toEntity(): CategoryEntity {
     )
 }
 
-fun CategoryEntity.toDomain(): Category {
+fun CategoryEntity.toDomain(
+    stringProvider: StringProvider = getKoin().get<StringProvider>(),
+): Category {
     return Category(
-        id = id, title = title, iconPath = if (isPredefined) {
+        id = id,
+        title = if (isPredefined) {
+            stringProvider.getString(this.title.toInt())
+        } else this.title,
+        iconPath = if (isPredefined) {
             ImageSource.PredefinedDrawable(image.toInt())
         } else {
             ImageSource.AddedByUser(image)
-        }, isPredefined = isPredefined
+        },
+        isPredefined = isPredefined
     )
 }
