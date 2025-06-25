@@ -27,14 +27,7 @@ class CategoryDetailsScreenViewModel(val categoryService: CategoriesService) :
     fun getCategoryDetails(categoryId: CategoryID) {
         tryToExecute<Category>(
             request = {
-                //categoryService.getCategory(categoryId)
-                Category(
-                    id = CategoryID(1L),
-                    title = "Reading",
-                    iconPath = ImageSource.Path("path/to/icon"),
-                    taskCount = 5,
-                    isPredefined = false
-                )
+                categoryService.getCategoryById(categoryId = categoryId)
             },
             onSuccess = {
                 updateState {
