@@ -105,6 +105,8 @@ fun CategoriesContent(
 
     Box(
         modifier = modifier
+            .background(AppTheme.colors.surfaceHigh)
+            .windowInsetsPadding(WindowInsets.systemBars)
             .fillMaxSize()
             .background(AppTheme.colors.surfaceHigh)
     ) {
