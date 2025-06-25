@@ -13,7 +13,11 @@ import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable
 
 @Composable
 fun TaskStatusTabs(
-    selectedTabIndex: Int, pagerState: PagerState,
+    selectedTabIndex: Int,
+    inProgressCount: Int,
+    toDoCount: Int,
+    doneCount: Int,
+    pagerState: PagerState,
 ) {
     PrimaryTabRow(
         selectedTabIndex = selectedTabIndex,
@@ -36,21 +40,21 @@ fun TaskStatusTabs(
             index = 0,
             tabName = "In progress",
             pagerState = pagerState,
-            tasksNumber = 12
+            tasksNumber = inProgressCount
         )
         TasksTab(
             selectedTabIndex = selectedTabIndex,
             index = 1,
             tabName = "To Do",
             pagerState = pagerState,
-            tasksNumber = 1
+            tasksNumber = toDoCount
         )
         TasksTab(
             selectedTabIndex = selectedTabIndex,
             index = 2,
             tabName = "Done",
             pagerState = pagerState,
-            tasksNumber = 2
+            tasksNumber = doneCount
         )
     }
 }
