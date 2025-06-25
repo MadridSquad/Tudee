@@ -35,7 +35,10 @@ import com.washingtondcsquad.tudee.domain.entity.ImageSource
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun CategoriesScreen(modifier: Modifier = Modifier, onCategoryClick: (categoryId: CategoryID)-> Unit ){
+fun CategoriesScreen(
+    modifier: Modifier = Modifier,
+    onCategoryClick: (categoryId: CategoryID) -> Unit
+) {
     val viewModel: CategoriesViewModel = koinViewModel()
     val categoriesScreenStatus by viewModel.state.collectAsState()
 
@@ -46,7 +49,7 @@ fun CategoriesScreen(modifier: Modifier = Modifier, onCategoryClick: (categoryId
         categoriesScreenStatus = categoriesScreenStatus,
         onCategoryClick = onCategoryClick,
 
-    )
+        )
 }
 
 @Composable
@@ -144,7 +147,9 @@ fun CategoriesContent(
                     CategoryCard(
                         title = title,
                         imageSource = imageSource,
-                        onClick = { categoriesEvent.onCategoryClick(category) },
+                        onClick = {
+                            onCategoryClick(CategoryID(category.id))
+                        },
                         isSelected = false,
                         tasksCount = category.tasksCount
                     )
@@ -225,6 +230,6 @@ fun CategoriesPreview(modifier: Modifier = Modifier) {
 
             },
             onCategoryClick = {}
-            )
+        )
     }
 }
