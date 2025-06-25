@@ -44,7 +44,7 @@ fun TaskScreenComponents(
     categoryList: List<Category>,
     onCategorySelected: (Category) -> Unit,
     selectedCategory: Category?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
         modifier = modifier,
@@ -135,7 +135,9 @@ fun TaskScreenComponents(
 
         items(categoryList) { category ->
             CategoryCard(
-                title = category.title,
+                title = if (category.isPredefined)
+                    stringResource(category.title.toInt())
+                else category.title,
                 imageSource = category.iconPath,
                 onClick = { onCategorySelected(category) },
                 isSelected = selectedCategory == category,
@@ -171,9 +173,9 @@ private fun TaskScreenComponentsPreview() {
             onPrioritySelected = {},
             categoryList = listOf(
                 Category(
-                    id = CategoryID(1), 
+                    id = CategoryID(1),
                     title = "bla bla",
-                    iconPath =    ImageSource.PredefinedDrawable(R.drawable.gym),
+                    iconPath = ImageSource.PredefinedDrawable(R.drawable.gym),
                     isPredefined = true
                 ),
                 Category(

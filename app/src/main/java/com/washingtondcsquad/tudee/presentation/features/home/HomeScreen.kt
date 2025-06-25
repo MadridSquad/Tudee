@@ -32,6 +32,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
@@ -83,8 +84,8 @@ private fun HomeScreenContent(
 ) {
     val isEmptyState =
         state.inProgressTasks.isEmpty() and state.todoTasks.isEmpty() and state.doneTasks.isEmpty()
-    var showAddNewTaskBottomSheet by remember { mutableStateOf(false) }
-    var showTaskDetailBottomSheet by remember { mutableStateOf(false) }
+    var showAddNewTaskBottomSheet by rememberSaveable { mutableStateOf(false) }
+    var showTaskDetailBottomSheet by rememberSaveable { mutableStateOf(false) }
     var currentTaskIdToShowDetail: TaskID by remember { mutableStateOf(TaskID(0L)) }
 
     Box(
