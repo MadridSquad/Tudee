@@ -9,7 +9,7 @@ import com.washingtondcsquad.tudee.R
 
 
 val nunito = FontFamily(
-    Font(R.font.nunito, weight = FontWeight.Normal),
+    Font(R.font.nunito_regular, weight = FontWeight.Normal),
     Font(R.font.nunito_medium, weight = FontWeight.Medium),
     Font(R.font.nunito_semibold, weight = FontWeight.SemiBold),
 )
