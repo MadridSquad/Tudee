@@ -1,5 +1,6 @@
 package com.washingtondcsquad.tudee.di
 
+import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.presentation.features.add_task.AddTaskViewModel
 import com.washingtondcsquad.tudee.presentation.features.home.HomeViewModel
 import com.washingtondcsquad.tudee.presentation.features.task_details.BottomSheetTaskViewModel
@@ -23,12 +24,12 @@ val viewModelModule = module {
     viewModel { BottomSheetTaskViewModel(get()) }
     viewModelOf(::AddTaskViewModel)
 
-    viewModel { (taskId: Int) ->
+    viewModel { (taskId: Long) ->
         EditTaskViewModel(
             tasksService = get(),
             categoryService = get(),
             stringProvider = get(),
-            taskId = taskId
+            taskId = TaskID(taskId)
         )
     }
 
