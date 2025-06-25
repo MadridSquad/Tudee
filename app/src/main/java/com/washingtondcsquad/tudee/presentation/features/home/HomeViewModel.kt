@@ -2,7 +2,6 @@ package com.washingtondcsquad.tudee.presentation.features.home
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.washingtondcsquad.tudee.data.localSource.daos.TaskDao
 import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.AppPreferencesService
@@ -11,7 +10,6 @@ import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TudeeStatus
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.koin.compose.koinInject
 
 class HomeViewModel(
     private val tasksService: TasksService, private val appPreferences: AppPreferencesService
@@ -23,9 +21,6 @@ class HomeViewModel(
     }
 
 
-    fun showEditTaskBottomSheet(isShow: Boolean){
-        updateState {  copy(isShowEditTaskBottomSheet = isShow ) }
-    }
     fun loadThemeState(){
         updateState {
             copy(isLoading = true)
