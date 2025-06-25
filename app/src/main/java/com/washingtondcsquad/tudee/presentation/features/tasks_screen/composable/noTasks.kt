@@ -17,9 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.washingtondcsquad.tudee.R
@@ -28,6 +31,8 @@ import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.dropShad
 
 @Composable
 fun NoTasks() {
+    val layoutDirection = LocalLayoutDirection.current
+
     Row {
         Box(
             modifier = Modifier
@@ -94,7 +99,8 @@ fun NoTasks() {
             Icon(
                 modifier = Modifier
                     .zIndex(1f)
-                    .offset(y = (-32).dp, x = (-97).dp),
+                    .offset(y = (-32).dp, x = (-97).dp)
+                    .rotate(if (layoutDirection == LayoutDirection.Rtl) 45f else 0f),
                 painter = painterResource(R.drawable.no_tasks_progress_indicator),
                 contentDescription = "",
                 tint = AppTheme.colors.surfaceHigh

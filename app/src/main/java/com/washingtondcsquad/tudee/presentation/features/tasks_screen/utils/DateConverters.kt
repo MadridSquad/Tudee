@@ -17,7 +17,7 @@ fun buildMonthDaysList(currentMonth: YearMonth, selectedDateMillis: Long): List<
 
     return (1..currentMonth.lengthOfMonth()).map { day ->
         val date = currentMonth.atDay(day)
-        val dayName = date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.ENGLISH)
+        val dayName = date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault())
         DayUiModel(
             dayNumber = day,
             dayName = dayName,
@@ -35,7 +35,7 @@ fun todayInMillis(): Long {
 }
 
 fun getYearAndMonthTitleFromYearMonth(yearMonth: YearMonth): String {
-    val monthName = yearMonth.month.getDisplayName(TextStyle.FULL, Locale.ENGLISH)
+    val monthName = yearMonth.month.getDisplayName(TextStyle.FULL, Locale.getDefault())
     return "$monthName, ${yearMonth.year}"
 }
 fun LocalDateParser(date: String): kotlinx.datetime.LocalDate {

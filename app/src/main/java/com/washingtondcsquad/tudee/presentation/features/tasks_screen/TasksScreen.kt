@@ -20,6 +20,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
@@ -29,8 +30,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
@@ -45,8 +48,8 @@ import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiSta
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.ChangeMonthButton
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.DatePickerComponent
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.NoTasks
+import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.ShowEditTaskScreen
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.TasksTabRow
-import com.washingtondcsquad.tudee.presentation.screens.add_task.EditTaskScreen
 import org.koin.androidx.compose.koinViewModel
 import androidx.compose.foundation.layout.systemBarsPadding
 
@@ -87,6 +90,7 @@ fun TasksScreenContent(
     val showSnackBar = remember { mutableStateOf(false) }
     val showTaskDetails = remember { mutableStateOf(false) }
     val editTaskResult = remember { mutableStateOf(false to "") }
+    val selectedTaskIdToEdit = remember { mutableStateOf<Int?>(null) }
     val lazyRowState = rememberLazyListState()
     val density = LocalDensity.current
 
@@ -103,25 +107,6 @@ fun TasksScreenContent(
         }
     }
 
-
-    if (showTaskDetails.value) {
-        EditTaskScreen(
-            onCancelAddTaskBottomSheet = { showTaskDetails.value = false },
-            onActionResult = { a, b ->
-                editTaskResult.value = a to b
-            },
-            taskId = TODO(),
-            viewModel = TODO()
-        )
-    }
-
-    LaunchedEffect(editTaskResult.value) {
-        if (editTaskResult.value.second.isNotEmpty()) {
-            SnackbarController.sendEvent(SnackbarEvent(message = editTaskResult.value.second))
-            editTaskResult.value = false to ""
-        }
-    }
-
     Column(
         modifier = Modifier
             .background(AppTheme.colors.surfaceHigh)
@@ -131,35 +116,36 @@ fun TasksScreenContent(
         Text(
             stringResource(R.string.tasks_screen_title),
             style = defaultTextStyle.title.large,
-            modifier = Modifier.padding(bottom = 20.dp, top = 8.dp, start = 16.dp, end = 16.dp),
+            modifier = Modifier.padding(bottom = 20.dp, top = 10.dp, start = 16.dp, end = 16.dp),
             color = AppTheme.colors.title
         )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            ChangeMonthButton(R.drawable.left_arrow) { gotToPreviousMonth() }
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
             Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.clickable { setShowDialog(true) }
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    tasksUiState.yearAndMonthTitle,
-                    style = AppTheme.textStyle.label.medium,
-                    color = AppTheme.colors.body,
-                    modifier = Modifier.padding(end = 4.dp)
-                )
-                Icon(
-                    painter = painterResource(R.drawable.down_arrow),
-                    contentDescription = "", tint = AppTheme.colors.body
-                )
+                ChangeMonthButton(R.drawable.left_arrow) { gotToPreviousMonth() }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.clickable { setShowDialog(true) }
+                ) {
+                    Text(
+                        tasksUiState.yearAndMonthTitle,
+                        style = AppTheme.textStyle.label.medium,
+                        color = AppTheme.colors.body,
+                        modifier = Modifier.padding(end = 4.dp)
+                    )
+                    Icon(
+                        painter = painterResource(R.drawable.down_arrow),
+                        contentDescription = "", tint = AppTheme.colors.body
+                    )
+                }
+                ChangeMonthButton(R.drawable.right_arrow) { gotToNextMonth() }
             }
-            ChangeMonthButton(R.drawable.right_arrow) { gotToNextMonth() }
         }
-
         LazyRow(
             state = lazyRowState,
             modifier = Modifier
@@ -220,7 +206,13 @@ fun TasksScreenContent(
 
                 if (tasksToShow.isNotEmpty()) {
                     itemsIndexed(tasksToShow) { index, item ->
-                        DeleteTaskScroll(task = item) {
+                        DeleteTaskScroll(
+                            task = item,
+                            onClick = {
+                                selectedTaskIdToEdit.value = item.taskId.taskId.toInt()
+                                showTaskDetails.value = true
+                            },
+                        ) {
                             selectedTaskToDelete.value = item
                         }
                     }
@@ -274,6 +266,21 @@ fun TasksScreenContent(
         if (showSnackBar.value) {
             SnackbarController.sendEvent(SnackbarEvent(message = snackbarMessage))
             showSnackBar.value = false
+        }
+    }
+
+    if (showTaskDetails.value && selectedTaskIdToEdit.value != null) {
+        ShowEditTaskScreen(
+            showTaskDetails = showTaskDetails,
+            editTaskResult = editTaskResult,
+            taskId = selectedTaskIdToEdit.value!!
+        )
+    }
+
+    LaunchedEffect(editTaskResult.value) {
+        if (editTaskResult.value.second.isNotEmpty()) {
+            SnackbarController.sendEvent(SnackbarEvent(message = editTaskResult.value.second))
+            editTaskResult.value = false to ""
         }
     }
 
