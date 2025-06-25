@@ -29,12 +29,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.washingtondcsquad.tudee.data.localSource.TudeeDataBase
-import com.washingtondcsquad.tudee.domain.entity.Category
+import androidx.navigation.navArgument
 import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.services.AppPreferencesService
 import com.washingtondcsquad.tudee.presentation.components.SnackBarCard
@@ -49,8 +49,6 @@ import com.washingtondcsquad.tudee.presentation.features.category_detail.Categor
 import com.washingtondcsquad.tudee.presentation.features.home.HomeScreen
 import com.washingtondcsquad.tudee.presentation.features.onBoarding.OnBoardingScreen
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.TasksScreen
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
@@ -146,18 +144,17 @@ class MainActivity : ComponentActivity() {
                                             backStackEntry.arguments?.getLong("categoryId")
 
                                         CategoryDetailScreen(
-                                            modifier = TODO(),
-                                            categoryId = CategoryID(categoryId  ?: throw Exception("null category id")),
+                                            categoryId = CategoryID(
+                                                categoryId ?: throw Exception("null category id")
+                                            ),
                                             onBack = {
                                                 navController.popBackStack()
                                             },
                                             onDeleteSuccessNav = {
-                                                navController.navigate("category"){
+                                                navController.navigate("category") {
                                                     popUpTo("category")
                                                 }
                                             },
-                                            imageSaver = TODO(),
-                                            viewModel = TODO()
                                         )
                                     }
                                 }
@@ -202,7 +199,6 @@ class MainActivity : ComponentActivity() {
 //            }
 //        }
 //    }
-}
 
 
 @Composable
