@@ -63,6 +63,7 @@ fun DeleteTaskBackground(
 @Composable
 fun DeleteTaskScroll(
     task: TaskUiState,
+    onClick: () -> Unit,
     onDelete: () -> Unit
 ) {
     val maxOffset = with(LocalDensity.current) { 55.dp.toPx() }
@@ -96,7 +97,9 @@ fun DeleteTaskScroll(
         ) {
             TaskCard(
                 taskUiState = task,
-                onTaskClicked = {}
+                onTaskClicked = {
+                    onClick()
+                }
             )
         }
     }

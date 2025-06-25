@@ -45,8 +45,8 @@ import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiSta
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.ChangeMonthButton
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.DatePickerComponent
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.NoTasks
+import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.ShowEditTaskScreen
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.TasksTabRow
-import com.washingtondcsquad.tudee.presentation.screens.add_task.EditTaskScreen
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -85,6 +85,8 @@ fun TasksScreenContent(
     val showSnackBar = remember { mutableStateOf(false) }
     val showTaskDetails = remember { mutableStateOf(false) }
     val editTaskResult = remember { mutableStateOf(false to "") }
+    val selectedTaskIdToEdit = remember { mutableStateOf<Int?>(null) }
+
     val lazyRowState = rememberLazyListState()
     val density = LocalDensity.current
 
@@ -98,25 +100,6 @@ fun TasksScreenContent(
                 index = selectedIndex,
                 scrollOffset = -centerOffset
             )
-        }
-    }
-
-
-    if (showTaskDetails.value) {
-        EditTaskScreen(
-            onCancelAddTaskBottomSheet = { showTaskDetails.value = false },
-            onActionResult = { a, b ->
-                editTaskResult.value = a to b
-            },
-            taskId = TODO(),
-            viewModel = TODO()
-        )
-    }
-
-    LaunchedEffect(editTaskResult.value) {
-        if (editTaskResult.value.second.isNotEmpty()) {
-            SnackbarController.sendEvent(SnackbarEvent(message = editTaskResult.value.second))
-            editTaskResult.value = false to ""
         }
     }
 
@@ -218,7 +201,13 @@ fun TasksScreenContent(
 
                 if (tasksToShow.isNotEmpty()) {
                     itemsIndexed(tasksToShow) { index, item ->
-                        DeleteTaskScroll(task = item) {
+                        DeleteTaskScroll(
+                            task = item,
+                            onClick = {
+                                selectedTaskIdToEdit.value = item.taskId.taskId.toInt()
+                                showTaskDetails.value = true
+                            },
+                        ) {
                             selectedTaskToDelete.value = item
                         }
                     }
@@ -272,6 +261,21 @@ fun TasksScreenContent(
         if (showSnackBar.value) {
             SnackbarController.sendEvent(SnackbarEvent(message = snackbarMessage))
             showSnackBar.value = false
+        }
+    }
+
+    if (showTaskDetails.value && selectedTaskIdToEdit.value != null) {
+        ShowEditTaskScreen(
+            showTaskDetails = showTaskDetails,
+            editTaskResult = editTaskResult,
+            taskId = selectedTaskIdToEdit.value!!
+        )
+    }
+
+    LaunchedEffect(editTaskResult.value) {
+        if (editTaskResult.value.second.isNotEmpty()) {
+            SnackbarController.sendEvent(SnackbarEvent(message = editTaskResult.value.second))
+            editTaskResult.value = false to ""
         }
     }
 
