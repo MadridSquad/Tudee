@@ -2,7 +2,9 @@ package com.washingtondcsquad.tudee.presentation.features.tasks_screen
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
+import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.CategoryID
+import com.washingtondcsquad.tudee.domain.entity.ImageSource
 import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
@@ -75,6 +77,7 @@ class TasksViewModel(
        viewModelScope.launch {
             tasksService.getAllTasks().collect { tasks ->
                 val tasksForUiState = tasks.map {
+                    val category = categoriesService.getCategoryById(it.categoryId)
                     TaskUiState(
                         taskId = it.id,
                         taskDate = it.date.toJavaLocalDate()
@@ -83,6 +86,7 @@ class TasksViewModel(
                         taskDescription = it.description,
                         taskPriority = it.priority,
                         taskStatus = it.status.toString(),
+                        categoryImage = category.iconPath,
                     )
                 }
                 updateState {
