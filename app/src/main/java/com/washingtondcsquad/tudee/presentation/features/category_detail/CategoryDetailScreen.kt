@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.SnackbarHandler
 import com.washingtondcsquad.tudee.domain.entity.CategoryID
+import com.washingtondcsquad.tudee.domain.entity.ImageSource.AddedByUser
 import com.washingtondcsquad.tudee.presentation.components.TaskCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.category_detail.components.CategoryDetailTopAppBar
@@ -54,24 +55,23 @@ fun CategoryDetailScreen(
 
     CategoryDetailContents(
         state = state, onDismissBottomSheet = {
-            viewModel.showEditCategoryBottomSheet(false)
-            viewModel.showDeleteCategoryBottomSheet(false)
-        }, onSaveEditCategory = { title, imagePath ->
-            viewModel.editCategory(
-                title = title, imagePath = imagePath
-            )
-        }, onShowEdit = { viewModel.showEditCategoryBottomSheet(isShow = true) }, onShowDelete = {
-            viewModel.showDeleteCategoryBottomSheet(isShow = true)
-        }, onDelete = {
-            viewModel.deleteCategory(
-                state.categoryID,
-                AddedByUser(state.categoryImagePath)
-            )
-            onDeleteSuccessNav()
+        viewModel.showEditCategoryBottomSheet(false)
+        viewModel.showDeleteCategoryBottomSheet(false)
+    }, onSaveEditCategory = { title, imagePath ->
+        viewModel.editCategory(
+            title = title, imagePath = imagePath
+        )
+    }, onShowEdit = { viewModel.showEditCategoryBottomSheet(isShow = true) }, onShowDelete = {
+        viewModel.showDeleteCategoryBottomSheet(isShow = true)
+    }, onDelete = {
+        viewModel.deleteCategory(
+            state.categoryID, AddedByUser(state.categoryImagePath)
+        )
+        onDeleteSuccessNav()
 
-        }, onBack = {
-            onBack()
-        }, modifier = modifier.background(AppTheme.colors.surface)
+    }, onBack = {
+        onBack()
+    }, modifier = modifier.background(AppTheme.colors.surface)
     )
 }
 
