@@ -64,7 +64,8 @@ fun CategoryDetailScreen(
             viewModel.showDeleteCategoryBottomSheet(isShow = true)
         }, onDelete = {
             viewModel.deleteCategory(
-                state.categoryID, onDeleteSuccessNav
+                state.categoryID,
+                AddedByUser(state.categoryImagePath)
             )
 
         }, onBack = {
