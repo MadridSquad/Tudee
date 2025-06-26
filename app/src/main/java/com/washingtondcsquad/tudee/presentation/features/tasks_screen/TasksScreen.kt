@@ -53,6 +53,8 @@ import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.ShowEditTaskScreen
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.TasksTabRow
 import org.koin.androidx.compose.koinViewModel
+import androidx.compose.foundation.layout.systemBarsPadding
+
 
 
 @Composable
@@ -117,7 +119,7 @@ fun TasksScreenContent(
     Column(
         modifier = Modifier
             .background(AppTheme.colors.surfaceHigh)
-            .padding(top = 16.dp)
+            .systemBarsPadding()
             .fillMaxSize()
     ) {
         Text(
