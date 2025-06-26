@@ -1,6 +1,5 @@
 package com.washingtondcsquad.tudee.presentation.components
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,7 +17,7 @@ fun LoadImage(imageSource: ImageSource, modifier: Modifier = Modifier) {
         is ImageSource.AddedByUser -> {
             AsyncImage(
 
-                        model = ImageRequest.Builder(LocalContext.current)
+                model = ImageRequest.Builder(LocalContext.current)
                     .data(imageSource.value)
                     .crossfade(true)
                     .build(),
@@ -26,7 +25,6 @@ fun LoadImage(imageSource: ImageSource, modifier: Modifier = Modifier) {
                 modifier = modifier,
                 contentScale = ContentScale.Crop
             )
-            Log.d("LoadImage", "Image path: ${imageSource.value}")
 
         }
 
