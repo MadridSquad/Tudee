@@ -5,11 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -32,13 +29,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.washingtondcsquad.tudee.LocalInnerPaddingProvider
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.CategoryID
-import com.washingtondcsquad.tudee.domain.entity.ImageSource
 import com.washingtondcsquad.tudee.presentation.components.CategoryCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import org.koin.androidx.compose.koinViewModel
-import androidx.compose.foundation.layout.systemBarsPadding
 
 
 @Composable
@@ -72,12 +68,11 @@ fun CategoriesContent(
     Box(
         modifier = modifier
             .background(AppTheme.colors.surfaceHigh)
-            .windowInsetsPadding(WindowInsets.systemBars)
             .fillMaxSize()
+            .padding(LocalInnerPaddingProvider.current)
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
-                .systemBarsPadding()
 
         ) {
             Text(
