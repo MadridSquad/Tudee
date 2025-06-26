@@ -284,7 +284,7 @@ private fun TaskStatusLayout(
     modifier: Modifier = Modifier,
 ) {
     val items = remember {
-        tasks.shuffled().toMutableStateList()
+        tasks.toMutableStateList()
     }
     val numberOfItemPerRow = 3
     val widthPx = LocalWindowInfo.current.containerSize.width
@@ -336,7 +336,7 @@ private fun TaskStatusLayout(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(items.take(numberOfItemPerRow)) { item ->
+            items(tasks.take(numberOfItemPerRow)) { item ->
                 TaskCard(
                     taskUiState = item,
                     onTaskClicked = onTaskClick,
@@ -349,7 +349,7 @@ private fun TaskStatusLayout(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(items.drop(numberOfItemPerRow).take(numberOfItemPerRow)) { item ->
+            items(tasks.drop(numberOfItemPerRow).take(numberOfItemPerRow)) { item ->
                 TaskCard(
                     taskUiState = item,
                     onTaskClicked = onTaskClick,
