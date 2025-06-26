@@ -57,6 +57,7 @@
     <string name="delete">حذف</string>
     <string name="add_task_successfully">تمت إضافة المهمة بنجاح.</string>
     <string name="some_error_happened">حدث خطأ ما</string>
+    <string name="edit_task_successfully">تمت عملية التحديث بنجاح</string>
 
     <string name="tasks_screen_title">المهام</string>
     <string name="tasks_screen_date_picker_clear">مسح</string>
@@ -67,5 +68,7 @@
     <string name="tasks_screen_tap_row_in_progress">قيد التنفيذ</string>
     <string name="tasks_screen_tap_row_to_do">المطلوبة</string>
     <string name="tasks_screen_tap_row_done">المنتهية</string>
+    <string name="failed_to_delete_image">حدث خطأ في ازالة الصورة</string>
+
 
 </resources>

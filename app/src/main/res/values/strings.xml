@@ -64,5 +64,6 @@
     <string name="tasks_screen_tap_row_in_progress">In progress</string>
     <string name="tasks_screen_tap_row_to_do">To Do</string>
     <string name="tasks_screen_tap_row_done">Done</string>
+    <string name="failed_to_delete_image">Failed to delete image</string>
 
 </resources>
