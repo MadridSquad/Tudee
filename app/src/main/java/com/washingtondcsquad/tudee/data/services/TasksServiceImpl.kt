@@ -30,9 +30,10 @@ class TasksServiceImpl(
 
     override fun getAllTasks(): Flow<List<Task>> {
         return dao.getAllTasks().map { flow ->
-            Log.e("MY_TAG","i am in the map")
             flow.map {
-            it.toDomain()
+                Log.e("MY_TAG",it.toString())
+
+                it.toDomain()
             }
         }
     }

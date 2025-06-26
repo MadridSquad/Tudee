@@ -70,6 +70,7 @@ import org.koin.androidx.compose.koinViewModel
 fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsState()
 
+
     SetStatusBarIconsColor(false)
     HomeScreenContent(modifier = modifier, state = state, onRefreshData = {
         viewModel.refresh()
@@ -221,7 +222,7 @@ private fun HomeScreenContent(
 
         if (showEditTaskBottomSheet) {
             EditTaskScreen(
-                taskId = TaskID(taskId = 1L),
+                taskId = currentTaskIdToShowDetail,
                 onClickCancel = {
                     showEditTaskBottomSheet = false
                 },
@@ -242,17 +243,28 @@ private fun HomeScreenContent(
                 .align(Alignment.BottomEnd)
         )
         if (showTaskDetailBottomSheet) {
-            ShowTaskDetails(currentTaskIdToShowDetail) {
-                showTaskDetailBottomSheet = false
-            }
+            ShowTaskDetails(
+                currentTaskIdToShowDetail,
+                onEditTask = {
+                    showEditTaskBottomSheet = true
+                    showTaskDetailBottomSheet = false
+
+                },
+                onDismiss = {
+                    showTaskDetailBottomSheet = false
+                }
+            )
         }
     }
 }
 
 @Composable
-private fun ShowTaskDetails(taskId: TaskID, onDismiss: () -> Unit) {
+private fun ShowTaskDetails(taskId: TaskID, onDismiss: () -> Unit,onEditTask:()->Unit) {
     TaskDetailsBottomSheet(
-        taskId = taskId, onDismiss = onDismiss, onEditTask = {})
+        taskId = taskId,
+        onDismiss = onDismiss,
+        onEditTask = onEditTask
+    )
 }
 
 @Composable
