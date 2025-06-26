@@ -113,8 +113,7 @@ private fun HomeScreenContent(
 
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .systemBarsPadding(),
+                    .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Row(
