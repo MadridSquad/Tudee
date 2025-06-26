@@ -89,7 +89,7 @@ fun CategoriesContent(
                         color = AppTheme.colors.surface
                     )
                     .padding(horizontal = 16.dp),
-                columns = GridCells.Fixed(3),
+                columns = GridCells.Adaptive(minSize = 100.dp),
                 contentPadding = PaddingValues(top = 12.dp, bottom = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(24.dp)
