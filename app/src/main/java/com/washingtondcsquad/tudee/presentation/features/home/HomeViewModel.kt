@@ -1,18 +1,24 @@
 package com.washingtondcsquad.tudee.presentation.features.home
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.washingtondcsquad.tudee.domain.entity.Task
+import com.washingtondcsquad.tudee.R
+import com.washingtondcsquad.tudee.domain.entity.ImageSource
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.AppPreferencesService
+import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
+import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TudeeStatus
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeViewModel(
-    private val tasksService: TasksService, private val appPreferences: AppPreferencesService
+    private val tasksService: TasksService,
+    private val categoryService: CategoriesService,
+    private val appPreferences: AppPreferencesService
 ) : BaseViewModel<HomeUiState>(HomeUiState()), HomeListener {
 
     init {
@@ -21,7 +27,7 @@ class HomeViewModel(
     }
 
 
-    fun loadThemeState(){
+    fun loadThemeState() {
         updateState {
             copy(isLoading = true)
         }
@@ -52,45 +58,58 @@ class HomeViewModel(
         }
     }
 
-    private fun loadData() = viewModelScope.launch {
-        updateState {
-            copy(isLoading = true, error = null)
-        }
-        var tasks: List<Task> = emptyList()
-
-        tryToExecute(
-            request = {
-
-                tasksService.getAllTasks().collect {
-                    onSuccess(it)
-                    Log.i("refresh", "all data ${it}")
+    private fun loadData() {
+        viewModelScope.launch {
+            tasksService.getAllTasks().collect { tasks ->
+                categoryService.getAllCategories().collect { categoryList ->
+                    val inProgresTasks = tasks.filter { it.status == TaskStatus.IN_PROGRESS }
+                    val doneTasks = tasks.filter { it.status == TaskStatus.DONE }
+                    val toDoTasks = tasks.filter { it.status == TaskStatus.TODO }
+                    withContext(Dispatchers.Main) {
+                        updateState {
+                            copy(
+                                inProgressTasks = inProgresTasks.map { progressTask ->
+                                    TaskUiState(
+                                        taskId = progressTask.id,
+                                        taskDate = progressTask.date.toString(),
+                                        taskTitle = progressTask.title,
+                                        taskDescription = progressTask.description,
+                                        taskPriority = progressTask.priority,
+                                        taskStatus = progressTask.status.toString(),
+                                        categoryImage = categoryList.find { it.id == progressTask.categoryId }?.iconPath
+                                            ?: ImageSource.PredefinedDrawable(R.drawable.gym)
+                                    )
+                                },
+                                todoTasks = toDoTasks.map { progressTask ->
+                                    TaskUiState(
+                                        taskId = progressTask.id,
+                                        taskDate = progressTask.date.toString(),
+                                        taskTitle = progressTask.title,
+                                        taskDescription = progressTask.description,
+                                        taskPriority = progressTask.priority,
+                                        taskStatus = progressTask.status.toString(),
+                                        categoryImage = categoryList.find { it.id == progressTask.categoryId }?.iconPath
+                                            ?: ImageSource.PredefinedDrawable(R.drawable.gym)
+                                    )
+                                },
+                                doneTasks = doneTasks.map { progressTask ->
+                                    TaskUiState(
+                                        taskId = progressTask.id,
+                                        taskDate = progressTask.date.toString(),
+                                        taskTitle = progressTask.title,
+                                        taskDescription = progressTask.description,
+                                        taskPriority = progressTask.priority,
+                                        taskStatus = progressTask.status.toString(),
+                                        categoryImage = categoryList.find { it.id == progressTask.categoryId }?.iconPath
+                                            ?: ImageSource.PredefinedDrawable(R.drawable.gym)
+                                    )
+                                }
+                            )
+                        }
+                    }
                 }
-                tasks
-
-            }, onSuccess = ::onSuccess, onError = ::onError
-        )
-    }
-
-    private fun onSuccess(response: List<Task>) {
-        val inProgressTasks = response.filter { it.status == TaskStatus.IN_PROGRESS }
-        val doneTasks = response.filter { it.status == TaskStatus.DONE }
-        val toDoTasks = response.filter { it.status == TaskStatus.TODO }
-
-        updateState {
-            copy(
-                isLoading = false,
-                error = null,
-                inProgressTasks = inProgressTasks.toUiState(),
-                doneTasks = doneTasks.toUiState(),
-                todoTasks = toDoTasks.toUiState(),
-                tudeeStatus = calculateOverviewAnalytics(
-                    inProgressCount = inProgressTasks.size,
-                    todoCount = toDoTasks.size,
-                    doneCount = doneTasks.size
-                )
-            )
+            }
         }
-
     }
 
     private fun calculateOverviewAnalytics(
@@ -141,8 +160,5 @@ class HomeViewModel(
                 copy(error = it.message)
             }
         })
-    }
-    fun showEditTaskBottomSheet(){
-
     }
 }
