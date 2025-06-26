@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -45,7 +46,6 @@ import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.design.textStyle.defaultTextStyle
 import com.washingtondcsquad.tudee.presentation.features.delete_task.ConfirmDeleteTask
 import com.washingtondcsquad.tudee.presentation.features.delete_task.DeleteTaskScroll
-import com.washingtondcsquad.tudee.presentation.features.edit_task.EditTaskScreen
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.ChangeMonthButton
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.DatePickerComponent
@@ -53,8 +53,6 @@ import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.ShowEditTaskScreen
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.TasksTabRow
 import org.koin.androidx.compose.koinViewModel
-import androidx.compose.foundation.layout.systemBarsPadding
-
 
 
 @Composable

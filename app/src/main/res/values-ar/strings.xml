@@ -69,6 +69,7 @@
     <string name="tasks_screen_tap_row_to_do">المطلوبة</string>
     <string name="tasks_screen_tap_row_done">المنتهية</string>
     <string name="failed_to_delete_image">حدث خطأ في ازالة الصورة</string>
+    <string name="error_edit_task">خطأ في تحديث المهمة</string>
 
 
 </resources>
