@@ -3,11 +3,9 @@ package com.washingtondcsquad.tudee
 import SplashScreen
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -91,7 +89,7 @@ class MainActivity : ComponentActivity() {
 
                         Scaffold(
                             bottomBar = {
-                                AnimatedVisibility(currentDestination in bottomNavBarRoutes) {
+                                if (currentDestination in bottomNavBarRoutes) {
                                     TudeeNavigationBar(
                                         navBarItemDataList = navBarItemsList,
                                         navController = navController,

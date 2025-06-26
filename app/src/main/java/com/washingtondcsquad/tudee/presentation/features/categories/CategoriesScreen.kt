@@ -97,14 +97,14 @@ fun CategoriesContent(
                 items(categoriesScreenStatus.categories) { category ->
 
                     CategoryCard(
-                        title = if(category.isPredefined) stringResource(category.title.toInt())else category.title ,
+                        title = if (category.isPredefined) stringResource(category.title.toInt()) else category.title,
                         //title = category.title,
                         imageSource = category.iconPath,
                         onClick = {
                             onCategoryClick(category.id)
                         },
                         isSelected = false,
-                        tasksCount = 0
+                        tasksCount = category.taskCount
                     )
                 }
             }
