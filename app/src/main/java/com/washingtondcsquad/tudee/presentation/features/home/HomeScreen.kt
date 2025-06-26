@@ -48,6 +48,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.LocalInnerPaddingProvider
 import com.washingtondcsquad.tudee.R
+import com.washingtondcsquad.tudee.SnackbarHandler
 import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.presentation.components.CustomSwitchButton
 import com.washingtondcsquad.tudee.presentation.components.TaskCard
@@ -116,6 +117,7 @@ private fun HomeScreenContent(
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                SnackbarHandler()
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
