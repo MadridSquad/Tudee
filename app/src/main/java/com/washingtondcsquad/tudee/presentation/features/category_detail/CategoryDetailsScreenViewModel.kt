@@ -114,11 +114,12 @@ class CategoryDetailsScreenViewModel(val categoryService: CategoriesService) :
     fun editCategory(title: String, imagePath: String) {
         tryToExecute(
             request = {
+                val imageUrl = categoryService.saveCategoryImage(iconPath = imagePath)
                 categoryService.editCategory(
                     Category(
                         id = state.value.categoryID,
                         title = title,
-                        iconPath = AddedByUser(imagePath),
+                        iconPath = AddedByUser(imageUrl),
                         isPredefined = false
                     )
                 )
