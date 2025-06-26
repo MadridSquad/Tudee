@@ -1,18 +1,20 @@
 package com.washingtondcsquad.tudee.presentation.features.category_detail
 
 import androidx.lifecycle.viewModelScope
+import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.entity.ImageSource
 import com.washingtondcsquad.tudee.domain.entity.ImageSource.AddedByUser
-import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarController
 import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarEvent
-import com.washingtondcsquad.tudee.presentation.features.home.toTaskUiState
+import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CategoryDetailsScreenViewModel(val categoryService: CategoriesService) :
     BaseViewModel<CategoryDetailsScreenUiState>(
@@ -43,31 +45,53 @@ class CategoryDetailsScreenViewModel(val categoryService: CategoriesService) :
     }
 
     fun getTasksByCategory(categoryID: CategoryID) {
-
-        tryToExecute<List<Task>>(
-            request = {
-
-                categoryService.getTasksByCategoryID(categoryId = categoryID)
-
-            },
-            onSuccess = {
-                val inProgresTasks = it.filter { it.status == TaskStatus.IN_PROGRESS }
-                val doneTasks = it.filter { it.status == TaskStatus.DONE }
-                val toDoTasks = it.filter { it.status == TaskStatus.TODO }
-                updateState {
-                    copy(
-                        inProgressTasks = inProgresTasks.map { it.toTaskUiState() },
-                        toDoTasks = toDoTasks.map { it.toTaskUiState() },
-                        doneTasks = doneTasks.map { it.toTaskUiState() }
-                    )
-                }
-            },
-            onError = {
-                viewModelScope.launch {
-                    SnackbarController.sendEvent(SnackbarEvent(it.message.toString()))
-                }
+        viewModelScope.launch {
+           categoryService.getAllCategories().collect {categoryList->
+                val tasks = categoryService.getTasksByCategoryID(categoryId = categoryID)
+                val inProgresTasks = tasks.filter { it.status == TaskStatus.IN_PROGRESS }
+                val doneTasks = tasks.filter { it.status == TaskStatus.DONE }
+                val toDoTasks = tasks.filter { it.status == TaskStatus.TODO }
+               withContext (Dispatchers.Main){
+                   updateState {
+                       copy(
+                           inProgressTasks = inProgresTasks.map {
+                               TaskUiState(
+                                   taskId = it.id,
+                                   taskDate = it.date.toString(),
+                                   taskTitle = it.title,
+                                   taskDescription = it.description,
+                                   taskPriority = it.priority,
+                                   taskStatus = it.status.toString(),
+                                   categoryImage = categoryList.find { it.id == categoryID }?.iconPath ?: ImageSource.PredefinedDrawable(R.drawable.gym)
+                               )
+                           },
+                           toDoTasks = toDoTasks.map {
+                               TaskUiState(
+                                   taskId = it.id,
+                                   taskDate = it.date.toString(),
+                                   taskTitle = it.title,
+                                   taskDescription = it.description,
+                                   taskPriority = it.priority,
+                                   taskStatus = it.status.toString(),
+                                   categoryImage = categoryList.find { it.id == categoryID }?.iconPath ?: ImageSource.PredefinedDrawable(R.drawable.gym)
+                               )
+                           },
+                           doneTasks = doneTasks.map {
+                               TaskUiState(
+                                   taskId = it.id,
+                                   taskDate = it.date.toString(),
+                                   taskTitle = it.title,
+                                   taskDescription = it.description,
+                                   taskPriority = it.priority,
+                                   taskStatus = it.status.toString(),
+                                   categoryImage = categoryList.find { it.id == categoryID }?.iconPath ?: ImageSource.PredefinedDrawable(R.drawable.gym)
+                               )
+                           }
+                       )
+                   }
+               }
             }
-        )
+        }
     }
 
     fun showEditCategoryBottomSheet(isShow: Boolean) {
@@ -120,33 +144,31 @@ class CategoryDetailsScreenViewModel(val categoryService: CategoriesService) :
     }
 
 
+    fun deleteCategory(categoryID: CategoryID, categoryImage: ImageSource) {
+        tryToExecute(
+            request = {
+                categoryService.deleteCategory(categoryID)
+                categoryService.deleteCategoryImage(categoryImage)
+            },
+            onSuccess = {
+                updateState {
+                    copy(
+                        isShowingEditCategoryBottomSheet = false
+                    )
+                }
 
-
-fun deleteCategory(categoryID: CategoryID, categoryImage: ImageSource) {
-    tryToExecute(
-        request = {
-            categoryService.deleteCategory(categoryID)
-            categoryService.deleteCategoryImage(categoryImage)
-        },
-        onSuccess = {
-            updateState {
-                copy(
-                    isShowingEditCategoryBottomSheet = false
-                )
-            }
-
-        },
-        onError = {}
-    )
-}
-
-fun setCategoryId(categoryId: CategoryID) {
-    updateState {
-        copy(
-            categoryID = categoryId
+            },
+            onError = {}
         )
     }
-}
+
+    fun setCategoryId(categoryId: CategoryID) {
+        updateState {
+            copy(
+                categoryID = categoryId
+            )
+        }
+    }
 
 }
 

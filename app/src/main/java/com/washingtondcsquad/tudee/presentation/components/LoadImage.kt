@@ -16,6 +16,7 @@ fun LoadImage(imageSource: ImageSource, modifier: Modifier = Modifier) {
     when (imageSource) {
         is ImageSource.AddedByUser -> {
             AsyncImage(
+
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(imageSource.value)
                     .crossfade(true)
@@ -24,6 +25,7 @@ fun LoadImage(imageSource: ImageSource, modifier: Modifier = Modifier) {
                 modifier = modifier,
                 contentScale = ContentScale.Crop
             )
+
         }
 
         is ImageSource.PredefinedDrawable -> {

@@ -38,6 +38,8 @@ import com.washingtondcsquad.tudee.domain.entity.ImageSource
 import com.washingtondcsquad.tudee.presentation.components.CategoryCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import org.koin.androidx.compose.koinViewModel
+import androidx.compose.foundation.layout.systemBarsPadding
+
 
 @Composable
 fun CategoriesScreen(
@@ -75,6 +77,7 @@ fun CategoriesContent(
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
+                .systemBarsPadding()
 
         ) {
             Text(

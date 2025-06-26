@@ -81,7 +81,7 @@ fun TudeeStatusBanner(
 }
 
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun PreviewStatusBanner() {
     TudeeStatusBanner(completedTask = 0, totalTasks = 10, tudeeStatus = TudeeStatus.ZERO_PROGRESS)

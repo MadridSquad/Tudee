@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -54,6 +55,7 @@ import com.washingtondcsquad.tudee.presentation.components.TextLogo
 import com.washingtondcsquad.tudee.presentation.components.analytics_components.AnalyticsCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.add_task.AddNewTaskScreen
+import com.washingtondcsquad.tudee.presentation.features.edit_task.EditTaskScreen
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import com.washingtondcsquad.tudee.presentation.features.task_details.TaskDetailsBottomSheet
 import com.washingtondcsquad.tudee.presentation.utils.SetStatusBarIconsColor
@@ -68,11 +70,9 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = koinVie
     val state by viewModel.state.collectAsState()
 
     SetStatusBarIconsColor(false)
-    HomeScreenContent(
-        modifier = modifier, state = state, viewmodel = viewModel, onRefreshData = {
-            viewModel.refresh()
-        })
-
+    HomeScreenContent(modifier = modifier, state = state, onRefreshData = {
+        viewModel.refresh()
+    }, onThemeToggle = { viewModel.onThemeSwitched(it) })
 }
 
 
@@ -80,15 +80,15 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = koinVie
 private fun HomeScreenContent(
     modifier: Modifier = Modifier,
     state: HomeUiState,
-    viewmodel: HomeViewModel,
+    onThemeToggle: (Boolean) -> Unit,
     onRefreshData: () -> Unit
 ) {
     val isEmptyState =
         state.inProgressTasks.isEmpty() and state.todoTasks.isEmpty() and state.doneTasks.isEmpty()
+    var showEditTaskBottomSheet by remember { mutableStateOf(false) }
     var showAddNewTaskBottomSheet by rememberSaveable { mutableStateOf(false) }
     var showTaskDetailBottomSheet by rememberSaveable { mutableStateOf(false) }
     var currentTaskIdToShowDetail: TaskID by remember { mutableStateOf(TaskID(0L)) }
-
 
     Box(
         modifier = modifier
@@ -154,11 +154,11 @@ private fun HomeScreenContent(
                         modifier = Modifier
                             .align(Alignment.CenterVertically)
                             .padding(end = 16.dp),
-                        switchPadding = 8.dp,
+                        switchPadding = 4.dp,
                         buttonWidth = 64.dp,
                         buttonHeight = 36.dp,
                         isDarkTheme = state.isDarkTheme,
-                        onToggle = { viewmodel.onThemeSwitched(it) })
+                        onToggle = { onThemeToggle(it) })
                 }
                 Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
 
@@ -197,29 +197,39 @@ private fun HomeScreenContent(
                                 currentTaskIdToShowDetail = it
                             },
                             onSeeMoreClick = {})
-
                     }
                 }
-
-
             }
         }
 
         if (showAddNewTaskBottomSheet) {
             AddNewTaskScreen(
                 onClickCancel = {
-                    showAddNewTaskBottomSheet = false
-                },
+                showAddNewTaskBottomSheet = false
+            },
                 onSuccessAddTask = { successMessage ->
 
                 },
                 onErrorAddTask = { errorMessage ->
 
                 },
-                taskDate = Clock.System.now()
-                    .toLocalDateTime(TimeZone.currentSystemDefault())
-                    .date
+                taskDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 
+            )
+        }
+
+        if (showEditTaskBottomSheet) {
+            EditTaskScreen(
+                taskId = TaskID(taskId = 1L),
+                onClickCancel = {
+                    showEditTaskBottomSheet = false
+                },
+                onSuccessEdit = {
+
+                },
+                onErrorEdit = {
+
+                },
             )
         }
 
@@ -228,7 +238,8 @@ private fun HomeScreenContent(
                 .noRippleClick {
                     showAddNewTaskBottomSheet = true
                 }
-                .align(Alignment.BottomEnd))
+                .align(Alignment.BottomEnd)
+        )
         if (showTaskDetailBottomSheet) {
             ShowTaskDetails(currentTaskIdToShowDetail) {
                 showTaskDetailBottomSheet = false
@@ -355,15 +366,30 @@ fun NoTasksPlaceHolder(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 20.dp)
     ) {
         val shape = RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp, bottomStart = 16.dp)
+        Image(
+            painter = painterResource(id = R.drawable.empty_tasks_palceholder_background),
+            contentDescription = null,
+            modifier = Modifier.align(Alignment.BottomEnd)
+        )
+        Image(
+            painter = painterResource(id = R.drawable.empty_tasks_placeholder_image),
+            contentDescription = null,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .size(107.dp)
+        )
         Column(
             verticalArrangement = Arrangement.spacedBy(4.dp),
             modifier = Modifier
-                .align(Alignment.TopStart)
+                .align(Alignment.TopStart).offset(x=19.dp,y=(-15).dp)
                 .shadow(
-                    elevation = 4.dp, shape = shape
+                    elevation = 12.dp,
+                    shape = shape,
+                    ambientColor = Color(0x0A000000),
+                    spotColor = Color(0x0A000000)
                 )
                 .background(
                     color = AppTheme.colors.surfaceHigh, shape = shape
@@ -382,18 +408,6 @@ fun NoTasksPlaceHolder(modifier: Modifier = Modifier) {
                 style = AppTheme.textStyle.body.small,
             )
         }
-        Image(
-            painter = painterResource(id = R.drawable.empty_tasks_palceholder_background),
-            contentDescription = null,
-            modifier = Modifier.align(Alignment.BottomEnd)
-        )
-        Image(
-            painter = painterResource(id = R.drawable.empty_tasks_palce_holder_image),
-            contentDescription = null,
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .size(107.dp)
-        )
 
     }
 
@@ -405,5 +419,5 @@ fun NoTasksPlaceHolder(modifier: Modifier = Modifier) {
 private fun Preview() {
     HomeScreenContent(
         modifier = Modifier, state = HomeUiState(
-        ), viewmodel = koinViewModel<HomeViewModel>(), onRefreshData = {})
+    ), onRefreshData = {}, onThemeToggle = {})
 }
