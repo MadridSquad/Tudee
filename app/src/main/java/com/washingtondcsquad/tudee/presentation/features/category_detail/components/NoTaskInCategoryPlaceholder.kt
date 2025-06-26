@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
@@ -42,8 +42,10 @@ fun NoTaskInCategoryPlaceHolder(categoryName: String,modifier: Modifier = Modifi
 
             ) {
             Text(
-                text = "No tasks in ${categoryName} category!",
+                text = "No tasks in ${formatCategoryName(categoryName)} category!",
                 color = AppTheme.colors.body,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 style = AppTheme.textStyle.title.small,
             )
         }
@@ -62,4 +64,8 @@ fun NoTaskInCategoryPlaceHolder(categoryName: String,modifier: Modifier = Modifi
 
     }
 
+}
+
+fun formatCategoryName(title: String): String {
+    return title.split(" ").take(3).joinToString(" ")
 }
