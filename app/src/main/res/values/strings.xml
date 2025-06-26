@@ -52,6 +52,7 @@
     <string name="are_you_sure_to_continue">Are you sure to continue?</string>
     <string name="delete">Delete</string>
     <string name="add_task_successfully">Add task successfully.</string>
+    <string name="edit_task_successfully">Edit task successfully.</string>
     <string name="some_error_happened">Some error happened</string>
 
     <string name="tasks_screen_title">Tasks</string>
