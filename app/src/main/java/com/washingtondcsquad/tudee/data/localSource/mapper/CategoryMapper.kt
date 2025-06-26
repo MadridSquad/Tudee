@@ -9,7 +9,7 @@ import org.koin.java.KoinJavaComponent.getKoin
 
 fun Category.toEntity(): CategoryEntity {
     return CategoryEntity(
-        id = CategoryID(0L), title = title, image = when (this.iconPath) {
+        id = this.id, title = title, image = when (this.iconPath) {
             is ImageSource.AddedByUser -> (this.iconPath as ImageSource.AddedByUser).value
             is ImageSource.PredefinedDrawable -> (this.iconPath as ImageSource.PredefinedDrawable).id.toString()
         }, isPredefined = this.isPredefined

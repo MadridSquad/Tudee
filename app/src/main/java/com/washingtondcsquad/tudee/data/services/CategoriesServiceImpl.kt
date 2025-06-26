@@ -55,6 +55,7 @@ class CategoriesServiceImpl(
     override suspend fun deleteCategoryImage(iconPath: ImageSource) {
         when (val icon = iconPath) {
             is ImageSource.AddedByUser -> {
+                println("image to be deleted ${icon.value}")
                 imageSaver.deleteImage(icon.value)
             }
 
@@ -66,7 +67,6 @@ class CategoriesServiceImpl(
 
 
     override suspend fun editCategory(category: Category) {
-        deleteCategoryImage(category.iconPath)
         categoryDao.editCategory(category.toEntity())
     }
 

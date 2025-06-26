@@ -39,12 +39,11 @@ class ImageSaverServiceImpl(private val context: Context) : ImageSaverService {
     }
 
     override suspend fun deleteImage(imageUrl: String): Boolean {
-        val fileName = imageUrl.toString().toMD5() + ".png"
-        val file = File(context.filesDir, fileName)
+        val file = File(imageUrl)
         return if (file.exists()) {
             file.delete()
         } else {
-            throw IllegalStateException("Failed to delete image")
+            throw IllegalStateException("Failed to delete image $imageUrl")
         }
     }
 }

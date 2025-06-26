@@ -30,9 +30,10 @@ class CategoryDetailsScreenViewModel(val categoryService: CategoriesService) :
             onSuccess = {
                 updateState {
                     copy(
+                        categoryID = it.id,
                         isCategoryPredefined = it.isPredefined,
                         categoryTitle = it.title,
-                        categoryImagePath = it.iconPath.toString()
+                        categoryImagePath = if(it.iconPath is ImageSource.AddedByUser) (it.iconPath as AddedByUser).value else ""
                     )
                 }
             },
@@ -158,7 +159,9 @@ class CategoryDetailsScreenViewModel(val categoryService: CategoriesService) :
                 }
 
             },
-            onError = {}
+            onError = {
+                println("delete category:  ${it.message}")
+            }
         )
     }
 
