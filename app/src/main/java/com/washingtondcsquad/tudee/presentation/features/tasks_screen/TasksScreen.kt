@@ -277,7 +277,6 @@ fun TasksScreenContent(
     }
 
     if (showTaskDetails.value && selectedTaskIdToEdit.value != null) {
-
         ShowEditTaskScreen(
             showTaskDetails = showTaskDetails,
             editTaskResult = editTaskResult,

@@ -35,11 +35,7 @@ fun EditTaskScreen(
     viewModel: EditTaskViewModel = koinViewModel(),
 ) {
     LaunchedEffect(Unit) {
-        Log.e("MY_TAG",taskId.toString())
         viewModel.initApp(taskId)
-//        viewModel.upDataTaskId(
-//            taskId
-//        )
     }
     val state by viewModel.state.collectAsState()
     val bottomSheetState = rememberModalBottomSheetState(

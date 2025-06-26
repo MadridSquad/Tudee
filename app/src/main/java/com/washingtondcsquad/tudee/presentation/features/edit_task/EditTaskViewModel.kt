@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.Category
+import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.entity.TaskID
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
@@ -29,18 +31,6 @@ class EditTaskViewModel(
     EditTaskUiState()
 ) {
 
-    init {
-
-    }
-
-    fun upDataTaskId(taskId: TaskID){
-        updateState {
-            copy(
-               taskId = taskId
-            )
-        }
-    }
-
     fun initApp(taskId: TaskID) {
         viewModelScope.launch {
             Log.e("MY_TAG",state.value.taskId.toString())
@@ -49,10 +39,12 @@ class EditTaskViewModel(
             withContext(Dispatchers.Main) {
                 updateState {
                     copy(
+                        taskId = taskId,
                         taskTitle = task.title,
                         taskDescription = task.description,
                         taskDate = task.date,
                         selectedPriority = task.priority,
+                        taskState = task.status
                     )
                 }
             }
@@ -69,19 +61,6 @@ class EditTaskViewModel(
             }
 
         }
-    }
-
-    private fun getAllCategories() {
-        tryToCollect(
-            request = { categoryService.getAllCategories() },
-            onChange = { newCategoryList ->
-                Log.e("MY_TAG", state.value.selectedCategory.toString())
-                updateState {
-                    copy(categoryList = newCategoryList)
-                }
-            },
-            onError = { }
-        )
     }
 
     fun onTitleChange(newTitle: String) {
@@ -150,14 +129,13 @@ class EditTaskViewModel(
                         title = state.value.taskTitle,
                         description = state.value.taskDescription,
                         date = state.value.taskDate,
-                        status = TaskStatus.TODO,
+                        status = state.value.taskState,
                         priority = priority
                     )
                 )
             },
             onSuccess = {
                 onSuccess(stringProvider.getString(R.string.edit_task_successfully))
-                clearState()
             },
             onError = {
                 onError(stringProvider.getString(R.string.some_error_happened))
@@ -165,16 +143,4 @@ class EditTaskViewModel(
         )
     }
 
-    private fun clearState() {
-        updateState {
-            copy(
-                taskTitle = "",
-                taskDescription = "",
-                taskDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
-                selectedCategory = null,
-                selectedPriority = null,
-                isButtonActionEnable = false
-            )
-        }
-    }
 }

@@ -78,7 +78,6 @@ fun DeleteTaskScroll(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(111.dp)
                 .swipeable(
                     state = swipeableState,
                     anchors = anchors,
@@ -94,7 +93,6 @@ fun DeleteTaskScroll(
                         IntOffset(swipeableState.offset.value.roundToInt(), 0)
                     }
                     .fillMaxWidth()
-                    .height(111.dp)
             ) {
                 TaskCard(
                     taskUiState = task,

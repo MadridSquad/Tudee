@@ -3,6 +3,7 @@ package com.washingtondcsquad.tudee.presentation.features.sharedUiState
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.TaskID
+import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -12,6 +13,7 @@ data class EditTaskUiState(
     val taskId: TaskID = TaskID(0L),
     val taskTitle: String = "",
     val taskDescription: String = "",
+    val taskState : TaskStatus = TaskStatus.TODO,
     val taskDate: LocalDate = Clock.System.now()
         .toLocalDateTime(TimeZone.currentSystemDefault()).date,
     val selectedPriority: Priority? = null,

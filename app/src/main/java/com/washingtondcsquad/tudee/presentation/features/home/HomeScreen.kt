@@ -218,11 +218,6 @@ private fun HomeScreenContent(
             )
         }
 
-        FabIcon(modifier = Modifier
-            .noRippleClick {
-                showAddNewTaskBottomSheet = true
-            }
-            .align(Alignment.BottomEnd))
         if (showEditTaskBottomSheet) {
             EditTaskScreen(
                 taskId = TaskID(taskId = 1L),
