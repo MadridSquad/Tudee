@@ -363,8 +363,8 @@ private fun TaskStatusLayout(
         }
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            contentPadding = PaddingValues(start = 16.dp , end = 16.dp , bottom = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             items(tasks.drop(numberOfItemPerRow).take(numberOfItemPerRow)) { item ->
                 TaskCard(
