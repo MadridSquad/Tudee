@@ -1,5 +1,7 @@
 package com.washingtondcsquad.tudee.presentation.features.add_task
 
+import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.Priority
@@ -10,7 +12,10 @@ import com.washingtondcsquad.tudee.domain.provider.StringProvider
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
+import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarController
+import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarEvent
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.AddTaskUiState
+import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -134,7 +139,9 @@ class AddTaskViewModel(
     fun onClickAdd(
         onSuccess: (message: String) -> Unit,
         onError: (message: String) -> Unit,
+        taskStatus: TaskStatus
     ) {
+        Log.e("MY_TAG",taskStatus.toString())
         tryToExecute(
             request = {
                 tasksService.createTask(
@@ -145,13 +152,16 @@ class AddTaskViewModel(
                         priority = state.value.selectedPriority!!,
                         id = TaskID(0),
                         categoryId = state.value.selectedCategory!!.id  ,
-                        status = TaskStatus.TODO
+                        status = taskStatus
                     )
                 )
             },
             onSuccess = {
                 onSuccess(stringProvider.getString(R.string.add_task_successfully))
                 clearDate()
+                viewModelScope.launch {
+                    SnackbarController.sendEvent(event= SnackbarEvent(message = "Task added successfully"))
+                }
             },
             onError = { exception ->
                 onError(stringProvider.getString(R.string.some_error_happened))

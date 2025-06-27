@@ -1,5 +1,8 @@
 package com.washingtondcsquad.tudee.domain.entity
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import com.washingtondcsquad.tudee.R
 import kotlin.String
 
 enum class Priority{
@@ -16,6 +19,14 @@ enum class Priority{
                 "high" -> HIGH
                 else -> LOW
             }
+        }
+    }
+    @Composable
+    fun getTitle(): String{
+        return when(this){
+            LOW -> stringResource(R.string.low)
+            MEDIUM -> stringResource(R.string.medium)
+            HIGH -> stringResource(R.string.high)
         }
     }
 }

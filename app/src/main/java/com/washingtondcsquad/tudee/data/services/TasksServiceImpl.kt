@@ -1,5 +1,6 @@
 package com.washingtondcsquad.tudee.data.services
 
+import android.util.Log
 import com.washingtondcsquad.tudee.data.localSource.daos.TaskDao
 import com.washingtondcsquad.tudee.data.localSource.mapper.toDomain
 import com.washingtondcsquad.tudee.data.localSource.mapper.toEntity
@@ -19,6 +20,7 @@ class TasksServiceImpl(
     private val dao: TaskDao
 ) : TasksService {
     override suspend fun createTask(task: Task) {
+        Log.e("MY_TAG","i am in create ")
         dao.createTask(task.toEntity())
     }
 
@@ -27,7 +29,13 @@ class TasksServiceImpl(
     }
 
     override fun getAllTasks(): Flow<List<Task>> {
-        return dao.getAllTasks().map { flow -> flow.map { it.toDomain() } }
+        return dao.getAllTasks().map { flow ->
+            flow.map {
+                Log.e("MY_TAG",it.toString())
+
+                it.toDomain()
+            }
+        }
     }
 
     override suspend fun getTaskById(id: TaskID): Task {

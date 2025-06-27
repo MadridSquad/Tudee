@@ -34,7 +34,7 @@ class TasksViewModel(
         yearAndMonthTitle = getYearAndMonthTitleFromYearMonth(YearMonth.now()),
         monthDaysList = buildMonthDaysList(YearMonth.now(), System.currentTimeMillis()),
         fullSelectedDate = "",
-        isFilterEnabled = true,
+        isFilterEnabled = false,
         tasksList = emptyList()
     )
 ) {

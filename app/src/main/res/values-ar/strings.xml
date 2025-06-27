@@ -57,6 +57,7 @@
     <string name="delete">حذف</string>
     <string name="add_task_successfully">تمت إضافة المهمة بنجاح.</string>
     <string name="some_error_happened">حدث خطأ ما</string>
+    <string name="edit_task_successfully">تمت عملية التحديث بنجاح</string>
 
     <string name="tasks_screen_title">المهام</string>
     <string name="tasks_screen_date_picker_clear">مسح</string>
@@ -67,5 +68,26 @@
     <string name="tasks_screen_tap_row_in_progress">قيد التنفيذ</string>
     <string name="tasks_screen_tap_row_to_do">المطلوبة</string>
     <string name="tasks_screen_tap_row_done">المنتهية</string>
-
+    <string name="failed_to_delete_image">حدث خطأ في ازالة الصورة</string>
+    <string name="error_edit_task">خطأ في تحديث المهمة</string>
+    <string name="categories">الفئات</string>
+    <string name="today">اليوم,</string>
+    <string name="overview">الملخص</string>
+    <string name="fill_your_day_with_something_awesome">املأ يومك بشيء رائع. </string>
+    <string name="you_re_doing_amazing_tudee_is_proud_of_you">لقد قمت بعمل رائع!!! تودي فخور بك</string>
+    <string name="you_re_just_scrolling_not_working_tudee_is_watching_back_to_work">انت فقط تتصفح الانترنت, لا تعمل, تودي يراقبك. عد الى العمل !!!</string>
+    <string name="you_ve_completed"> لقد اكملت </string>
+    <string name="out_of"> من اصل </string>
+    <string name="tasks_Keep_going">مهمة. واصل العمل!!</string>
+    <string name="stay_working">واصل العمل !</string>
+    <string name="tadaa">تادا !</string>
+    <string name="zero_progress">صفر تقدم ؟!</string>
+    <string name="nothing_on_your_list">لا يوجد شيء في قائمتك…</string>
+    <string name="low">مش مهم</string>
+    <string name="medium">نص و نص</string>
+    <string name="high">كلش مهم</string>
+    <string name="task_details">التفاصيل</string>
+    <string name="move_to">"انقلها الى "</string>
+    <string name="todo">مهام</string>
+    <string name="no_tasks_in">"ماكو اي مهام "</string>"
 </resources>

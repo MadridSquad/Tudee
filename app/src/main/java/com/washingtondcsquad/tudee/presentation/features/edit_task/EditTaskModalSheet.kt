@@ -1,6 +1,5 @@
 package com.washingtondcsquad.tudee.presentation.features.edit_task
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,11 +21,10 @@ import com.washingtondcsquad.tudee.presentation.components.TaskScreenComponents
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.EditTaskUiState
 import org.koin.androidx.compose.koinViewModel
-import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditTaskScreen(
+fun EditTaskModalSheet(
     taskId: TaskID,
     onClickCancel: () -> Unit,
     onSuccessEdit: (message: String) -> Unit,

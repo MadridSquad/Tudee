@@ -4,11 +4,9 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.Category
-import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.domain.entity.Priority
 import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.entity.TaskID
-import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.provider.StringProvider
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
@@ -17,9 +15,7 @@ import com.washingtondcsquad.tudee.presentation.features.sharedUiState.EditTaskU
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
@@ -138,7 +134,7 @@ class EditTaskViewModel(
                 onSuccess(stringProvider.getString(R.string.edit_task_successfully))
             },
             onError = {
-                onError(stringProvider.getString(R.string.some_error_happened))
+                onError(stringProvider.getString(R.string.error_edit_task))
             }
         )
     }

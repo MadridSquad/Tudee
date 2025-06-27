@@ -7,7 +7,9 @@ import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.TabRowDefaults.PrimaryIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.TasksTab
 
@@ -37,21 +39,21 @@ fun TaskStatusTabs(
         TasksTab(
             selectedTabIndex = selectedTabIndex,
             index = 0,
-            tabName = "In progress",
+            tabName = stringResource(R.string.in_progress_title),
             pagerState = pagerState,
             tasksNumber = inProgressCount
         )
         TasksTab(
             selectedTabIndex = selectedTabIndex,
             index = 1,
-            tabName = "To Do",
+            tabName = stringResource(R.string.to_do_title),
             pagerState = pagerState,
             tasksNumber = toDoCount
         )
         TasksTab(
             selectedTabIndex = selectedTabIndex,
             index = 2,
-            tabName = "Done",
+            tabName = stringResource(R.string.done),
             pagerState = pagerState,
             tasksNumber = doneCount
         )

@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
@@ -65,13 +66,17 @@ fun CategoryDetailTopAppBar(
         }
         Text(
             title,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             style = AppTheme.textStyle.title.large,
             color = AppTheme.colors.title,
-            modifier = Modifier.padding(
-                start = 12.dp,
-                top = 20.dp,
-                bottom = 20.dp
-            )
+            modifier = Modifier
+                .fillMaxWidth(0.75f)
+                .padding(
+                    start = 12.dp,
+                    top = 20.dp,
+                    bottom = 20.dp
+                )
         )
         if (!isCategoryPredefined) {
             Spacer(modifier = Modifier.weight(1f))

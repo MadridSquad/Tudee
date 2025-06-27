@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#FF3090BF</color>
+    <color name="secondary">#FFF49061</color>
+    <color name="primary_gradient_start">#FF3090BF</color>
+    <color name="primary_gradient_end">#FF3A9CCD</color>
+    <color name="title">#DEFFFFFF</color>
+    <color name="body">#99FFFFFF</color>
+    <color name="hint">#61FFFFFF</color>
+    <color name="stroke">#1FFFFFFF</color>
+    <color name="surface_low">#FF020108</color>
+    <color name="surface">#FF0D0C14</color>
+    <color name="surface_high">#FF0F0E19</color>
+    <color name="on_primary">#DEFFFFFF</color>
+    <color name="on_primary_caption">#B3FFFFFF</color>
+    <color name="on_primary_card">#29060414</color>
+    <color name="on_primary_stroke">#99242424</color>
+    <color name="disable">#FF1D1E1F</color>
+    <color name="pink_accent">#FFCC5268</color>
+    <color name="yellow_accent">#FFB28F25</color>
+    <color name="green_accent">#FF4D8064</color>
+    <color name="purple_accent">#FF6F63B2</color>
+    <color name="error">#FFF95555</color>
+    <color name="overlay">#5202151E</color>
+    <color name="emoji_tint">#DE1F1F1F</color>
+    <color name="yellow_variant">#FF1F1E1C</color>
+    <color name="green_variant">#FF1C1F1D</color>
+    <color name="purple_variant">#FF1C1A33</color>
+    <color name="error_variant">#FF1F1111</color>
+    <color name="dark_switch">#FF151535</color>
+    <color name="light_switch">#FF49BAF2</color>
+</resources>

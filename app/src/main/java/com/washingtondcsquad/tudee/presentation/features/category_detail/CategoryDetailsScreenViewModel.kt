@@ -30,9 +30,10 @@ class CategoryDetailsScreenViewModel(val categoryService: CategoriesService) :
             onSuccess = {
                 updateState {
                     copy(
+                        categoryID = it.id,
                         isCategoryPredefined = it.isPredefined,
                         categoryTitle = it.title,
-                        categoryImagePath = it.iconPath.toString()
+                        categoryImagePath = if(it.iconPath is ImageSource.AddedByUser) (it.iconPath as AddedByUser).value else ""
                     )
                 }
             },
@@ -113,11 +114,12 @@ class CategoryDetailsScreenViewModel(val categoryService: CategoriesService) :
     fun editCategory(title: String, imagePath: String) {
         tryToExecute(
             request = {
+                val imageUrl = categoryService.saveCategoryImage(iconPath = imagePath)
                 categoryService.editCategory(
                     Category(
                         id = state.value.categoryID,
                         title = title,
-                        iconPath = AddedByUser(imagePath),
+                        iconPath = AddedByUser(imageUrl),
                         isPredefined = false
                     )
                 )
@@ -158,7 +160,9 @@ class CategoryDetailsScreenViewModel(val categoryService: CategoriesService) :
                 }
 
             },
-            onError = {}
+            onError = {
+                println("delete category:  ${it.message}")
+            }
         )
     }
 

@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
@@ -128,7 +129,7 @@ private fun TaskDetailsContent(
                 .padding(horizontal = 16.dp)
         ) {
             Text(
-                text = "Task details",
+                text = stringResource(R.string.task_details),
                 style = AppTheme.textStyle.title.large,
                 color = AppTheme.colors.title,
                 modifier = Modifier.padding(bottom = 16.dp)
@@ -170,7 +171,7 @@ private fun TaskDetailsContent(
                 )
 
                 TaskPriorityCard(
-                    priority = task.priority, modifier = Modifier.height(28.dp)
+                    priority = task.priority, modifier = Modifier.height(28.dp), isSelected = true
                 )
             }
             if (!isFinalStatus) {
@@ -212,7 +213,9 @@ private fun TaskDetailsContent(
                                 })
                     ) {
                         Text(
-                            text = "Move to ${task.status.next().toDisplayName()}",
+                            text = "${stringResource(R.string.move_to)}${
+                                task.status.next().toDisplayName()
+                            }",
                             color = AppTheme.colors.primary,
                             style = AppTheme.textStyle.label.large,
                             modifier = Modifier.align(Alignment.Center)

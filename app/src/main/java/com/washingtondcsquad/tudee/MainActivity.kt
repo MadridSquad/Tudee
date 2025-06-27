@@ -3,11 +3,9 @@ package com.washingtondcsquad.tudee
 import SplashScreen
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -18,6 +16,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -25,6 +24,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -46,6 +46,7 @@ import com.washingtondcsquad.tudee.presentation.features.category_detail.Categor
 import com.washingtondcsquad.tudee.presentation.features.home.HomeScreen
 import com.washingtondcsquad.tudee.presentation.features.onBoarding.OnBoardingScreen
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.TasksScreen
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
@@ -73,14 +74,10 @@ class MainActivity : ComponentActivity() {
                 when (val isOnboardingShown = isOnboardingShownState) {
                     null -> {
 
-                        SplashScreen(
-                            title = "Tudee",
-                            isDarkTheme =isDarkMode ,
-                        )
                     }
 
                     else -> {
-                        val startDestination = if (isOnboardingShown) {
+                        val onboarding = if (isOnboardingShown) {
                             "home"
                         } else {
                             "onboarding"
@@ -89,9 +86,10 @@ class MainActivity : ComponentActivity() {
                         val navBackStackEntry = navController.currentBackStackEntryAsState()
                         val currentDestination = navBackStackEntry.value?.destination?.route
 
+
                         Scaffold(
                             bottomBar = {
-                                AnimatedVisibility(currentDestination in bottomNavBarRoutes) {
+                                if (currentDestination in bottomNavBarRoutes) {
                                     TudeeNavigationBar(
                                         navBarItemDataList = navBarItemsList,
                                         navController = navController,
@@ -105,8 +103,19 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 NavHost(
                                     navController = navController,
-                                    startDestination = startDestination,
+                                    startDestination = "splash",
                                 ) {
+                                    composable(route = "splash") {
+                                        SplashScreen(
+                                            title = stringResource(R.string.app_name),
+                                            isDarkTheme =isDarkMode ,
+                                            onFinish = {
+                                                navController.navigate(onboarding) {
+                                                    popUpTo("splash") { inclusive = true }
+                                                }
+                                            },
+                                        )
+                                    }
                                     composable(route = "onboarding") {
                                         OnBoardingScreen(
                                             onFinish = {
@@ -161,6 +170,7 @@ class MainActivity : ComponentActivity() {
             }
             SnackbarHandler()
         }
+
     }
 }
 

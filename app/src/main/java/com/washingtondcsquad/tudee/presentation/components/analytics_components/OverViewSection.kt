@@ -34,7 +34,7 @@ fun OverViewSection(
     doneCount: Int, inProgressCount: Int, toDoCount: Int, modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
-        Text("Overview", style = AppTheme.textStyle.title.large, color = AppTheme.colors.title)
+        Text(stringResource(R.string.overview), style = AppTheme.textStyle.title.large, color = AppTheme.colors.title)
         Spacer(Modifier.height(8.dp))
         Row(
             Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)

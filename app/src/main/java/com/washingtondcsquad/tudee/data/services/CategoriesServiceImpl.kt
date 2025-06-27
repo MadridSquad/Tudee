@@ -14,8 +14,6 @@ import com.washingtondcsquad.tudee.domain.entity.Task
 import com.washingtondcsquad.tudee.domain.provider.StringProvider
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.ImageSaverService
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
 class CategoriesServiceImpl(
@@ -64,9 +62,7 @@ class CategoriesServiceImpl(
         }
     }
 
-
     override suspend fun editCategory(category: Category) {
-        deleteCategoryImage(category.iconPath)
         categoryDao.editCategory(category.toEntity())
     }
 
@@ -80,7 +76,6 @@ class CategoriesServiceImpl(
     override suspend fun getTasksByCategoryID(categoryId: CategoryID): List<Task> {
         return taskDao.getTasksByCategoryId(categoryId)
     }
-
 
     override suspend fun getCategoryById(categoryId: CategoryID): Category {
         return categoryDao.getCategoryById(categoryId).toDomain()

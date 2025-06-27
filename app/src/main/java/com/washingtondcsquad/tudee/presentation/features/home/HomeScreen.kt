@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -32,6 +31,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
@@ -48,18 +48,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.LocalInnerPaddingProvider
 import com.washingtondcsquad.tudee.R
+import com.washingtondcsquad.tudee.SnackbarHandler
 import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.presentation.components.CustomSwitchButton
 import com.washingtondcsquad.tudee.presentation.components.TaskCard
 import com.washingtondcsquad.tudee.presentation.components.TextLogo
 import com.washingtondcsquad.tudee.presentation.components.analytics_components.AnalyticsCard
+import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarController
+import com.washingtondcsquad.tudee.presentation.components.snack_bar.SnackbarEvent
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.add_task.AddNewTaskScreen
-import com.washingtondcsquad.tudee.presentation.features.edit_task.EditTaskScreen
+import com.washingtondcsquad.tudee.presentation.features.edit_task.EditTaskModalSheet
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
 import com.washingtondcsquad.tudee.presentation.features.task_details.TaskDetailsBottomSheet
 import com.washingtondcsquad.tudee.presentation.utils.SetStatusBarIconsColor
 import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.noRippleClick
+import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -68,6 +72,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsState()
+
 
     SetStatusBarIconsColor(false)
     HomeScreenContent(modifier = modifier, state = state, onRefreshData = {
@@ -83,12 +88,15 @@ private fun HomeScreenContent(
     onThemeToggle: (Boolean) -> Unit,
     onRefreshData: () -> Unit
 ) {
+    val scope = rememberCoroutineScope()
     val isEmptyState =
         state.inProgressTasks.isEmpty() and state.todoTasks.isEmpty() and state.doneTasks.isEmpty()
     var showEditTaskBottomSheet by remember { mutableStateOf(false) }
     var showAddNewTaskBottomSheet by rememberSaveable { mutableStateOf(false) }
     var showTaskDetailBottomSheet by rememberSaveable { mutableStateOf(false) }
     var currentTaskIdToShowDetail: TaskID by remember { mutableStateOf(TaskID(0L)) }
+
+    SnackbarHandler()
 
     Box(
         modifier = modifier
@@ -112,9 +120,7 @@ private fun HomeScreenContent(
         } else {
 
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .systemBarsPadding(),
+                modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Row(
@@ -205,8 +211,8 @@ private fun HomeScreenContent(
         if (showAddNewTaskBottomSheet) {
             AddNewTaskScreen(
                 onClickCancel = {
-                showAddNewTaskBottomSheet = false
-            },
+                    showAddNewTaskBottomSheet = false
+                },
                 onSuccessAddTask = { successMessage ->
 
                 },
@@ -219,16 +225,24 @@ private fun HomeScreenContent(
         }
 
         if (showEditTaskBottomSheet) {
-            EditTaskScreen(
-                taskId = TaskID(taskId = 1L),
+            EditTaskModalSheet(
+                taskId = currentTaskIdToShowDetail,
                 onClickCancel = {
                     showEditTaskBottomSheet = false
                 },
-                onSuccessEdit = {
-
+                onSuccessEdit = { message ->
+                    scope.launch {
+                        SnackbarController.sendEvent(
+                            event = SnackbarEvent(
+                                message = message
+                            )
+                        )
+                    }
                 },
-                onErrorEdit = {
-
+                onErrorEdit = { message ->
+                    scope.launch {
+                        SnackbarController.sendEvent(event = SnackbarEvent(message = message))
+                    }
                 },
             )
         }
@@ -238,20 +252,24 @@ private fun HomeScreenContent(
                 .noRippleClick {
                     showAddNewTaskBottomSheet = true
                 }
-                .align(Alignment.BottomEnd)
-        )
+                .align(Alignment.BottomEnd))
         if (showTaskDetailBottomSheet) {
-            ShowTaskDetails(currentTaskIdToShowDetail) {
+            ShowTaskDetails(currentTaskIdToShowDetail, onEditTask = {
+                showEditTaskBottomSheet = true
                 showTaskDetailBottomSheet = false
-            }
+
+            }, onDismiss = {
+                showTaskDetailBottomSheet = false
+            })
         }
     }
 }
 
 @Composable
-private fun ShowTaskDetails(taskId: TaskID, onDismiss: () -> Unit) {
+private fun ShowTaskDetails(taskId: TaskID, onDismiss: () -> Unit, onEditTask: () -> Unit) {
     TaskDetailsBottomSheet(
-        taskId = taskId, onDismiss = onDismiss, onEditTask = {})
+        taskId = taskId, onDismiss = onDismiss, onEditTask = onEditTask
+    )
 }
 
 @Composable
@@ -284,7 +302,7 @@ private fun TaskStatusLayout(
     modifier: Modifier = Modifier,
 ) {
     val items = remember {
-        tasks.shuffled().toMutableStateList()
+        tasks.toMutableStateList()
     }
     val numberOfItemPerRow = 3
     val widthPx = LocalWindowInfo.current.containerSize.width
@@ -336,7 +354,7 @@ private fun TaskStatusLayout(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(items.take(numberOfItemPerRow)) { item ->
+            items(tasks.take(numberOfItemPerRow)) { item ->
                 TaskCard(
                     taskUiState = item,
                     onTaskClicked = onTaskClick,
@@ -346,10 +364,10 @@ private fun TaskStatusLayout(
         }
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            contentPadding = PaddingValues(start = 16.dp , end = 16.dp , bottom = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            items(items.drop(numberOfItemPerRow).take(numberOfItemPerRow)) { item ->
+            items(tasks.drop(numberOfItemPerRow).take(numberOfItemPerRow)) { item ->
                 TaskCard(
                     taskUiState = item,
                     onTaskClicked = onTaskClick,
@@ -384,7 +402,8 @@ fun NoTasksPlaceHolder(modifier: Modifier = Modifier) {
         Column(
             verticalArrangement = Arrangement.spacedBy(4.dp),
             modifier = Modifier
-                .align(Alignment.TopStart).offset(x=19.dp,y=(-15).dp)
+                .align(Alignment.TopStart)
+                .offset(x = 19.dp, y = (-15).dp)
                 .shadow(
                     elevation = 12.dp,
                     shape = shape,
@@ -419,5 +438,5 @@ fun NoTasksPlaceHolder(modifier: Modifier = Modifier) {
 private fun Preview() {
     HomeScreenContent(
         modifier = Modifier, state = HomeUiState(
-    ), onRefreshData = {}, onThemeToggle = {})
+        ), onRefreshData = {}, onThemeToggle = {})
 }

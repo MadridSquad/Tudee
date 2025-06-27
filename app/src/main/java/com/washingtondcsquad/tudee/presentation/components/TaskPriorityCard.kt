@@ -44,7 +44,7 @@ fun TaskPriorityCard(
             tint =if (isSelected ) AppTheme.colors.onPrimary else AppTheme.colors.hint,
         )
         Text(
-            text = priority.name.lowercase().replaceFirstChar { it.uppercase() },
+            text = priority.getTitle().lowercase().replaceFirstChar { it.uppercase() },
             color = if (isSelected ) AppTheme.colors.onPrimary else AppTheme.colors.hint,
         )
 

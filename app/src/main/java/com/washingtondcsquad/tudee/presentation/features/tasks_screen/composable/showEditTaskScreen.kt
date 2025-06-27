@@ -3,7 +3,7 @@ package com.washingtondcsquad.tudee.presentation.features.tasks_screen.composabl
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import com.washingtondcsquad.tudee.domain.entity.TaskID
-import com.washingtondcsquad.tudee.presentation.features.edit_task.EditTaskScreen
+import com.washingtondcsquad.tudee.presentation.features.edit_task.EditTaskModalSheet
 
 @Composable
 fun ShowEditTaskScreen(
@@ -12,7 +12,7 @@ fun ShowEditTaskScreen(
     taskId: TaskID
 ) {
 
-    EditTaskScreen(
+    EditTaskModalSheet(
         taskId = taskId,
         onClickCancel = { showTaskDetails.value = false },
         onSuccessEdit = {

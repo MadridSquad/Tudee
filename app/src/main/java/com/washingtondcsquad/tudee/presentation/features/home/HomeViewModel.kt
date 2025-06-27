@@ -1,5 +1,6 @@
 package com.washingtondcsquad.tudee.presentation.features.home
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.ImageSource
@@ -12,6 +13,7 @@ import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiSta
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TudeeStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -60,12 +62,18 @@ class HomeViewModel(
 
     private fun loadData() {
         viewModelScope.launch {
-            tasksService.getAllTasks().collect { tasks ->
-                categoryService.getAllCategories().collect { categoryList ->
+            tasksService.getAllTasks().combine(categoryService.getAllCategories()){tasks,category->
+                tasks to category
+            }.collect {
+                val tasks = it.first
+                val categories = it.second
+                Log.e("MY_TAG","this is task ")
+                    Log.e("MY_TAG","this is catgro ")
                     val inProgresTasks = tasks.filter { it.status == TaskStatus.IN_PROGRESS }
                     val doneTasks = tasks.filter { it.status == TaskStatus.DONE }
                     val toDoTasks = tasks.filter { it.status == TaskStatus.TODO }
                     withContext(Dispatchers.Main) {
+
                         updateState {
                             copy(
                                 inProgressTasks = inProgresTasks.map { progressTask ->
@@ -76,7 +84,7 @@ class HomeViewModel(
                                         taskDescription = progressTask.description,
                                         taskPriority = progressTask.priority,
                                         taskStatus = progressTask.status.toString(),
-                                        categoryImage = categoryList.find { it.id == progressTask.categoryId }?.iconPath
+                                        categoryImage = categories.find { it.id == progressTask.categoryId }?.iconPath
                                             ?: ImageSource.PredefinedDrawable(R.drawable.gym)
                                     )
                                 },
@@ -88,7 +96,7 @@ class HomeViewModel(
                                         taskDescription = progressTask.description,
                                         taskPriority = progressTask.priority,
                                         taskStatus = progressTask.status.toString(),
-                                        categoryImage = categoryList.find { it.id == progressTask.categoryId }?.iconPath
+                                        categoryImage = categories.find { it.id == progressTask.categoryId }?.iconPath
                                             ?: ImageSource.PredefinedDrawable(R.drawable.gym)
                                     )
                                 },
@@ -100,14 +108,19 @@ class HomeViewModel(
                                         taskDescription = progressTask.description,
                                         taskPriority = progressTask.priority,
                                         taskStatus = progressTask.status.toString(),
-                                        categoryImage = categoryList.find { it.id == progressTask.categoryId }?.iconPath
+                                        categoryImage = categories.find { it.id == progressTask.categoryId }?.iconPath
                                             ?: ImageSource.PredefinedDrawable(R.drawable.gym)
                                     )
-                                }
+                                },
+                                tudeeStatus = calculateOverviewAnalytics(
+                                    inProgressCount =inProgresTasks.size ,
+                                    todoCount = toDoTasks.size,
+                                    doneCount = doneTasks.size,
+                                )
                             )
                         }
                     }
-                }
+
             }
         }
     }

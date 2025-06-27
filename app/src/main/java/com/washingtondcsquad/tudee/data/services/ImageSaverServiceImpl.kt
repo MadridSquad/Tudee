@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable
 import coil.imageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
+import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.data.localSource.utils.toMD5
 import com.washingtondcsquad.tudee.domain.services.ImageSaverService
 import kotlinx.coroutines.Dispatchers
@@ -39,12 +40,11 @@ class ImageSaverServiceImpl(private val context: Context) : ImageSaverService {
     }
 
     override suspend fun deleteImage(imageUrl: String): Boolean {
-        val fileName = imageUrl.toString().toMD5() + ".png"
-        val file = File(context.filesDir, fileName)
+        val file = File(imageUrl)
         return if (file.exists()) {
             file.delete()
         } else {
-            throw IllegalStateException("Failed to delete image")
+            throw IllegalStateException(context.getString(R.string.failed_to_delete_image))
         }
     }
 }
