@@ -18,7 +18,13 @@ fun SplashScreen(
     modifier: Modifier = Modifier,
     title: String,
     isDarkTheme: Boolean,
+    onFinish: () -> Unit = {}
 ){
+    LaunchedEffect(Unit) {
+        delay(700)
+        onFinish()
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()

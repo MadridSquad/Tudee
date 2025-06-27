@@ -16,6 +16,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -45,6 +46,7 @@ import com.washingtondcsquad.tudee.presentation.features.category_detail.Categor
 import com.washingtondcsquad.tudee.presentation.features.home.HomeScreen
 import com.washingtondcsquad.tudee.presentation.features.onBoarding.OnBoardingScreen
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.TasksScreen
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
@@ -72,14 +74,10 @@ class MainActivity : ComponentActivity() {
                 when (val isOnboardingShown = isOnboardingShownState) {
                     null -> {
 
-                        SplashScreen(
-                            title = stringResource(R.string.app_name),
-                            isDarkTheme =isDarkMode ,
-                        )
                     }
 
                     else -> {
-                        val startDestination = if (isOnboardingShown) {
+                        val onboarding = if (isOnboardingShown) {
                             "home"
                         } else {
                             "onboarding"
@@ -87,6 +85,7 @@ class MainActivity : ComponentActivity() {
                         val navController = rememberNavController()
                         val navBackStackEntry = navController.currentBackStackEntryAsState()
                         val currentDestination = navBackStackEntry.value?.destination?.route
+
 
                         Scaffold(
                             bottomBar = {
@@ -104,8 +103,19 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 NavHost(
                                     navController = navController,
-                                    startDestination = startDestination,
+                                    startDestination = "splash",
                                 ) {
+                                    composable(route = "splash") {
+                                        SplashScreen(
+                                            title = stringResource(R.string.app_name),
+                                            isDarkTheme =isDarkMode ,
+                                            onFinish = {
+                                                navController.navigate(onboarding) {
+                                                    popUpTo(onboarding) { inclusive = true }
+                                                }
+                                            },
+                                        )
+                                    }
                                     composable(route = "onboarding") {
                                         OnBoardingScreen(
                                             onFinish = {
@@ -160,6 +170,7 @@ class MainActivity : ComponentActivity() {
             }
             SnackbarHandler()
         }
+
     }
 }
 

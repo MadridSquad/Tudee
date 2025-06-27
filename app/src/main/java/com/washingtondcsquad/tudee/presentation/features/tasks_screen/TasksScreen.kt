@@ -62,13 +62,10 @@ import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.ShowEditTaskScreen
 import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.TasksTabRow
 import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.noRippleClick
-import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.koin.androidx.compose.koinViewModel
-import java.time.ZoneId
 
 
 @Composable
@@ -291,19 +288,32 @@ fun TasksScreenContent(
             AddNewTaskScreen(
                 onClickCancel = {
                     showAddNewTaskBottomSheet = false
-                }, onSuccessAddTask = { successMessage ->
+                },
+                onSuccessAddTask = { successMessage ->
 
-
-                }, onErrorAddTask = { errorMessage ->
 
                 },
+                onErrorAddTask = { errorMessage ->
 
+                },
 
                 taskDate = Instant.fromEpochMilliseconds(
                     tasksUiState.selectedDateInMillis
                 ).toLocalDateTime(
                     TimeZone.currentSystemDefault()
                 ).date
+
+                , taskStates = when(pagerState.currentPage){
+                    0 -> {
+                        TaskStatus.IN_PROGRESS
+                    }
+                    1->{
+                        TaskStatus.TODO
+                    }
+                    else -> {
+                        TaskStatus.DONE
+                    }
+                }
             )
         }
 
