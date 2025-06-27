@@ -111,7 +111,7 @@ class MainActivity : ComponentActivity() {
                                             isDarkTheme =isDarkMode ,
                                             onFinish = {
                                                 navController.navigate(onboarding) {
-                                                    popUpTo(onboarding) { inclusive = true }
+                                                    popUpTo("splash") { inclusive = true }
                                                 }
                                             },
                                         )
