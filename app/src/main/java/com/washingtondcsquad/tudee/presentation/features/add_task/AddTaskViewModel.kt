@@ -1,6 +1,6 @@
 package com.washingtondcsquad.tudee.presentation.features.add_task
 
-import androidx.compose.material3.Snackbar
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.Category
@@ -139,7 +139,9 @@ class AddTaskViewModel(
     fun onClickAdd(
         onSuccess: (message: String) -> Unit,
         onError: (message: String) -> Unit,
+        taskStatus: TaskStatus
     ) {
+        Log.e("MY_TAG",taskStatus.toString())
         tryToExecute(
             request = {
                 tasksService.createTask(
@@ -150,7 +152,7 @@ class AddTaskViewModel(
                         priority = state.value.selectedPriority!!,
                         id = TaskID(0),
                         categoryId = state.value.selectedCategory!!.id  ,
-                        status = TaskStatus.TODO
+                        status = taskStatus
                     )
                 )
             },

@@ -1,18 +1,18 @@
 package com.washingtondcsquad.tudee.presentation.features.categories
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -34,6 +35,7 @@ import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.CategoryID
 import com.washingtondcsquad.tudee.presentation.components.CategoryCard
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
+import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.noRippleClick
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -89,7 +91,7 @@ fun CategoriesContent(
                         color = AppTheme.colors.surface
                     )
                     .padding(horizontal = 16.dp),
-                columns = GridCells.Fixed(3),
+                columns = GridCells.Adaptive(minSize = 100.dp),
                 contentPadding = PaddingValues(top = 12.dp, bottom = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(24.dp)
@@ -110,26 +112,14 @@ fun CategoriesContent(
             }
 
         }
-        Button(
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Transparent, contentColor = Color.Transparent
-            ),
-            contentPadding = PaddingValues(18.dp),
-            onClick = { showBottomSheet = true },
+
+        FabIcon(
             modifier = Modifier
+                .noRippleClick {
+                    showBottomSheet = true
+                }
                 .align(Alignment.BottomEnd)
-                .padding(bottom = 18.dp, end = 12.dp)
-                .background(
-                    Brush.verticalGradient(AppTheme.colors.primaryGradient),
-                    shape = RoundedCornerShape(100)
-                )
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.add_category),
-                contentDescription = "Add Category",
-                tint = AppTheme.colors.onPrimary
-            )
-        }
+        )
 
         CategoryBottomSheetScreen(
             bottomSheetTitle = "Add New Category",
@@ -146,6 +136,29 @@ fun CategoriesContent(
     }
 
 
+}
+
+@Composable
+private fun FabIcon(
+    modifier: Modifier,
+) {
+    Icon(
+        painter = painterResource(R.drawable.add_category),
+        contentDescription = "Add Category",
+        tint = AppTheme.colors.onPrimary,
+        modifier = modifier
+            .padding(end = 16.dp, bottom = 16.dp)
+            .shadow(
+                elevation = 4.dp,
+                shape = CircleShape,
+                clip = false,
+            )
+            .background(
+                brush = Brush.linearGradient(AppTheme.colors.primaryGradient), shape = CircleShape
+            )
+            .padding(18.dp)
+            .size(28.dp)
+    )
 }
 
 @Preview(showBackground = true)
