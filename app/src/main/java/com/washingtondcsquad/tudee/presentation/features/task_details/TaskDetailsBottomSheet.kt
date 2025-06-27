@@ -171,7 +171,7 @@ private fun TaskDetailsContent(
                 )
 
                 TaskPriorityCard(
-                    priority = task.priority, modifier = Modifier.height(28.dp)
+                    priority = task.priority, modifier = Modifier.height(28.dp), isSelected = true
                 )
             }
             if (!isFinalStatus) {
@@ -213,7 +213,9 @@ private fun TaskDetailsContent(
                                 })
                     ) {
                         Text(
-                            text = "${stringResource(R.string.move_to)}${task.status.next().toDisplayName()}" ,
+                            text = "${stringResource(R.string.move_to)}${
+                                task.status.next().toDisplayName()
+                            }",
                             color = AppTheme.colors.primary,
                             style = AppTheme.textStyle.label.large,
                             modifier = Modifier.align(Alignment.Center)

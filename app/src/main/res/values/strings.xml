@@ -83,6 +83,8 @@
     <string name="medium">Medium</string>
     <string name="high">High</string>
     <string name="task_details">Task details</string>
-    <string name="move_to">"Move to "</string>"
+    <string name="move_to">"Move to "</string>
+    <string name="todo">To Do</string>
+    <string name="no_tasks_in">"No tasks in "</string>"
 
 </resources>

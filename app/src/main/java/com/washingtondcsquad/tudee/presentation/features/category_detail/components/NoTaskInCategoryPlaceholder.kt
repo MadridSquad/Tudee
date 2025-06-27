@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
@@ -42,7 +43,7 @@ fun NoTaskInCategoryPlaceHolder(categoryName: String,modifier: Modifier = Modifi
 
             ) {
             Text(
-                text = "No tasks in ${formatCategoryName(categoryName)} category!",
+                text = "${stringResource(R.string.no_tasks_in)}${formatCategoryName(categoryName)} ${stringResource(R.string.category)} !",
                 color = AppTheme.colors.body,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,

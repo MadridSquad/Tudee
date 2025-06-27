@@ -87,5 +87,7 @@
     <string name="medium">نص و نص</string>
     <string name="high">كلش مهم</string>
     <string name="task_details">التفاصيل</string>
-    <string name="move_to">"انقلها الى "</string>"
+    <string name="move_to">"انقلها الى "</string>
+    <string name="todo">مهام</string>
+    <string name="no_tasks_in">"ماكو اي مهام "</string>"
 </resources>

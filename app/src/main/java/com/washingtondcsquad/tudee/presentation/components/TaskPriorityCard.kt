@@ -31,7 +31,7 @@ fun TaskPriorityCard(
         modifier = modifier
             .clickable(onClick = onClick)
             .background(
-                color = getBackgroundColor(priority, true),
+                color = getBackgroundColor(priority, isSelected),
                 shape = RoundedCornerShape(100)
             )
             .padding(vertical = 6.dp, horizontal = 8.dp),
