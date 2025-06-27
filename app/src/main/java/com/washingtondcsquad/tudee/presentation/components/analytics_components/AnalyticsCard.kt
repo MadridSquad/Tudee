@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
@@ -24,6 +25,7 @@ import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TudeeStatus
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @Composable
 fun AnalyticsCard(
@@ -47,11 +49,13 @@ fun AnalyticsCard(
                 painter = painterResource(R.drawable.calendar_icon),
                 contentDescription = "calender icon",
                 tint = AppTheme.colors.body,
-                modifier = Modifier.size(16.dp).align(alignment = Alignment.CenterVertically)
+                modifier = Modifier
+                    .size(16.dp)
+                    .align(alignment = Alignment.CenterVertically)
             )
             Spacer(Modifier.width(8.dp))
             Text(
-                "today, ${LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy"))}",
+                "${stringResource(R.string.today)} ${LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.getDefault() ))}",
                 style = AppTheme.textStyle.label.medium,
                 color = AppTheme.colors.body
             )

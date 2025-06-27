@@ -23,6 +23,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -72,7 +73,7 @@ class MainActivity : ComponentActivity() {
                     null -> {
 
                         SplashScreen(
-                            title = "Tudee",
+                            title = stringResource(R.string.app_name),
                             isDarkTheme =isDarkMode ,
                         )
                     }

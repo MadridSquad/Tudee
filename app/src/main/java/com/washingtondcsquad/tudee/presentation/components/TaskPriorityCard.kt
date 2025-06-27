@@ -31,7 +31,7 @@ fun TaskPriorityCard(
         modifier = modifier
             .clickable(onClick = onClick)
             .background(
-                color = getBackgroundColor(priority, isSelected),
+                color = getBackgroundColor(priority, true),
                 shape = RoundedCornerShape(100)
             )
             .padding(vertical = 6.dp, horizontal = 8.dp),
@@ -44,7 +44,7 @@ fun TaskPriorityCard(
             tint =if (isSelected ) AppTheme.colors.onPrimary else AppTheme.colors.hint,
         )
         Text(
-            text = priority.name.lowercase().replaceFirstChar { it.uppercase() },
+            text = priority.getTitle().lowercase().replaceFirstChar { it.uppercase() },
             color = if (isSelected ) AppTheme.colors.onPrimary else AppTheme.colors.hint,
         )
 

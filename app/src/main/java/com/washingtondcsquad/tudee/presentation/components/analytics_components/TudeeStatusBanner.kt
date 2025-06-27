@@ -40,7 +40,7 @@ fun TudeeStatusBanner(
         Column(modifier = Modifier.widthIn(max = 231.dp)) {
             Row {
                 Text(
-                    tudeeStatus.title,
+                    tudeeStatus.getTitle(),
                     style = AppTheme.textStyle.title.small,
                     color = AppTheme.colors.title
                 )

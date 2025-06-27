@@ -66,5 +66,23 @@
     <string name="tasks_screen_tap_row_done">Done</string>
     <string name="failed_to_delete_image">Failed to delete image</string>
     <string name="error_edit_task">Error edit task</string>
+    <string name="categories">Categories</string>
+    <string name="today">today,</string>
+    <string name="overview">Overview</string>
+    <string name="you_re_doing_amazing_tudee_is_proud_of_you">You’re doing amazing!!!\nTudee is proud of you.</string>
+    <string name="you_re_just_scrolling_not_working_tudee_is_watching_back_to_work">You’re just scrolling, not working. Tudee is watching. Back to work!!!</string>
+    <string name="fill_your_day_with_something_awesome">Fill your day with something awesome.</string>
+    <string name="you_ve_completed"> You\'ve completed </string>
+    <string name="out_of">out of </string>
+    <string name="tasks_Keep_going">tasks. Keep going!</string>
+    <string name="stay_working">Stay working!</string>
+    <string name="tadaa">Tadaa!</string>
+    <string name="zero_progress">Zero progress?!</string>
+    <string name="nothing_on_your_list">Nothing on your list…</string>
+    <string name="low">Low</string>
+    <string name="medium">Medium</string>
+    <string name="high">High</string>
+    <string name="task_details">Task details</string>
+    <string name="move_to">"Move to "</string>"
 
 </resources>

@@ -79,7 +79,7 @@ fun CategoriesContent(
         ) {
             Text(
                 modifier = Modifier.padding(vertical = 20.dp, horizontal = 16.dp),
-                text = "Categories",
+                text = stringResource(R.string.categories),
                 color = AppTheme.colors.title,
                 style = AppTheme.textStyle.title.large
             )
