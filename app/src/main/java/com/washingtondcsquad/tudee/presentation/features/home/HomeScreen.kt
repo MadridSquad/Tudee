@@ -96,6 +96,8 @@ private fun HomeScreenContent(
     var showTaskDetailBottomSheet by rememberSaveable { mutableStateOf(false) }
     var currentTaskIdToShowDetail: TaskID by remember { mutableStateOf(TaskID(0L)) }
 
+    SnackbarHandler()
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -121,7 +123,6 @@ private fun HomeScreenContent(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                SnackbarHandler()
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
