@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.Category
 import com.washingtondcsquad.tudee.domain.entity.Priority
+import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.presentation.components.CancelableActionLayout
 import com.washingtondcsquad.tudee.presentation.components.DatePickerModal
 import com.washingtondcsquad.tudee.presentation.components.TaskScreenComponents
@@ -34,6 +35,7 @@ fun AddNewTaskScreen(
     onErrorAddTask: (message: String) -> Unit,
     taskDate: LocalDate,
     modifier: Modifier = Modifier,
+    taskStates: TaskStatus = TaskStatus.TODO,
     viewModel: AddTaskViewModel = koinViewModel(
         parameters = {
             parametersOf(
@@ -63,6 +65,7 @@ fun AddNewTaskScreen(
         onErrorAddTask = onErrorAddTask,
         onClickAdd = viewModel::onClickAdd,
         onClickCancel = onClickCancel,
+        taskStates  = taskStates,
         modifier = modifier,
     )
 }
@@ -73,7 +76,7 @@ private fun AddNewTaskContent(
     state: AddTaskUiState,
     bottomSheetState: SheetState,
     taskData: LocalDate,
-    updateData:(data: LocalDate)->Unit,
+    updateData: (data: LocalDate) -> Unit,
     onTitleChange: (newTitle: String) -> Unit,
     onDescriptionChange: (newDescription: String) -> Unit,
     onDateSelected: (dateAsMilliseconds: Long) -> Unit,
@@ -86,8 +89,10 @@ private fun AddNewTaskContent(
     onClickAdd: (
         onSuccess: (message: String) -> Unit,
         onError: (message: String) -> Unit,
+        taskStats: TaskStatus
     ) -> Unit,
     onClickCancel: () -> Unit,
+    taskStates: TaskStatus,
     modifier: Modifier = Modifier
 ) {
     LaunchedEffect(Unit) {
@@ -141,7 +146,8 @@ private fun AddNewTaskContent(
                     onClickCancel()
                     onClickAdd(
                         onSuccessAddTask,
-                        onErrorAddTask
+                        onErrorAddTask,
+                        taskStates
                     )
                 },
                 onCancel = {
@@ -179,7 +185,8 @@ fun AddTaskPreview(
         onCategorySelected = {},
         onSuccessAddTask = {},
         onErrorAddTask = {},
-        onClickAdd = { _, _ -> },
+        onClickAdd = { _, _, _-> },
+        taskStates = TaskStatus.TODO,
         onClickCancel = {}
     )
 }
