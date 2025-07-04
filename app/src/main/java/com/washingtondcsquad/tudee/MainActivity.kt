@@ -16,7 +16,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -45,8 +44,7 @@ import com.washingtondcsquad.tudee.presentation.features.categories.CategoriesSc
 import com.washingtondcsquad.tudee.presentation.features.category_detail.CategoryDetailScreen
 import com.washingtondcsquad.tudee.presentation.features.home.HomeScreen
 import com.washingtondcsquad.tudee.presentation.features.onBoarding.OnBoardingScreen
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.TasksScreen
-import kotlinx.coroutines.delay
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.TasksScreen
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 

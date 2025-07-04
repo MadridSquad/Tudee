@@ -11,7 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.TasksTab
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.composable.TasksTab
 
 @Composable
 fun TaskStatusTabs(

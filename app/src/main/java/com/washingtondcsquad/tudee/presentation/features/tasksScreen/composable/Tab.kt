@@ -1,4 +1,4 @@
-package com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable
+package com.washingtondcsquad.tudee.presentation.features.tasksScreen.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

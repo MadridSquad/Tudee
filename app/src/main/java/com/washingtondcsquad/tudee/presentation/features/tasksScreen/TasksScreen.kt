@@ -1,4 +1,4 @@
-package com.washingtondcsquad.tudee.presentation.features.tasks_screen
+package com.washingtondcsquad.tudee.presentation.features.tasksScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -18,7 +17,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,8 +32,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
@@ -56,16 +52,18 @@ import com.washingtondcsquad.tudee.presentation.features.add_task.AddNewTaskScre
 import com.washingtondcsquad.tudee.presentation.features.delete_task.ConfirmDeleteTask
 import com.washingtondcsquad.tudee.presentation.features.delete_task.DeleteTaskScroll
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.ChangeMonthButton
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.DatePickerComponent
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.NoTasks
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.ShowEditTaskScreen
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.TasksTabRow
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.composable.ChangeMonthButton
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.composable.DatePickerComponent
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.composable.NoTasks
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.composable.ShowEditTaskScreen
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.composable.TasksScreenFabIcon
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.composable.TasksTabRow
 import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.noRippleClick
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.koin.androidx.compose.koinViewModel
+
 
 
 @Composable
@@ -272,7 +270,7 @@ fun TasksScreenContent(
 
             selectedTaskToDelete.value?.let { taskToDelete ->
                 ConfirmDeleteTask(deleteOnClick = {
-                    tasksViewModel.deleteTask(taskToDelete.taskId)
+                    tasksViewModel.deleteTask(taskToDelete)
                     selectedTaskToDelete.value = null
                     showSnackBar.value = true
                 }, cancelOnClick = {
@@ -318,8 +316,7 @@ fun TasksScreenContent(
             )
         }
 
-
-        FabIcon(
+        TasksScreenFabIcon(
             modifier = Modifier
                 .noRippleClick {
                     showAddNewTaskBottomSheet = true
@@ -352,24 +349,5 @@ fun TasksScreenContent(
     }
 }
 
-@Composable
-private fun FabIcon(modifier: Modifier) {
-    Icon(
-        painter = painterResource(R.drawable.note_add_icon),
-        contentDescription = null,
-        tint = AppTheme.colors.onPrimary,
-        modifier = modifier
-            .padding(end = 16.dp, bottom = 16.dp)
-            .shadow(
-                elevation = 4.dp,
-                shape = CircleShape,
-                clip = false,
-            )
-            .background(
-                brush = Brush.linearGradient(AppTheme.colors.primaryGradient), shape = CircleShape
-            )
-            .padding(18.dp)
-            .size(28.dp)
-    )
-}
+
 
