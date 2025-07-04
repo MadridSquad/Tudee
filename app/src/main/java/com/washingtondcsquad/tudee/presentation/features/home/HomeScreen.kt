@@ -50,6 +50,7 @@ import com.washingtondcsquad.tudee.LocalInnerPaddingProvider
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.SnackbarHandler
 import com.washingtondcsquad.tudee.domain.entity.TaskID
+import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.presentation.components.CustomSwitchButton
 import com.washingtondcsquad.tudee.presentation.components.TaskCard
 import com.washingtondcsquad.tudee.presentation.components.TextLogo
@@ -70,12 +71,12 @@ import kotlinx.datetime.toLocalDateTime
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = koinViewModel()) {
+fun HomeScreen(navigateToTaskScreen:(TaskStatus) ->Unit,modifier: Modifier = Modifier, viewModel: HomeViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsState()
 
 
     SetStatusBarIconsColor(false)
-    HomeScreenContent(modifier = modifier, state = state, onRefreshData = {
+    HomeScreenContent(navigateToTaskScreen=navigateToTaskScreen,modifier = modifier, state = state, onRefreshData = {
         viewModel.refresh()
     }, onThemeToggle = { viewModel.onThemeSwitched(it) })
 }
@@ -83,6 +84,7 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = koinVie
 
 @Composable
 private fun HomeScreenContent(
+    navigateToTaskScreen:(TaskStatus) ->Unit,
     modifier: Modifier = Modifier,
     state: HomeUiState,
     onThemeToggle: (Boolean) -> Unit,
@@ -175,7 +177,10 @@ private fun HomeScreenContent(
                         tudeeStatus = state.tudeeStatus,
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
-                            .padding(top = 16.dp)
+                            .padding(top = 16.dp),
+                        onDoneClick = { navigateToTaskScreen(TaskStatus.DONE) },
+                        onInProgressClick = { navigateToTaskScreen(TaskStatus.IN_PROGRESS) },
+                        onToDoClick = { navigateToTaskScreen(TaskStatus.TODO) }
                     )
 
                     if (isEmptyState) {
@@ -438,5 +443,7 @@ fun NoTasksPlaceHolder(modifier: Modifier = Modifier) {
 private fun Preview() {
     HomeScreenContent(
         modifier = Modifier, state = HomeUiState(
-        ), onRefreshData = {}, onThemeToggle = {})
+        ), onRefreshData = {}, onThemeToggle = {},
+        navigateToTaskScreen = {}
+    )
 }

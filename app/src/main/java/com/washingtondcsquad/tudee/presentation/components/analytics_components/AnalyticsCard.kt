@@ -33,7 +33,10 @@ fun AnalyticsCard(
     inProgressCount: Int,
     toDoCount: Int,
     tudeeStatus: TudeeStatus,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onDoneClick:()-> Unit ={},
+    onInProgressClick:()-> Unit={},
+    onToDoClick:()-> Unit={}
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -70,7 +73,10 @@ fun AnalyticsCard(
             doneCount = doneCount,
             inProgressCount = inProgressCount,
             toDoCount = toDoCount,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            onDoneClick ={onDoneClick()},
+            onToDoClick={onToDoClick()},
+            onInProgressClick = {onInProgressClick()}
         )
 
     }

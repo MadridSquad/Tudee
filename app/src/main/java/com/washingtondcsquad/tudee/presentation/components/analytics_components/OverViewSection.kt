@@ -3,6 +3,7 @@ package com.washingtondcsquad.tudee.presentation.components.analytics_components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,23 +32,45 @@ import com.washingtondcsquad.tudee.presentation.design.AppTheme
 
 @Composable
 fun OverViewSection(
-    doneCount: Int, inProgressCount: Int, toDoCount: Int, modifier: Modifier = Modifier
+    doneCount: Int,
+    inProgressCount: Int,
+    toDoCount: Int,
+    modifier: Modifier = Modifier,
+    onDoneClick: () -> Unit ={},
+    onInProgressClick: () -> Unit ={},
+    onToDoClick: () -> Unit ={}
 ) {
-    Column(modifier = modifier.fillMaxWidth()) {
+    Column(modifier.fillMaxWidth()) {
         Text(stringResource(R.string.overview), style = AppTheme.textStyle.title.large, color = AppTheme.colors.title)
         Spacer(Modifier.height(8.dp))
         Row(
-            Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)
+            Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            TaskStatusCountCard(TaskStatus.DONE, doneCount, Modifier.weight(1f))
-            TaskStatusCountCard(TaskStatus.IN_PROGRESS, inProgressCount, Modifier.weight(1f))
-            TaskStatusCountCard(TaskStatus.TODO, toDoCount, Modifier.weight(1f))
+            TaskStatusCountCard(
+                TaskStatus.DONE,
+                doneCount,
+                Modifier.weight(1f),
+                onDoneClick
+            )
+            TaskStatusCountCard(
+                TaskStatus.IN_PROGRESS,
+                inProgressCount,
+                Modifier.weight(1f),
+                onInProgressClick
+            )
+            TaskStatusCountCard(
+                TaskStatus.TODO,
+                toDoCount,
+                Modifier.weight(1f),
+                onToDoClick
+            )
         }
     }
 }
 
 @Composable
-fun TaskStatusCountCard(taskStatus: TaskStatus, count: Int, modifier: Modifier = Modifier) {
+fun TaskStatusCountCard(taskStatus: TaskStatus, count: Int, modifier: Modifier = Modifier,onClick:()->Unit) {
     var bgColor: Color = getCardBackgroundColor(taskStatus = taskStatus)
     var icon: Painter = getCardIcon(taskStatus = taskStatus)
     var title: String = getCardTitle(taskStatus = taskStatus)
@@ -55,7 +78,7 @@ fun TaskStatusCountCard(taskStatus: TaskStatus, count: Int, modifier: Modifier =
     Box(
         modifier
             .background(bgColor, shape = RoundedCornerShape(20.dp))
-            .clip(shape = RoundedCornerShape(20.dp))
+            .clip(shape = RoundedCornerShape(20.dp)).clickable { onClick() }
     ) {
         Column(
             modifier = Modifier
@@ -141,7 +164,8 @@ fun getCardTitle(taskStatus: TaskStatus): String {
 @Composable
 private fun PreviewTaskStatusCount() {
     AppTheme(useDarkTheme = false) {
-        OverViewSection(doneCount = 6, inProgressCount = 6, toDoCount = 6)
+        OverViewSection(doneCount = 6, inProgressCount = 6, toDoCount = 6,
+            onInProgressClick = {}, onToDoClick = {}, onDoneClick = {})
     }
 
 }
