@@ -271,7 +271,7 @@ fun TasksScreenContent(
 
             selectedTaskToDelete.value?.let { taskToDelete ->
                 ConfirmDeleteTask(deleteOnClick = {
-                    tasksViewModel.deleteTask(taskToDelete.taskId)
+                    tasksViewModel.deleteTask(taskToDelete)
                     selectedTaskToDelete.value = null
                     showSnackBar.value = true
                 }, cancelOnClick = {

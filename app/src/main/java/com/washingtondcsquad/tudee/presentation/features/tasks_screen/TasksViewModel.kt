@@ -1,12 +1,8 @@
 package com.washingtondcsquad.tudee.presentation.features.tasks_screen
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
-import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.CategoryID
-import com.washingtondcsquad.tudee.domain.entity.ImageSource
 import com.washingtondcsquad.tudee.domain.entity.Task
-import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
@@ -38,33 +34,25 @@ class TasksViewModel(
         tasksList = emptyList()
     )
 ) {
+
     init {
         observeTasks()
     }
-    var snackBarMessage = mutableStateOf<String?>(null)
 
-    fun deleteTask(taskId: TaskID) = tryToExecute(
+    fun deleteTask(taskUi: TaskUiState) = tryToExecute(
         request = {
-            val taskUi = state.value.tasksList.find { it.taskId == taskId }
-
-            val task = taskUi?.taskDate?.let {
-                Task(
+            val task = Task(
                     id = taskUi.taskId,
                     title = taskUi.taskTitle,
                     description = taskUi.taskDescription,
                     priority = taskUi.taskPriority,
                     status = TaskStatus.valueOf(taskUi.taskStatus),
-                    date = LocalDateParser(taskUi.taskDate),
+                date = LocalDateParser(taskUi.taskDate!!),
                     categoryId = CategoryID(0L),
                 )
-            }
-
-            if (task != null) {
                 tasksService.deleteTask(task)
-            }
         },
         onSuccess = {
-            snackBarMessage.value = "Deleted task successfully."
             observeTasks()
         },
         onError = {
@@ -197,7 +185,6 @@ class TasksViewModel(
     fun clearDatePicker(): Long {
         return todayInMillis()
     }
-
 
 }
 
