@@ -45,13 +45,12 @@ class TasksViewModel(
             observeTasks()
         },
         onError = {
-            onError(it)
         }
     )
 
 
     private fun observeTasks() {
-       viewModelScope.launch {
+        viewModelScope.launch {
             tasksService.getAllTasks().collect { tasks ->
                 val tasksForUiState = tasks.map {
                     val category = categoriesService.getCategoryById(it.categoryId)
@@ -71,17 +70,6 @@ class TasksViewModel(
                 }
             }
         }
-    }
-    private fun onSuccess(response: Unit) {
-
-    }
-
-    private fun onError(error: Throwable) {
-
-    }
-
-    fun onTaskClicked(taskId: Int) {
-
     }
 
     fun onDateSelectedFromPicker(millis: Long) {
