@@ -123,7 +123,7 @@ fun DeleteTaskIllustration() {
     ) {
         Image(
             painter = painterResource(R.drawable.delete_task_illustration),
-            contentDescription = "Robot: Are you sure to delete task",
+            contentDescription = stringResource(R.string.are_you_sure_to_delete_task),
             modifier = Modifier
                 .size(width = 107.dp, height = 100.dp)
                 .align(Alignment.CenterHorizontally),

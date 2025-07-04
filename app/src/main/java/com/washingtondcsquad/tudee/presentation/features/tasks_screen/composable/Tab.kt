@@ -42,8 +42,10 @@ fun TasksTab(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = tabName,
-                    color = if (selectedTabIndex == index) AppTheme.colors.title else AppTheme.colors.hint,
-                    style = if (selectedTabIndex == index) AppTheme.textStyle.label.medium else AppTheme.textStyle.label.small
+                    color = if (selectedTabIndex == index) AppTheme.colors.title
+                    else AppTheme.colors.hint,
+                    style = if (selectedTabIndex == index) AppTheme.textStyle.label.medium
+                    else AppTheme.textStyle.label.small
                 )
                 if (selectedTabIndex == index) {
                     Box(
@@ -63,8 +65,6 @@ fun TasksTab(
                 }
 
             }
-
         },
-
-        )
+    )
 }

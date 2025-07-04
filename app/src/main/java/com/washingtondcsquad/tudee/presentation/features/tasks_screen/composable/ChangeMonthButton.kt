@@ -12,7 +12,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 
 @Composable
@@ -29,7 +31,7 @@ fun ChangeMonthButton(@DrawableRes icon: Int, onClick: () -> Unit) {
     ) {
         Icon(
             painter = painterResource(icon),
-            contentDescription = "",
+            contentDescription = stringResource(R.string.empty),
             tint = AppTheme.colors.body
         )
     }

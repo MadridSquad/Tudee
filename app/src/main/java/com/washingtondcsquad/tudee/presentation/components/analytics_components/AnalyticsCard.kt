@@ -47,7 +47,7 @@ fun AnalyticsCard(
         Row {
             Icon(
                 painter = painterResource(R.drawable.calendar_icon),
-                contentDescription = "calender icon",
+                contentDescription = stringResource(R.string.calender_icon),
                 tint = AppTheme.colors.body,
                 modifier = Modifier
                     .size(16.dp)

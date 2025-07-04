@@ -82,18 +82,18 @@ fun NoTasks() {
         Box(contentAlignment = Alignment.BottomEnd) {
             Image(
                 painter = painterResource(R.drawable.no_tasks_image_container),
-                contentDescription = "",
+                contentDescription = stringResource(R.string.empty),
                 modifier = Modifier
                     .offset(y = (-5).dp, x = (-5).dp)
             )
             Image(
                 painter = painterResource(R.drawable.no_tasks_image_overlay),
-                contentDescription = "",
+                contentDescription = stringResource(R.string.empty),
 
             )
             Image(
                 painter = painterResource(R.drawable.no_tasks_tudee),
-                contentDescription = "",
+                contentDescription = stringResource(R.string.empty),
                 modifier = Modifier.size(107.dp)
             )
             Icon(
@@ -102,7 +102,7 @@ fun NoTasks() {
                     .offset(y = (-32).dp, x = (-97).dp)
                     .rotate(if (layoutDirection == LayoutDirection.Rtl) 45f else 0f),
                 painter = painterResource(R.drawable.no_tasks_progress_indicator),
-                contentDescription = "",
+                contentDescription = stringResource(R.string.empty),
                 tint = AppTheme.colors.surfaceHigh
             )
         }

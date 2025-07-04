@@ -91,8 +91,7 @@ fun TaskCard(
                         )
                     }
                 }
-
-
+                
                 TaskPriorityCard(taskUiState.taskPriority, isSelected = true)
             }
         }

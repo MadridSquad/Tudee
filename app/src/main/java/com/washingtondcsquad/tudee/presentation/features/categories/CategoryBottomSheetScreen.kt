@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
@@ -55,7 +56,7 @@ fun CategoryBottomSheetScreen(
     bottomSheetSubTitle: String,
     showBottomSheet: Boolean,
     onDismiss: () -> Unit,
-    onSaveCategory: (title: String , categoryIconPathString : String) -> Unit = { _, _ -> }
+    onSaveCategory: (title: String, categoryIconPathString: String) -> Unit = { _, _ -> }
 ) {
     if (showBottomSheet) {
         val sheetState = rememberModalBottomSheetState(
@@ -87,27 +88,31 @@ fun CategoryBottomSheetScreen(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                Row ( modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically){
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(
-                        text =bottomSheetTitle,
+                        text = bottomSheetTitle,
                         style = AppTheme.textStyle.title.large,
                         color = AppTheme.colors.title,
                     )
-                    if (isEditMode){
-                    Text(
-                        text = "Delete",
-                        style = AppTheme.textStyle.label.large,
-                        color = AppTheme.colors.error,
-                        modifier = Modifier
-                    )
-                        }
+                    if (isEditMode) {
+                        Text(
+                            text = stringResource(R.string.delete),
+                            style = AppTheme.textStyle.label.large,
+                            color = AppTheme.colors.error,
+                            modifier = Modifier
+                        )
+                    }
                 }
                 if (!isDeleteMode) {
                     AppTextField(
                         prefixIconPainter = painterResource(R.drawable.add_new_category),
-                        hintText = "Category Title",
+                        hintText = stringResource(R.string.category_title),
                         onValueChange = { newCategoryTitle = it },
                         value = newCategoryTitle,
                         modifier = Modifier.padding(horizontal = 16.dp)
@@ -123,24 +128,27 @@ fun CategoryBottomSheetScreen(
                     Image(
 
                         painter = painterResource(R.drawable.delete_robot),
-                        contentDescription = "Delete",
+                        contentDescription = stringResource(R.string.delete),
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally)
                             .fillMaxWidth()
-                           .size(107.dp, 100.dp)
+                            .size(107.dp, 100.dp)
                             .padding(horizontal = 16.dp)
                     )
-                }
-                else {
+                } else {
                     if (categoryIconPath.isEmpty()) {
                         Icon(
                             painter = painterResource(R.drawable.add_new_image),
-                            contentDescription = "Category Image",
+                            contentDescription = stringResource(R.string.category_image),
                             tint = AppTheme.colors.hint,
                             modifier = Modifier
                                 .padding(horizontal = 16.dp)
                                 .clickable {
-                                    pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                                    pickMedia.launch(
+                                        PickVisualMediaRequest(
+                                            ActivityResultContracts.PickVisualMedia.ImageOnly
+                                        )
+                                    )
                                 }
                                 .drawBehind {
                                     val stroke = Stroke(
@@ -168,7 +176,7 @@ fun CategoryBottomSheetScreen(
                         ) {
                             Image(
                                 painter = rememberAsyncImagePainter(categoryIconPath),
-                                contentDescription = "Category Image",
+                                contentDescription = stringResource(R.string.category_image),
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(16.dp))
@@ -181,7 +189,7 @@ fun CategoryBottomSheetScreen(
                             )
                             Icon(
                                 painter = painterResource(R.drawable.pencil),
-                                contentDescription = "Category Image",
+                                contentDescription = stringResource(R.string.category_image),
                                 tint = AppTheme.colors.secondary,
                                 modifier = Modifier
                                     .align(
@@ -208,9 +216,13 @@ fun CategoryBottomSheetScreen(
                 CancelableActionLayout(
                     modifier = Modifier,
                     actionText = actionText,
-                    actionTextColor = if(isDeleteMode) AppTheme.colors.error else AppTheme.colors.onPrimary,
-                    actionBackgroundColor =if(isDeleteMode) listOf( AppTheme.colors.errorVariant, AppTheme.colors.errorVariant) else AppTheme.colors.primaryGradient,
-                    isEnabled = if(isDeleteMode) true else categoryIconPath.isNotEmpty() && newCategoryTitle.isNotEmpty(),
+                    actionTextColor = if (isDeleteMode) AppTheme.colors.error else
+                        AppTheme.colors.onPrimary,
+                    actionBackgroundColor = if (isDeleteMode)
+                        listOf(AppTheme.colors.errorVariant, AppTheme.colors.errorVariant) else
+                        AppTheme.colors.primaryGradient,
+                    isEnabled = if (isDeleteMode) true
+                    else categoryIconPath.isNotEmpty() && newCategoryTitle.isNotEmpty(),
                     onCancel = { onDismiss() },
                     onAction = {
                         onSaveCategory(newCategoryTitle, categoryIconPath)

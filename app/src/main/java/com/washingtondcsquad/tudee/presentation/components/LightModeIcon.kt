@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import com.washingtondcsquad.tudee.R
 
 
 @Composable
@@ -17,7 +19,7 @@ fun LightModeIcon(visible: Boolean) {
     val alphaAnim by animateFloatAsState(
         targetValue = if (visible) 1f else 0f,
         animationSpec = tween(durationMillis = 800),
-        label = "sunAlpha"
+        label = stringResource(R.string.craterAlpha)
     )
 
     Canvas(

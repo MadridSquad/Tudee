@@ -171,7 +171,7 @@ fun TasksScreenContent(
                         )
                         Icon(
                             painter = painterResource(R.drawable.down_arrow),
-                            contentDescription = "",
+                            contentDescription = stringResource(R.string.empty),
                             tint = AppTheme.colors.body
                         )
                     }
@@ -196,7 +196,8 @@ fun TasksScreenContent(
                             .width(65.dp)
                             .clickable {
                                 onDaySelectedFromLazyRow(item.dayNumber)
-                            })
+                            }
+                    )
                 }
             }
 

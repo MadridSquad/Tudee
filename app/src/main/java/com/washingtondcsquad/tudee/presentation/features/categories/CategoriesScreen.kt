@@ -122,9 +122,9 @@ fun CategoriesContent(
         )
 
         CategoryBottomSheetScreen(
-            bottomSheetTitle = "Add New Category",
-            bottomSheetSubTitle = "Category Image",
-            actionText = "Add",
+            bottomSheetTitle = stringResource(R.string.add_new_category),
+            bottomSheetSubTitle = stringResource(R.string.category_image),
+            actionText = stringResource(R.string.add),
             showBottomSheet = showBottomSheet,
             onDismiss = { showBottomSheet = false },
             onSaveCategory = { title, categoryIconPath ->
@@ -144,7 +144,7 @@ private fun FabIcon(
 ) {
     Icon(
         painter = painterResource(R.drawable.add_category),
-        contentDescription = "Add Category",
+        contentDescription = stringResource(R.string.add_new_category),
         tint = AppTheme.colors.onPrimary,
         modifier = modifier
             .padding(end = 16.dp, bottom = 16.dp)

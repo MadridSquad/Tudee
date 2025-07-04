@@ -6,8 +6,7 @@ import com.washingtondcsquad.tudee.domain.entity.ImageSource
 
 data class CategoriesScreenStatus(
     val categories: List<CategoryUiState> = emptyList(),
-
-    )
+)
 
 data class CategoryUiState(
     val id: CategoryID,

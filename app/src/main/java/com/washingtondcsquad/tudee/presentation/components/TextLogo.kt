@@ -12,9 +12,8 @@ import com.washingtondcsquad.tudee.presentation.design.textStyle.Cherry_Bomb
 
 
 @Composable
-fun TextLogo(title: String, size: Int, stroke: Float = 15f) {
-
-
+fun TextLogo(title: String, size: Int, stroke: Float = 15f
+) {
     Box {
         Text(
             text = title,
