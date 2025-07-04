@@ -1,9 +1,9 @@
-package com.washingtondcsquad.tudee.presentation.features.tasks_screen
+package com.washingtondcsquad.tudee.presentation.features.tasksScreen
 
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.utils.buildMonthDaysList
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.utils.getYearAndMonthTitleFromYearMonth
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.utils.todayInMillis
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.utils.buildMonthDaysList
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.utils.getYearAndMonthTitleFromYearMonth
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.utils.todayInMillis
 import java.time.YearMonth
 
 data class TasksUiState(

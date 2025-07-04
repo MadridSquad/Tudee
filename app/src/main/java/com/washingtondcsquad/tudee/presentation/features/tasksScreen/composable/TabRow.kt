@@ -1,4 +1,4 @@
-package com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable
+package com.washingtondcsquad.tudee.presentation.features.tasksScreen.composable
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -11,7 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.TasksUiState
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.TasksUiState
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter

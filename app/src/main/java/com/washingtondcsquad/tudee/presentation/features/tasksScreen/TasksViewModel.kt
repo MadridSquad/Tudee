@@ -1,4 +1,4 @@
-package com.washingtondcsquad.tudee.presentation.features.tasks_screen
+package com.washingtondcsquad.tudee.presentation.features.tasksScreen
 
 import androidx.lifecycle.viewModelScope
 import com.washingtondcsquad.tudee.domain.entity.CategoryID
@@ -8,10 +8,10 @@ import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.utils.LocalDateParser
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.utils.buildMonthDaysList
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.utils.getYearAndMonthTitleFromYearMonth
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.utils.todayInMillis
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.utils.LocalDateParser
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.utils.buildMonthDaysList
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.utils.getYearAndMonthTitleFromYearMonth
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.utils.todayInMillis
 import kotlinx.coroutines.launch
 import kotlinx.datetime.toJavaLocalDate
 import java.time.Instant

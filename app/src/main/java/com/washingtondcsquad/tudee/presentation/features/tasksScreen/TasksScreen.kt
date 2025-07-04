@@ -1,4 +1,4 @@
-package com.washingtondcsquad.tudee.presentation.features.tasks_screen
+package com.washingtondcsquad.tudee.presentation.features.tasksScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -56,11 +56,11 @@ import com.washingtondcsquad.tudee.presentation.features.add_task.AddNewTaskScre
 import com.washingtondcsquad.tudee.presentation.features.delete_task.ConfirmDeleteTask
 import com.washingtondcsquad.tudee.presentation.features.delete_task.DeleteTaskScroll
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.ChangeMonthButton
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.DatePickerComponent
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.NoTasks
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.ShowEditTaskScreen
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable.TasksTabRow
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.composable.ChangeMonthButton
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.composable.DatePickerComponent
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.composable.NoTasks
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.composable.ShowEditTaskScreen
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.composable.TasksTabRow
 import com.washingtondcsquad.tudee.presentation.utils.modifierExensions.noRippleClick
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone

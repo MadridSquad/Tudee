@@ -1,4 +1,4 @@
-package com.washingtondcsquad.tudee.presentation.features.tasks_screen.composable
+package com.washingtondcsquad.tudee.presentation.features.tasksScreen.composable
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
