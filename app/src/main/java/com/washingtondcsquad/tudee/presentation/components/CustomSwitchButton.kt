@@ -26,9 +26,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 
 
@@ -52,13 +54,13 @@ fun CustomSwitchButton(
         animationSpec = tween(
             durationMillis = 700,
             easing = LinearOutSlowInEasing
-        ), label = "padding"
+        ), label = stringResource(R.string.padding)
     )
 
     val backgroundColor by animateColorAsState(
         targetValue = if (switchClicked) AppTheme.colors.darkSwitch else AppTheme.colors.primary,
         animationSpec = tween(700),
-        label = "backgroundColor"
+        label = stringResource(R.string.backgroundColor)
     )
 
     Box(

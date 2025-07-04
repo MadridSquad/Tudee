@@ -34,7 +34,8 @@ fun SplashScreen(
     ){
 
     Image(
-           painter = if (isDarkTheme) painterResource(R.drawable.background_graphics_dark) else painterResource(
+           painter = if (isDarkTheme) painterResource(R.drawable.background_graphics_dark)
+           else painterResource(
                R.drawable.background_graphics
            ),
            contentDescription = stringResource(R.string.background_graphics),
@@ -44,8 +45,6 @@ fun SplashScreen(
             alignment = Alignment.TopEnd
             )
         TextLogo(title, 48)
-
-
     }
 
 }

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryDetailTopAppBar(
     isCategoryPredefined: Boolean,
@@ -120,6 +118,5 @@ private fun PreviewTopBar() {
         onBack = {},
         onEdit = {},
         isCategoryPredefined = false,
-        //modifier = Modifier.height(60.dp)
     )
 }

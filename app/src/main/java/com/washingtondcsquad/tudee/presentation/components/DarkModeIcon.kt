@@ -11,19 +11,21 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.res.stringResource
+import com.washingtondcsquad.tudee.R
 
 @Composable
 fun DarkModeIcon(visible: Boolean) {
     val moonAlpha by animateFloatAsState(
         targetValue = if (visible) 1f else 0f,
         animationSpec = tween(durationMillis = 800),
-        label = "moonAlpha"
+        label = stringResource(R.string.alphaAnim)
     )
 
     val cratersAlpha by animateFloatAsState(
         targetValue = if (visible) 1f else 0f,
         animationSpec = tween(durationMillis = 1000),
-        label = "craterAlpha"
+        label = stringResource(R.string.craterAlpha)
     )
 
     Canvas(

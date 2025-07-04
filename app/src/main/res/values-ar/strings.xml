@@ -90,4 +90,35 @@
     <string name="move_to">"انقلها الى "</string>
     <string name="todo">مهام</string>
     <string name="no_tasks_in">"ماكو اي مهام "</string>"
+    <string name="add_new_category">أضافة فئة جديدة</string>
+    <string name="category_image">صورة الفئة</string>
+    <string name="skip">تخطي</string>
+    <string name="empty"></string>
+    <string name="Retry">أعد المحاولة</string>
+    <string name="error_loading_task">حدث خطأ اثناء تحميل التاسك :</string>
+    <string name="calender_icon">ايقونة الروزنامة</string>
+    <string name="offsetRight">ازاحة لليمين</string>
+    <string name="offsetLeft">ازاحة لليسار</string>
+    <string name="big_circle_gray">دائرة كبيرة رمادية</string>
+    <string name="big_circle_white">دائرة كبيرة بيضاء</string>
+    <string name="small_circle_gray">دائرة صغيرة رمادية</string>
+    <string name="small_circle_white">sدائرة صغيرة بيضاء</string>
+    <string name="padding">مسافات</string>
+    <string name="backgroundColor">لون الخلفية</string>
+    <string name="success_icon">ايقونة تدل على النجاح</string>
+    <string name="category_title">عنوان الفئة</string>
+    <string name="edit_category">تعديل الفئة</string>
+    <string name="delete_category">حذف الفئة</string>
+    <string name="are_you_sure_to_delete_task">الروبوت: هل انت متأكد لحذف التاسك </string>
+
+
+
+
+
+
+
+
+
+
+
 </resources>

@@ -47,6 +47,7 @@ import com.washingtondcsquad.tudee.presentation.utils.statusColor
 import com.washingtondcsquad.tudee.presentation.utils.toDisplayName
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TaskDetailsBottomSheet(
     taskId: TaskID,
@@ -89,12 +90,12 @@ fun TaskDetailsBottomSheet(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Error loading task: $errorMessage",
+                        text = stringResource(id = R.string.error_loading_task, errorMessage) ,
                         color = AppTheme.colors.error,
                         modifier = Modifier.padding(bottom = 16.dp)
                     )
                     Button(onClick = { viewModel.loadTask(taskId) }) {
-                        Text("Retry")
+                        Text(stringResource(R.string.Retry))
                     }
                 }
             }
@@ -143,7 +144,7 @@ private fun TaskDetailsContent(
                     .padding(12.dp)
                     .size(32.dp),
                 painter = painterResource(R.drawable.education_icon),
-                contentDescription = "Category Image",
+                contentDescription = stringResource(R.string.category_image),
             )
             Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
@@ -193,7 +194,7 @@ private fun TaskDetailsContent(
                             .clickable { onEditTask() }) {
                         Image(
                             painter = painterResource(id = R.drawable.pencil_edit),
-                            contentDescription = "edit screen",
+                            contentDescription = stringResource(R.string.edit_task),
                             modifier = Modifier.align(Alignment.Center)
 
                         )

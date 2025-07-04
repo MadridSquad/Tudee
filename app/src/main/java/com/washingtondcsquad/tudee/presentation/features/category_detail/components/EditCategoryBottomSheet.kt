@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.washingtondcsquad.tudee.R
@@ -96,13 +97,15 @@ fun EditCategoryBottomSheet(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = if (isDeleteMode) "Delete Category" else "Edit category",
+                        text = if (isDeleteMode) stringResource(R.string.delete_category) else
+                            stringResource(R.string.edit_category)
+                        ,
                         style = AppTheme.textStyle.title.large,
                         color = AppTheme.colors.title,
                     )
                     if (!isDeleteMode) {
                         Text(
-                            text = "Delete",
+                            text = stringResource(R.string.delete),
                             style = AppTheme.textStyle.label.large,
                             color = AppTheme.colors.error,
                             modifier = Modifier.noRippleClick {
@@ -114,7 +117,7 @@ fun EditCategoryBottomSheet(
                 if (!isDeleteMode) {
                     AppTextField(
                         prefixIconPainter = painterResource(R.drawable.add_new_category),
-                        hintText = "Category Title",
+                        hintText = stringResource(R.string.category_title),
                         onValueChange = { newCategoryTitle = it },
                         value = newCategoryTitle,
                         modifier = Modifier.padding(horizontal = 16.dp)
@@ -123,7 +126,7 @@ fun EditCategoryBottomSheet(
                 if (isDeleteMode) {
                     Text(
                         modifier = Modifier.padding(horizontal = 16.dp),
-                        text = "Are you sure to continue?",
+                        text = stringResource(R.string.are_you_sure_to_continue),
                         style = AppTheme.textStyle.label.medium,
                         color = AppTheme.colors.title
                     )
@@ -133,7 +136,7 @@ fun EditCategoryBottomSheet(
                 if (isDeleteMode) {
                     Image(
                         painter = painterResource(R.drawable.delete_robot),
-                        contentDescription = "Delete",
+                        contentDescription = stringResource(R.string.delete),
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally)
                             .fillMaxWidth()
@@ -144,7 +147,7 @@ fun EditCategoryBottomSheet(
                     if (categoryIconPath.isEmpty()) {
                         Icon(
                             painter = painterResource(R.drawable.add_new_image),
-                            contentDescription = "Category Image",
+                            contentDescription = stringResource(R.string.category_image),
                             tint = AppTheme.colors.hint,
                             modifier = Modifier
                                 .padding(horizontal = 16.dp)
@@ -177,7 +180,7 @@ fun EditCategoryBottomSheet(
                         ) {
                             Image(
                                 painter = rememberAsyncImagePainter(categoryIconPath),
-                                contentDescription = "Category Image",
+                                contentDescription = stringResource(R.string.category_image),
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(16.dp))
@@ -190,7 +193,7 @@ fun EditCategoryBottomSheet(
                             )
                             Icon(
                                 painter = painterResource(R.drawable.pencil),
-                                contentDescription = "Category Image",
+                                contentDescription = stringResource(R.string.category_image),
                                 tint = AppTheme.colors.secondary,
                                 modifier = Modifier
                                     .align(
@@ -216,13 +219,20 @@ fun EditCategoryBottomSheet(
 
                 CancelableActionLayout(
                     modifier = Modifier,
-                    actionText = if (isDeleteMode) "Delete" else "Save",
-                    actionTextColor = if (isDeleteMode) AppTheme.colors.error else AppTheme.colors.onPrimary,
+                    actionText = if (isDeleteMode) stringResource(R.string.delete) else
+                        stringResource(R.string.save)
+                    ,
+                    actionTextColor = if (isDeleteMode) AppTheme.colors.error
+                    else AppTheme.colors.onPrimary
+                    ,
                     actionBackgroundColor = if (isDeleteMode) listOf(
                         AppTheme.colors.errorVariant,
                         AppTheme.colors.errorVariant
-                    ) else AppTheme.colors.primaryGradient,
-                    isEnabled = if (isDeleteMode) true else categoryIconPath.isNotEmpty() && newCategoryTitle.isNotEmpty(),
+                    ) else AppTheme.colors.primaryGradient
+                    ,
+                    isEnabled = if (isDeleteMode) true
+                    else categoryIconPath.isNotEmpty() && newCategoryTitle.isNotEmpty()
+                    ,
                     onCancel = { onDismiss() },
                     onAction = {
                         if (isDeleteMode) {

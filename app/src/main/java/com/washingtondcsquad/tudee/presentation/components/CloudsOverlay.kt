@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.washingtondcsquad.tudee.R
 
@@ -23,24 +24,24 @@ fun CloudsOverlay(visible: Boolean) {
         val offsetRight by animateDpAsState(
             targetValue = if (visible) 0.dp else 40.dp,
             animationSpec = tween(durationMillis = 800),
-            label = "offsetRight"
+            label = stringResource(R.string.offsetRight)
         )
 
         val offsetLeft by animateDpAsState(
             targetValue = if (visible) 0.dp else (-40).dp,
             animationSpec = tween(durationMillis = 800),
-            label = "offsetLeft"
+            label = stringResource(R.string.offsetLeft)
         )
 
         val alphaAnim by animateFloatAsState(
             targetValue = if (visible) 1f else 0f,
             animationSpec = tween(durationMillis = 800),
-            label = "alphaAnim"
+            label = stringResource(R.string.alphaAnim)
         )
 
         Image(
             painter = painterResource(id = R.drawable.big_circle_gray),
-            contentDescription = "Big Circle gray",
+            contentDescription = stringResource(R.string.big_circle_gray),
             modifier = Modifier
                 .width(32.dp)
                 .height(32.dp)
@@ -52,7 +53,7 @@ fun CloudsOverlay(visible: Boolean) {
 
         Image(
             painter = painterResource(id = R.drawable.big_circle_white),
-            contentDescription = "Big circle white",
+            contentDescription = stringResource(R.string.big_circle_white),
             modifier = Modifier
                 .size(29.dp)
                 .align(Alignment.TopEnd)
@@ -62,7 +63,7 @@ fun CloudsOverlay(visible: Boolean) {
 
         Image(
             painter = painterResource(id = R.drawable.small_circle_gray),
-            contentDescription = "Small circle gray",
+            contentDescription = stringResource(R.string.small_circle_gray),
             modifier = Modifier
                 .size(24.dp)
                 .align(Alignment.BottomEnd)
@@ -72,7 +73,7 @@ fun CloudsOverlay(visible: Boolean) {
 
         Image(
             painter = painterResource(id = R.drawable.small_circle_white),
-            contentDescription = "Small circle white",
+            contentDescription = stringResource(R.string.small_circle_white),
             modifier = Modifier
                 .size(16.dp)
                 .align(Alignment.BottomEnd)
@@ -82,7 +83,7 @@ fun CloudsOverlay(visible: Boolean) {
 
         Image(
             painter = painterResource(id = R.drawable.small_circle_white),
-            contentDescription = "Small circle white",
+            contentDescription = stringResource(R.string.small_circle_white),
             modifier = Modifier
                 .size(16.dp)
                 .align(Alignment.BottomEnd)

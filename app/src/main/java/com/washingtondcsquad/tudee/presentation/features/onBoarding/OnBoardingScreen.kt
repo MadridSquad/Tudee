@@ -20,7 +20,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -81,7 +83,7 @@ fun OnBoardingScreenContent(
         AnimatedContent(pagerState.currentPage != pagerState.pageCount - 1) {
             if (it) {
                 Text(
-                    text = "Skip",
+                    text = stringResource(R.string.skip),
                     style = AppTheme.textStyle.label.large,
                     color = AppTheme.colors.primary,
                     modifier = Modifier
@@ -89,8 +91,8 @@ fun OnBoardingScreenContent(
                         .padding(top = 16.dp, start = 16.dp)
                         .clickable {
                             onSkipClick()
-                        })
-
+                        }
+                )
             }
         }
 
@@ -107,7 +109,5 @@ fun OnBoardingScreenContent(
                 pagerState = pagerState,
             )
         }
-
-
     }
 }

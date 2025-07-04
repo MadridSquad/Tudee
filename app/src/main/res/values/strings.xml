@@ -19,7 +19,6 @@
     <string name="event">Event</string>
     <string name="deleted_task_successfully">Deleted task successfully.</string>
 
-
     <string name="onboarding_title_1">Uh-oh! Procrastinating again\n</string>
     <string name="onboarding_description_1">Let’s bring some order to the chaos. Tudee is here to help you sort, plan, and breathe easier.</string>
     <string name="onboarding_title_2">Uh-oh! Procrastinating again\n</string>
@@ -86,5 +85,30 @@
     <string name="move_to">"Move to "</string>
     <string name="todo">To Do</string>
     <string name="no_tasks_in">"No tasks in "</string>"
+    <string name="add_new_category">Add New Category</string>
+    <string name="category_image">Category Image</string>
+    <string name="skip">Skip</string>
+    <string name="empty"></string>
+    <string name="Retry">Retry</string>
+    <string name="error_loading_task">Error loading task:</string>
+    <string name="calender_icon">calender icon</string>
+    <string name="offsetRight">offsetRight</string>
+    <string name="offsetLeft">offsetLeft</string>
+    <string name="alphaAnim" translatable="false">alphaAnim</string>
+    <string name="big_circle_gray">Big Circle gray</string>
+    <string name="big_circle_white">Big Circle white</string>
+    <string name="small_circle_gray">Small Circle gray</string>
+    <string name="small_circle_white">small Circle white</string>
+    <string name="padding">padding</string>
+    <string name="backgroundColor">backgroundColor</string>
+    <string name="craterAlpha" translatable="false">craterAlpha</string>
+    <string name="success_icon">success icon</string>
+    <string name="category_title">Category Title</string>
+    <string name="edit_category">Edit category</string>
+    <string name="delete_category">delete category</string>
+    <string name="are_you_sure_to_delete_task">Robot: Are you sure to delete task</string>
+    <string name="pagerIndicatorColor" translatable="false">PagerIndicatorColor</string>
+
+
 
 </resources>

@@ -15,8 +15,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.presentation.design.AppTheme
 
 @Composable
@@ -33,7 +35,7 @@ fun OnBoardingPagerIndicator(
                 if (pagerState.currentPage == iteration) AppTheme.colors.primary else AppTheme.colors.primaryVarient
             val color by animateColorAsState(
                 targetValue = targetColor,
-                label = "PagerIndicatorColor"
+                label = stringResource(R.string.pagerIndicatorColor)
             )
             Box(
                 modifier = Modifier
