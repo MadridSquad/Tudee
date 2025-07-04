@@ -1,21 +1,17 @@
-package com.washingtondcsquad.tudee.presentation.features.tasks_screen
+package com.washingtondcsquad.tudee.presentation.features.tasksScreen
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
-import com.washingtondcsquad.tudee.R
 import com.washingtondcsquad.tudee.domain.entity.CategoryID
-import com.washingtondcsquad.tudee.domain.entity.ImageSource
 import com.washingtondcsquad.tudee.domain.entity.Task
-import com.washingtondcsquad.tudee.domain.entity.TaskID
 import com.washingtondcsquad.tudee.domain.entity.TaskStatus
 import com.washingtondcsquad.tudee.domain.services.CategoriesService
 import com.washingtondcsquad.tudee.domain.services.TasksService
 import com.washingtondcsquad.tudee.presentation.base.BaseViewModel
 import com.washingtondcsquad.tudee.presentation.features.sharedUiState.TaskUiState
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.utils.LocalDateParser
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.utils.buildMonthDaysList
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.utils.getYearAndMonthTitleFromYearMonth
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.utils.todayInMillis
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.utils.LocalDateParser
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.utils.buildMonthDaysList
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.utils.getYearAndMonthTitleFromYearMonth
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.utils.todayInMillis
 import kotlinx.coroutines.launch
 import kotlinx.datetime.toJavaLocalDate
 import java.time.Instant
@@ -26,55 +22,35 @@ import java.time.format.DateTimeFormatter
 class TasksViewModel(
     private val tasksService: TasksService ,
     private val categoriesService: CategoriesService
-) : BaseViewModel<TasksUiState>(
-    TasksUiState(
-        showDateDialog = false,
-        selectedDateInMillis = todayInMillis(),
-        currentMonth = YearMonth.now(),
-        yearAndMonthTitle = getYearAndMonthTitleFromYearMonth(YearMonth.now()),
-        monthDaysList = buildMonthDaysList(YearMonth.now(), System.currentTimeMillis()),
-        fullSelectedDate = "",
-        isFilterEnabled = false,
-        tasksList = emptyList()
-    )
-) {
+) : BaseViewModel<TasksUiState>(TasksUiState()) {
+
     init {
         observeTasks()
     }
-    var snackBarMessage = mutableStateOf<String?>(null)
 
-    fun deleteTask(taskId: TaskID) = tryToExecute(
+    fun deleteTask(taskUi: TaskUiState) = tryToExecute(
         request = {
-            val taskUi = state.value.tasksList.find { it.taskId == taskId }
-
-            val task = taskUi?.taskDate?.let {
-                Task(
+            val task = Task(
                     id = taskUi.taskId,
                     title = taskUi.taskTitle,
                     description = taskUi.taskDescription,
                     priority = taskUi.taskPriority,
                     status = TaskStatus.valueOf(taskUi.taskStatus),
-                    date = LocalDateParser(taskUi.taskDate),
+                date = LocalDateParser(taskUi.taskDate!!),
                     categoryId = CategoryID(0L),
                 )
-            }
-
-            if (task != null) {
                 tasksService.deleteTask(task)
-            }
         },
         onSuccess = {
-            snackBarMessage.value = "Deleted task successfully."
             observeTasks()
         },
         onError = {
-            onError(it)
         }
     )
 
 
     private fun observeTasks() {
-       viewModelScope.launch {
+        viewModelScope.launch {
             tasksService.getAllTasks().collect { tasks ->
                 val tasksForUiState = tasks.map {
                     val category = categoriesService.getCategoryById(it.categoryId)
@@ -94,17 +70,6 @@ class TasksViewModel(
                 }
             }
         }
-    }
-    private fun onSuccess(response: Unit) {
-
-    }
-
-    private fun onError(error: Throwable) {
-
-    }
-
-    fun onTaskClicked(taskId: Int) {
-
     }
 
     fun onDateSelectedFromPicker(millis: Long) {
@@ -197,7 +162,6 @@ class TasksViewModel(
     fun clearDatePicker(): Long {
         return todayInMillis()
     }
-
 
 }
 

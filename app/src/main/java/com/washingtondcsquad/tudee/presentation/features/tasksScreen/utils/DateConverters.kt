@@ -1,6 +1,6 @@
-package com.washingtondcsquad.tudee.presentation.features.tasks_screen.utils
+package com.washingtondcsquad.tudee.presentation.features.tasksScreen.utils
 
-import com.washingtondcsquad.tudee.presentation.features.tasks_screen.DayUiModel
+import com.washingtondcsquad.tudee.presentation.features.tasksScreen.DayUiModel
 import kotlinx.datetime.toKotlinLocalDate
 import java.time.Instant
 import java.time.LocalDate
