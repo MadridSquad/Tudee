@@ -22,18 +22,7 @@ import java.time.format.DateTimeFormatter
 class TasksViewModel(
     private val tasksService: TasksService ,
     private val categoriesService: CategoriesService
-) : BaseViewModel<TasksUiState>(
-    TasksUiState(
-        showDateDialog = false,
-        selectedDateInMillis = todayInMillis(),
-        currentMonth = YearMonth.now(),
-        yearAndMonthTitle = getYearAndMonthTitleFromYearMonth(YearMonth.now()),
-        monthDaysList = buildMonthDaysList(YearMonth.now(), System.currentTimeMillis()),
-        fullSelectedDate = "",
-        isFilterEnabled = false,
-        tasksList = emptyList()
-    )
-) {
+) : BaseViewModel<TasksUiState>(TasksUiState()) {
 
     init {
         observeTasks()
